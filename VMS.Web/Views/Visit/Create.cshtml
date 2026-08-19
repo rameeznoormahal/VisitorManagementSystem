@@ -1,0 +1,677 @@
+﻿@model VMS.Web.ViewModels.Visits.CreateVisitRequestViewModel
+
+@{
+    ViewData["Title"] = "Create Visit Request";
+}
+
+<h2 class="mb-4">Create Visit Request</h2>
+
+<form asp-action="Create" method="post" id="visitForm">
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger mb-3">
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Visit Information
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="HostUserId" class="form-label"></label>
+                    <select asp-for="HostUserId"
+                            asp-items="Model.Hosts"
+                            class="form-select">
+                        <option value="">-- Select Host --</option>
+                    </select>
+                    <span asp-validation-for="HostUserId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="DepartmentId" class="form-label"></label>
+                    <select asp-for="DepartmentId"
+                            asp-items="Model.Departments"
+                            class="form-select">
+                        <option value="">-- Select Department --</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="VisitFromDateTime" class="form-label">
+                        From Date & Time
+                    </label>
+
+                    <input asp-for="VisitFromDateTime"
+                           type="datetime-local"
+                           class="form-control" />
+
+                    <span asp-validation-for="VisitFromDateTime"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="VisitToDateTime" class="form-label">
+                        To Date & Time
+                    </label>
+
+                    <input asp-for="VisitToDateTime"
+                           type="datetime-local"
+                           class="form-control" />
+
+                    <span asp-validation-for="VisitToDateTime"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label asp-for="Purpose" class="form-label"></label>
+                    <textarea asp-for="Purpose"
+                              class="form-control"
+                              rows="3"></textarea>
+                    <span asp-validation-for="Purpose"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MeetingLocation" class="form-label"></label>
+                    <input asp-for="MeetingLocation"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label asp-for="Notes" class="form-label"></label>
+                    <textarea asp-for="Notes"
+                              class="form-control"
+                              rows="3"></textarea>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Visitor Details
+        </div>
+
+        <div class="card-body">
+
+            <div class="row align-items-end mb-4">
+
+                <div class="col-md-4">
+                    <label asp-for="VisitorCount"
+                           class="form-label">
+                        Number of Visitors
+                    </label>
+
+                    <input asp-for="VisitorCount"
+                           id="visitorCount"
+                           type="number"
+                           min="1"
+                           max="20"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                    <button type="button"
+                            id="applyVisitorCount"
+                            class="btn btn-outline-primary">
+                        Apply Visitor Count
+                    </button>
+                </div>
+
+            </div>
+
+            <div id="visitorContainer">
+
+                @for (var i = 0; i < Model.Visitors.Count; i++)
+                {
+                    <div class="card mb-3 visitor-card"
+                         data-index="@i">
+
+                        <div class="card-header d-flex justify-content-between align-items-center">
+
+                            <strong>
+                                Visitor @(i + 1)
+                            </strong>
+
+                            <span class="visitor-status text-muted"></span>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="row">
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">
+                                        ID Type
+                                    </label>
+
+                                    <select name="Visitors[@i].IdType"
+                                            class="form-select visitor-id-type">
+                                        <option value="">-- Select --</option>
+                                        <option value="National ID"
+                                                selected="@(Model.Visitors[i].IdType == "National ID")">
+                                            National ID
+                                        </option>
+                                        <option value="Passport"
+                                                selected="@(Model.Visitors[i].IdType == "Passport")">
+                                            Passport
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-5 mb-3">
+                                    <label class="form-label">
+                                        National ID / Passport Number
+                                    </label>
+
+                                    <input name="Visitors[@i].IdNumber"
+                                           value="@Model.Visitors[i].IdNumber"
+                                           class="form-control visitor-id-number" />
+                                </div>
+
+                                <div class="col-md-3 mb-3 d-flex align-items-end">
+
+                                    <button type="button"
+                                            class="btn btn-outline-secondary w-100 search-visitor">
+                                        Search
+                                    </button>
+
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">
+                                        ID Expiry Date
+                                    </label>
+
+                                    <input name="Visitors[@i].IdExpiryDate"
+                                           value="@(Model.Visitors[i].IdExpiryDate == default ? "" : Model.Visitors[i].IdExpiryDate.ToString("yyyy-MM-dd"))"
+                                           type="date"
+                                           class="form-control visitor-expiry" />
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">
+                                        Full Name
+                                    </label>
+
+                                    <input name="Visitors[@i].FullName"
+                                           value="@Model.Visitors[i].FullName"
+                                           class="form-control visitor-fullname" />
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">
+                                        Phone Number
+                                    </label>
+
+                                    <input name="Visitors[@i].PhoneNumber"
+                                           value="@Model.Visitors[i].PhoneNumber"
+                                           class="form-control visitor-phone" />
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">
+                                        Email
+                                    </label>
+
+                                    <input name="Visitors[@i].Email"
+                                           value="@Model.Visitors[i].Email"
+                                           type="email"
+                                           class="form-control visitor-email" />
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">
+                                        Company
+                                    </label>
+
+                                    <input name="Visitors[@i].CompanyName"
+                                           value="@Model.Visitors[i].CompanyName"
+                                           class="form-control visitor-company" />
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">
+                                        Designation
+                                    </label>
+
+                                    <input name="Visitors[@i].Designation"
+                                           value="@Model.Visitors[i].Designation"
+                                           class="form-control visitor-designation" />
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">
+                                        Nationality
+                                    </label>
+
+                                    <input name="Visitors[@i].Nationality"
+                                           value="@Model.Visitors[i].Nationality"
+                                           class="form-control visitor-nationality" />
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary">
+        Submit for Approval
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const visitorContainer =
+            document.getElementById("visitorContainer");
+
+        const visitorCountInput =
+            document.getElementById("visitorCount");
+
+        document.getElementById("applyVisitorCount")
+            .addEventListener("click", function () {
+
+                let count =
+                    parseInt(visitorCountInput.value || "1");
+
+                if (count < 1)
+                    count = 1;
+
+                if (count > 20)
+                    count = 20;
+
+                rebuildVisitorCards(count);
+            });
+
+
+        function rebuildVisitorCards(count) {
+
+            const existingCards =
+                visitorContainer.querySelectorAll(".visitor-card");
+
+            const existingValues = [];
+
+            existingCards.forEach(card => {
+
+                existingValues.push({
+                    idType:
+                        card.querySelector(".visitor-id-type")?.value ?? "",
+
+                    idNumber:
+                        card.querySelector(".visitor-id-number")?.value ?? "",
+
+                    expiry:
+                        card.querySelector(".visitor-expiry")?.value ?? "",
+
+                    fullName:
+                        card.querySelector(".visitor-fullname")?.value ?? "",
+
+                    phone:
+                        card.querySelector(".visitor-phone")?.value ?? "",
+
+                    email:
+                        card.querySelector(".visitor-email")?.value ?? "",
+
+                    company:
+                        card.querySelector(".visitor-company")?.value ?? "",
+
+                    designation:
+                        card.querySelector(".visitor-designation")?.value ?? "",
+
+                    nationality:
+                        card.querySelector(".visitor-nationality")?.value ?? ""
+                });
+            });
+
+            visitorContainer.innerHTML = "";
+
+            for (let i = 0; i < count; i++) {
+
+                const data =
+                    existingValues[i] || {};
+
+                visitorContainer.insertAdjacentHTML(
+                    "beforeend",
+                    createVisitorCard(i, data));
+            }
+
+            visitorCountInput.value = count;
+
+            attachSearchHandlers();
+        }
+
+
+        function createVisitorCard(index, data) {
+
+            return `
+                <div class="card mb-3 visitor-card"
+                     data-index="${index}">
+
+                    <div class="card-header d-flex justify-content-between align-items-center">
+
+                        <strong>
+                            Visitor ${index + 1}
+                        </strong>
+
+                        <span class="visitor-status text-muted"></span>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row">
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    ID Type
+                                </label>
+
+                                <select name="Visitors[${index}].IdType"
+                                        class="form-select visitor-id-type">
+
+                                    <option value="">
+                                        -- Select --
+                                    </option>
+
+                                    <option value="National ID"
+                                        ${data.idType === "National ID" ? "selected" : ""}>
+                                        National ID
+                                    </option>
+
+                                    <option value="Passport"
+                                        ${data.idType === "Passport" ? "selected" : ""}>
+                                        Passport
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-5 mb-3">
+
+                                <label class="form-label">
+                                    National ID / Passport Number
+                                </label>
+
+                                <input name="Visitors[${index}].IdNumber"
+                                       value="${escapeHtml(data.idNumber || "")}"
+                                       class="form-control visitor-id-number" />
+
+                            </div>
+
+                            <div class="col-md-3 mb-3 d-flex align-items-end">
+
+                                <button type="button"
+                                        class="btn btn-outline-secondary w-100 search-visitor">
+                                    Search
+                                </button>
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    ID Expiry Date
+                                </label>
+
+                                <input name="Visitors[${index}].IdExpiryDate"
+                                       value="${escapeHtml(data.expiry || "")}"
+                                       type="date"
+                                       class="form-control visitor-expiry" />
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    Full Name
+                                </label>
+
+                                <input name="Visitors[${index}].FullName"
+                                       value="${escapeHtml(data.fullName || "")}"
+                                       class="form-control visitor-fullname" />
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    Phone Number
+                                </label>
+
+                                <input name="Visitors[${index}].PhoneNumber"
+                                       value="${escapeHtml(data.phone || "")}"
+                                       class="form-control visitor-phone" />
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    Email
+                                </label>
+
+                                <input name="Visitors[${index}].Email"
+                                       value="${escapeHtml(data.email || "")}"
+                                       type="email"
+                                       class="form-control visitor-email" />
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    Company
+                                </label>
+
+                                <input name="Visitors[${index}].CompanyName"
+                                       value="${escapeHtml(data.company || "")}"
+                                       class="form-control visitor-company" />
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    Designation
+                                </label>
+
+                                <input name="Visitors[${index}].Designation"
+                                       value="${escapeHtml(data.designation || "")}"
+                                       class="form-control visitor-designation" />
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    Nationality
+                                </label>
+
+                                <input name="Visitors[${index}].Nationality"
+                                       value="${escapeHtml(data.nationality || "")}"
+                                       class="form-control visitor-nationality" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+        }
+
+
+        function attachSearchHandlers() {
+
+            document.querySelectorAll(".search-visitor")
+                .forEach(button => {
+
+                    button.onclick =
+                        async function () {
+
+                            const card =
+                                button.closest(".visitor-card");
+
+                            const idNumber =
+                                card.querySelector(".visitor-id-number")
+                                    .value.trim();
+
+                            const status =
+                                card.querySelector(".visitor-status");
+
+                            if (!idNumber) {
+
+                                status.className =
+                                    "visitor-status text-danger";
+
+                                status.textContent =
+                                    "Enter ID number first.";
+
+                                return;
+                            }
+
+                            status.className =
+                                "visitor-status text-muted";
+
+                            status.textContent =
+                                "Searching...";
+
+                            try {
+
+                                const response =
+                                    await fetch(
+                                        `/Visit/FindVisitor?idNumber=${encodeURIComponent(idNumber)}`);
+
+                                const result =
+                                    await response.json();
+
+                                if (!result.found) {
+
+                                    status.className =
+                                        "visitor-status text-primary";
+
+                                    status.textContent =
+                                        "New visitor - enter details.";
+
+                                    clearVisitorDetails(card, idNumber);
+
+                                    return;
+                                }
+
+                                card.querySelector(".visitor-id-type").value =
+                                    result.idType || "";
+
+                                card.querySelector(".visitor-id-number").value =
+                                    result.idNumber || "";
+
+                                card.querySelector(".visitor-expiry").value =
+                                    result.idExpiryDate || "";
+
+                                card.querySelector(".visitor-fullname").value =
+                                    result.fullName || "";
+
+                                card.querySelector(".visitor-phone").value =
+                                    result.phoneNumber || "";
+
+                                card.querySelector(".visitor-email").value =
+                                    result.email || "";
+
+                                card.querySelector(".visitor-company").value =
+                                    result.companyName || "";
+
+                                card.querySelector(".visitor-designation").value =
+                                    result.designation || "";
+
+                                card.querySelector(".visitor-nationality").value =
+                                    result.nationality || "";
+
+                                if (result.isExpired) {
+
+                                    status.className =
+                                        "visitor-status text-danger fw-bold";
+
+                                    status.textContent =
+                                        "ID expired - visitor cannot be registered.";
+
+                                }
+                                else {
+
+                                    status.className =
+                                        "visitor-status text-success fw-bold";
+
+                                    status.textContent =
+                                        "Existing visitor found.";
+
+                                }
+
+                            }
+                            catch {
+
+                                status.className =
+                                    "visitor-status text-danger";
+
+                                status.textContent =
+                                    "Unable to search visitor.";
+                            }
+                        };
+                });
+        }
+
+
+        function clearVisitorDetails(card, idNumber) {
+
+            card.querySelector(".visitor-id-number").value =
+                idNumber;
+
+            card.querySelector(".visitor-expiry").value = "";
+            card.querySelector(".visitor-fullname").value = "";
+            card.querySelector(".visitor-phone").value = "";
+            card.querySelector(".visitor-email").value = "";
+            card.querySelector(".visitor-company").value = "";
+            card.querySelector(".visitor-designation").value = "";
+            card.querySelector(".visitor-nationality").value = "";
+        }
+
+
+        function escapeHtml(value) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent =
+                value ?? "";
+
+            return div.innerHTML;
+        }
+
+
+        attachSearchHandlers();
+
+    </script>
+}

@@ -1,0 +1,75 @@
+﻿@model VMS.Web.ViewModels.Groups.GroupViewModel
+
+@{
+    ViewData["Title"] = "Edit Group";
+}
+
+<h2 class="mb-4">Edit Group</h2>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="GroupId" />
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger mb-3">
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="GroupName" class="form-label"></label>
+        <input asp-for="GroupName" class="form-control" />
+        <span asp-validation-for="GroupName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description"
+                  class="form-control"
+                  rows="3">
+        </textarea>
+    </div>
+
+    <h5 class="mt-4">Permissions</h5>
+
+    <div class="row">
+        @for (int i = 0; i < Model.Permissions.Count; i++)
+        {
+            <div class="col-md-6 mb-2">
+
+                <input type="hidden"
+                       asp-for="Permissions[i].PermissionId" />
+
+                <input type="hidden"
+                       asp-for="Permissions[i].PermissionCode" />
+
+                <input type="hidden"
+                       asp-for="Permissions[i].PermissionName" />
+
+                <div class="form-check">
+                    <input asp-for="Permissions[i].IsSelected"
+                           class="form-check-input" />
+
+                    <label class="form-check-label">
+                        @Model.Permissions[i].PermissionName
+                        <small class="text-muted">
+                            (@Model.Permissions[i].PermissionCode)
+                        </small>
+                    </label>
+                </div>
+
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">
+        Save Changes
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary mt-3">
+        Cancel
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

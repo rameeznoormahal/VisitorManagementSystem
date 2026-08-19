@@ -1,0 +1,115 @@
+﻿@model IEnumerable<VMS.Web.ViewModels.Reception.AccessHistoryViewModel>
+
+@{
+    ViewData["Title"] = "Access History";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1">Visitor Access History</h2>
+        <div class="text-muted">
+            Complete visitor entry and exit movement history
+        </div>
+    </div>
+
+    <a asp-controller="Home"
+       asp-action="Index"
+       class="btn btn-outline-secondary">
+        Back to Dashboard
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Visit Reference</th>
+                        <th>Visitor</th>
+                        <th>ID Number</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                        <th>Entry By</th>
+                        <th>Exit By</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    @item.VisitReference
+                                </strong>
+                            </td>
+
+                            <td>
+                                @item.VisitorName
+                            </td>
+
+                            <td>
+                                @item.IdNumber
+                            </td>
+
+                            <td>
+                                @(item.EntryTime.ToString(
+                                                            "dd-MMM-yyyy hh:mm tt"))
+                                                                                </td>
+
+                            <td>
+                                @(item.ExitTime?.ToString(
+                                                            "dd-MMM-yyyy hh:mm tt") ?? "-")
+                        </td>
+
+                            <td>
+                                @item.EntryProcessedBy
+                            </td>
+
+                            <td>
+                                @(item.ExitProcessedBy ?? "-")
+                            </td>
+
+                            <td>
+                            @if (item.ExitTime == null)
+                                {
+                                    <span class="badge bg-success">
+                                        INSIDE
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        COMPLETED
+                                    </span>
+                                }
+                            </td>
+
+                        </tr>
+                    }
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="8"
+                                class="text-center text-muted py-4">
+                                No access history found.
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>

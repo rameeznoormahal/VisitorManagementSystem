@@ -1,0 +1,120 @@
+﻿@model IEnumerable<VMS.Domain.Entities.VisitRequest>
+
+@{
+    ViewData["Title"] = "Pending Approvals";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="mb-1">Pending Approvals</h2>
+        <small class="text-muted">
+            Visit requests waiting for review
+        </small>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info mb-0">
+                There are no visit requests pending approval.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Visitors</th>
+                            <th>Count</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Purpose</th>
+                            <th>Status</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        @item.VisitReference
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    @if (item.VisitVisitors.Any())
+                                    {
+                                        @foreach (var visitVisitor in item.VisitVisitors)
+                                        {
+                                            <div>
+                                                @visitVisitor.Visitor.FullName
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            No visitors
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        @item.VisitVisitors.Count
+                                    </span>
+                                </td>
+
+                                <td>
+                                    @item.VisitFromDateTime.ToString("dd-MMM-yyyy hh:mm tt")
+                                </td>
+
+                                <td>
+                                    @item.VisitToDateTime.ToString("dd-MMM-yyyy hh:mm tt")
+                                </td>
+
+                                <td>
+                                    @item.Purpose
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-warning text-dark">
+                                        Pending Approval
+                                    </span>
+                                </td>
+
+                                <td class="text-end">
+
+                                    <a asp-controller="Approval"
+                                       asp-action="Review"
+                                       asp-route-id="@item.VisitRequestId"
+                                       class="btn btn-sm btn-primary">
+                                        Review
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+
+    </div>
+</div>

@@ -1,0 +1,242 @@
+﻿@using VMS.Web.Services
+@inject IPermissionService PermissionService
+
+@{
+    var canEditVisitor =
+        await PermissionService.HasPermissionAsync(
+            User, "Visitor.Edit");
+}
+@if (canEditVisitor)
+{
+    <a asp-action="Edit"
+       asp-route-id="@Model.VisitorId"
+       class="btn btn-primary">
+        Edit Visitor
+    </a>
+}
+@model VMS.Domain.Entities.Visitor
+
+@{
+    ViewData["Title"] = "Visitor Details";
+
+    var visitHistory =
+        ViewBag.VisitHistory as IEnumerable<VMS.Domain.Entities.VisitVisitor>;
+
+    var accessHistory =
+        ViewBag.AccessHistory as IEnumerable<VMS.Domain.Entities.VisitAccessLog>;
+
+    var today = DateOnly.FromDateTime(DateTime.Today);
+    var expired = Model.IdExpiryDate < today;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1">@Model.FullName</h2>
+        <div class="text-muted">Visitor profile and history</div>
+    </div>
+
+    <a asp-action="Edit"
+       asp-route-id="@Model.VisitorId"
+       class="btn btn-primary">
+        Edit Visitor
+    </a>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        Visitor Profile
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+
+            <div class="col-md-4 mb-3">
+                <strong>ID Type</strong>
+                <div>@Model.IdType</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <strong>ID Number</strong>
+                <div>@Model.IdNumber</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <strong>ID Expiry</strong>
+                <div>
+                    @Model.IdExpiryDate.ToString("dd-MMM-yyyy")
+
+                    @if (expired)
+                    {
+                        <span class="badge bg-danger ms-2">
+                            Expired
+                        </span>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <strong>Nationality</strong>
+                <div>@Model.Nationality</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <strong>Company</strong>
+                <div>@Model.CompanyName</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <strong>Designation</strong>
+                <div>@Model.Designation</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <strong>Phone</strong>
+                <div>@Model.PhoneNumber</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <strong>Email</strong>
+                <div>@Model.Email</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <strong>Status</strong>
+                <div>
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactive</span>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        Visit History
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Department</th>
+                        <th>Purpose</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (visitHistory != null && visitHistory.Any())
+                    {
+                        @foreach (var item in visitHistory)
+                        {
+                            <tr>
+                                <td>@item.VisitRequest.VisitReference</td>
+                                <td>
+                                    @(item.VisitRequest.VisitFromDateTime.ToString("dd-MMM-yyyy hh:mm tt"))
+                                </td>
+                                <td>
+                                    @item.VisitRequest.VisitToDateTime.ToString("dd-MMM-yyyy hh:mm tt")
+                                </td>
+                                <td>
+                                    @item.VisitRequest.Department?.DepartmentName
+                                </td>
+                                <td>@item.VisitRequest.Purpose</td>
+                                <td>@item.VisitRequest.Status</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6"
+                                class="text-center text-muted">
+                                No visit history found.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        Access History
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Visit Reference</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (accessHistory != null && accessHistory.Any())
+                    {
+                        @foreach (var item in accessHistory)
+                        {
+                            <tr>
+                                <td>@item.VisitRequest.VisitReference</td>
+
+                                <td>
+                                    @item.EntryTime.ToString("dd-MMM-yyyy hh:mm tt")
+                                </td>
+
+                                <td>
+                                    @(item.ExitTime?.ToString("dd-MMM-yyyy hh:mm tt") ?? "-")
+                        </td>
+
+                                <td>
+                            @if (item.ExitTime == null)
+                                    {
+                                        <span class="badge bg-success">
+                                            Currently Inside
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Completed
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4"
+                                class="text-center text-muted">
+                                No access history found.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>

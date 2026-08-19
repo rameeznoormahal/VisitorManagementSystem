@@ -1,0 +1,254 @@
+﻿@using VMS.Web.Services
+@inject IPermissionService PermissionService
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var canViewVisitor =
+        await PermissionService.HasPermissionAsync(
+            User, "Visitor.View");
+
+    var canEditVisitor =
+        await PermissionService.HasPermissionAsync(
+            User, "Visitor.Edit");
+
+    var canValidateQr =
+        await PermissionService.HasPermissionAsync(
+            User, "Visitor.ValidateQR");
+
+    var canApproveVisitor =
+        await PermissionService.HasPermissionAsync(
+            User, "Visitor.Approve");
+
+    var canRejectVisitor =
+        await PermissionService.HasPermissionAsync(
+            User, "Visitor.Reject");
+}
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="mb-4">
+    <h2 class="mb-1">Dashboard</h2>
+    <div class="text-muted">
+        Visitor management overview
+    </div>
+</div>
+@if (canViewVisitor)
+{
+    <div class="mb-4">
+        <h5 class="mb-3">Visitor Master</h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <a asp-controller="Visitor"
+                   asp-action="Index"
+                   class="text-decoration-none">
+
+                    <div class="card dashboard-card h-100">
+                        <div class="card-body">
+
+                            <div class="dashboard-label">
+                                Total Registered Visitors
+                            </div>
+
+                            <div class="dashboard-value">
+                                @ViewBag.TotalRegisteredVisitors
+                            </div>
+
+                            <div class="small text-muted mt-2">
+                                View all visitors →
+                            </div>
+
+                        </div>
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a asp-controller="Visitor"
+                   asp-action="Index"
+                   asp-route-filter="active"
+                   class="text-decoration-none">
+
+                    <div class="card dashboard-card h-100">
+                        <div class="card-body">
+
+                            <div class="dashboard-label">
+                                Active Visitors
+                            </div>
+
+                            <div class="dashboard-value">
+                                @ViewBag.ActiveVisitors
+                            </div>
+
+                            <div class="small text-muted mt-2">
+                                View active visitors →
+                            </div>
+
+                        </div>
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a asp-controller="Visitor"
+                   asp-action="Index"
+                   asp-route-filter="expired"
+                   class="text-decoration-none">
+
+                    <div class="card dashboard-card h-100">
+                        <div class="card-body">
+
+                            <div class="dashboard-label">
+                                Expired IDs
+                            </div>
+
+                            <div class="dashboard-value">
+                                @ViewBag.ExpiredIdVisitors
+                            </div>
+
+                            <div class="small text-muted mt-2">
+                                Review expired IDs →
+                            </div>
+
+                        </div>
+                    </div>
+
+                </a>
+            </div>
+
+        </div>
+    </div>
+}
+@if (canValidateQr)
+{
+    <div class="mb-4">
+        <h5 class="mb-3">Today / Live Operations</h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-4 col-xl-3">
+                <a asp-controller="Reception"
+                   asp-action="Visitors"
+                   asp-route-filter="expected"
+                   class="text-decoration-none">
+
+                    <div class="card dashboard-card h-100">
+                        <div class="card-body">
+
+                            <div class="dashboard-label">
+                                Expected Today
+                            </div>
+
+                            <div class="dashboard-value">
+                                @ViewBag.ExpectedToday
+                            </div>
+
+                            <div class="small text-muted mt-2">
+                                View expected visitors →
+                            </div>
+
+                        </div>
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="col-md-4 col-xl-3">
+                <a asp-controller="Reception"
+                   asp-action="Visitors"
+                   asp-route-filter="inside"
+                   class="text-decoration-none">
+
+
+                    <div class="card dashboard-card h-100">
+                        <div class="card-body">
+                            <div class="dashboard-label">
+                                Currently Inside
+                            </div>
+
+                            <div class="dashboard-value">
+                                @ViewBag.CurrentlyInside
+                            </div>
+                            <div class="small text-muted mt-2">
+                                View Currently Inside →
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 col-xl-3">
+                <a asp-controller="Reception"
+                   asp-action="Visitors"
+                   asp-route-filter="checkedout"
+                   class="text-decoration-none">
+                    <div class="card dashboard-card">
+                        <div class="card-body">
+                            <div class="dashboard-label">
+                                Checked Out Today
+                            </div>
+
+                            <div class="dashboard-value">
+                                @ViewBag.CheckedOutToday
+                            </div>
+                            <div class="small text-muted mt-2">
+                                View Checked Out Today →
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 col-xl-3">
+                <a asp-controller="Reception"
+                   asp-action="Visitors"
+                   class="text-decoration-none">
+                    <div class="card dashboard-card">
+                        <div class="card-body">
+                            <div class="dashboard-label">
+                                Not Yet Arrived
+                            </div>
+
+                            <div class="dashboard-value">
+                                @ViewBag.NotYetArrived
+                            </div>
+                            <div class="small text-muted mt-2">
+                                View Not Yet Arrived →
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @if (canApproveVisitor || canRejectVisitor)
+            {
+                <div class="col-md-4 col-xl-3">
+                    <a asp-controller="Reception"
+                       asp-action="Visitors"
+                       asp-route-filter="inside"
+                       class="text-decoration-none">
+                        <div class="card dashboard-card">
+                            <div class="card-body">
+                                <div class="dashboard-label">
+                                    Pending Approvals
+                                </div>
+
+                                <div class="dashboard-value">
+                                    @ViewBag.PendingApprovals
+                                </div>
+                                <div class="small text-muted mt-2">
+                                    View Pending Approvals →
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+
+        </div>
+    </div>
+}

@@ -1,0 +1,258 @@
+﻿@using VMS.Web.Services
+@inject IPermissionService PermissionService
+@{
+    var controller =
+       ViewContext.RouteData.Values["controller"]?.ToString();
+
+    var action =
+     ViewContext.RouteData.Values["action"]?.ToString();
+
+    var canManageDepartments =
+        await PermissionService.HasPermissionAsync(
+            User,
+            "Department.Manage");
+
+    var canManageGroups =
+        await PermissionService.HasPermissionAsync(
+            User,
+            "Group.Manage");
+
+    var canManageUsers =
+        await PermissionService.HasPermissionAsync(
+            User,
+            "User.Manage");
+
+}
+@{
+    var canCreateVisitor =
+        await PermissionService.HasPermissionAsync(
+            User, "Visitor.Create");
+
+    var canViewVisitor =
+        await PermissionService.HasPermissionAsync(
+            User, "Visitor.View");
+
+    var canApproveVisitor =
+        await PermissionService.HasPermissionAsync(
+            User, "Visitor.Approve");
+
+    var canRejectVisitor =
+        await PermissionService.HasPermissionAsync(
+            User, "Visitor.Reject");
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Visitor Management System</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/VMS.Web.styles.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <!-- Top Header -->
+        <header class="top-header">
+
+            <div class="top-header-title">
+                Visitor Management System
+            </div>
+
+            <div class="top-header-user">
+
+                <span class="me-3">
+                    @User.Identity.Name
+                </span>
+
+                <form asp-controller="Account"
+                      asp-action="Logout"
+                      method="post"
+                      class="d-inline">
+
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit"
+                            class="btn btn-sm btn-outline-danger">
+                        Logout
+                    </button>
+
+                </form>
+
+            </div>
+
+        </header>
+
+
+        <div class="app-container">
+
+            <!-- Left Sidebar -->
+            <nav class="sidebar">
+                <div class="sidebar-menu">
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="sidebar-link">
+                    Dashboard
+                </a>
+
+                @if (canManageDepartments ||
+                            canManageGroups ||
+                            canManageUsers)
+                {
+                    <a asp-controller="Admin"
+                       asp-action="Index"
+                       class="sidebar-link text-uppercase small">
+                        Administration
+                    </a>
+                }
+
+                @if (canManageDepartments)
+                {
+                    <a asp-controller="Department"
+                       asp-action="Index"
+                       class="sidebar-link">
+                        Departments
+                    </a>
+                }
+
+                @if (canManageGroups)
+                {
+                    <a asp-controller="Group"
+                       asp-action="Index"
+                       class="sidebar-link">
+                        Groups
+                    </a>
+                }
+
+                @if (canManageUsers)
+                {
+                    <a asp-controller="User"
+                       asp-action="Index"
+                       class="sidebar-link">
+                        Users
+                    </a>
+                }
+
+                @if (canCreateVisitor || canViewVisitor)
+                {
+                    <div class="sidebar-section-title">
+                        Visitor Management
+                    </div>
+                }
+
+                @if (canViewVisitor)
+                {
+                    <a asp-controller="Visit"
+                       asp-action="Index"
+                       class="sidebar-link @(controller == "Visit" && action == "Index" ? "active" : "")">
+                        Visit Requests
+                    </a>
+                }
+
+                @if (canCreateVisitor)
+                {
+                    <a asp-controller="Visit"
+                       asp-action="Create"
+                       class="sidebar-link @(controller == "Visit" && action == "Create" ? "active" : "")">
+                        Register Visitor
+                    </a>
+                }
+                
+                @if (await PermissionService.HasPermissionAsync(
+                            User, "Visitor.ValidateQR"))
+                {
+                    <a asp-controller="Reception"
+                       asp-action="Index"
+                       class="sidebar-link @(controller == "Reception" ? "active" : "")">
+                        Reception / QR Scan
+                    </a>
+                }
+                
+                @if (await PermissionService.HasPermissionAsync(
+                            User, "Visitor.ValidateQR"))
+                {
+                    <a asp-controller="Reception"
+                       asp-action="AccessHistory"
+                       class="sidebar-link @(controller == "Reception" &&
+                                                    action == "AccessHistory" ? "active" : "")">
+                Access History
+            </a>
+                        }
+                
+                @if (canApproveVisitor || canRejectVisitor)
+                {
+                    <div class="sidebar-section-title">
+                        Approvals
+                    </div>
+
+                    <a asp-controller="Approval"
+                       asp-action="Index"
+                       class="sidebar-link @(controller == "Approval" ? "active" : "")">
+                        Pending Approvals
+                    </a>
+                }
+
+                </div>
+            </nav>
+
+
+            <!-- Main Content -->
+            <main class="main-content">
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show">
+
+                        @TempData["SuccessMessage"]
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert">
+                        </button>
+
+                    </div>
+                }
+
+                @RenderBody()
+
+            </main>
+
+        </div>
+    }
+    else
+    {
+        <!-- Login layout -->
+        <main class="container">
+
+            @RenderBody()
+
+        </main>
+    }
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true">
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

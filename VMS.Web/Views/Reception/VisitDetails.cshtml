@@ -1,0 +1,210 @@
+﻿@model VMS.Web.ViewModels.Reception.ReceptionVisitViewModel
+
+@{
+    ViewData["Title"] = "Visitor Access";
+}
+
+<h2 class="mb-4">Visitor Access</h2>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header">
+        Visit Request
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+
+            <div class="col-md-4 mb-3">
+                <strong>Reference</strong>
+                <div>@Model.VisitReference</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <strong>Host</strong>
+                <div>@Model.HostName</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <strong>Department</strong>
+                <div>@Model.DepartmentName</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Valid From</strong>
+                <div>
+                    @Model.VisitFromDateTime.ToString("dd-MMM-yyyy hh:mm tt")
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Valid To</strong>
+                <div>
+                    @Model.VisitToDateTime.ToString("dd-MMM-yyyy hh:mm tt")
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <strong>Purpose</strong>
+                <div>@Model.Purpose</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Location</strong>
+                <div>@Model.MeetingLocation</div>
+            </div>
+
+        </div>
+
+        @if (Model.IsWithinValidPeriod)
+        {
+            <div class="alert alert-success mb-0">
+                This request is currently within the approved access period.
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger mb-0">
+                This request is outside the approved access period.
+            </div>
+        }
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        Visitors (@Model.Visitors.Count)
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Company</th>
+                        <th>Designation</th>
+                        <th>Status</th>
+                        <th>Last Check-In</th>
+                        <th>Last Check-Out</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var visitor in Model.Visitors)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@visitor.FullName</strong>
+                            </td>
+
+                            <td>@visitor.IdNumber</td>
+
+                            <td>@visitor.CompanyName</td>
+
+                            <td>@visitor.Designation</td>
+
+                            <td>
+                                @if (visitor.IsCurrentlyInside)
+                                {
+                                    <span class="badge bg-success">
+                                        INSIDE
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        OUTSIDE
+                                    </span>
+                                }
+                        </td>
+
+                        <td>
+                            @(visitor.LastCheckInTime?.ToString(
+                                                        "dd-MMM-yyyy hh:mm tt") ?? "-")
+                                                                                   </td>
+
+                        <td>
+                            @(visitor.LastCheckOutTime?.ToString(
+                                                        "dd-MMM-yyyy hh:mm tt") ?? "-")
+                        </td>
+
+                            <td>
+                            @if (!Model.IsWithinValidPeriod)
+                                {
+                                    <button class="btn btn-sm btn-secondary"
+                                            disabled>
+                                        Access Closed
+                                    </button>
+                                }
+                                else if (visitor.IsCurrentlyInside)
+                                {
+                                    <form asp-controller="Reception"
+                                          asp-action="CheckOut"
+                                          method="post"
+                                          class="d-inline">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="visitRequestId"
+                                               value="@Model.VisitRequestId" />
+
+                                        <input type="hidden"
+                                               name="visitVisitorId"
+                                               value="@visitor.VisitVisitorId" />
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger">
+                                            Check Out
+                                        </button>
+
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form asp-controller="Reception"
+                                          asp-action="CheckIn"
+                                          method="post"
+                                          class="d-inline">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="visitRequestId"
+                                               value="@Model.VisitRequestId" />
+
+                                        <input type="hidden"
+                                               name="visitVisitorId"
+                                               value="@visitor.VisitVisitorId" />
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-success">
+                                            Check In
+                                        </button>
+
+                                    </form>
+                                }
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Scan Another QR
+    </a>
+</div>

@@ -1,0 +1,168 @@
+﻿@model IEnumerable<VMS.Web.ViewModels.Reception.ReceptionVisitorListItemViewModel>
+
+@{
+    var filter = ViewBag.Filter as string;
+
+    ViewData["Title"] = filter switch
+    {
+        "inside" => "Currently Inside",
+        "checkedout" => "Checked Out Today",
+        "notarrived" => "Not Yet Arrived",
+        _ => "Expected Today"
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1">@ViewData["Title"]</h2>
+        <div class="text-muted">
+            Today's visitor activity
+        </div>
+    </div>
+
+    <a asp-controller="Home"
+       asp-action="Index"
+       class="btn btn-outline-secondary">
+        Back to Dashboard
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <div class="d-flex gap-2 mb-3">
+
+            <a asp-action="Visitors"
+               asp-route-filter="expected"
+               class="btn btn-sm @(filter == "expected" || string.IsNullOrWhiteSpace(filter) ? "btn-primary" : "btn-outline-primary")">
+                Expected Today
+            </a>
+
+            <a asp-action="Visitors"
+               asp-route-filter="inside"
+               class="btn btn-sm @(filter == "inside" ? "btn-success" : "btn-outline-success")">
+                Currently Inside
+            </a>
+
+            <a asp-action="Visitors"
+               asp-route-filter="checkedout"
+               class="btn btn-sm @(filter == "checkedout" ? "btn-secondary" : "btn-outline-secondary")">
+                Checked Out
+            </a>
+
+            <a asp-action="Visitors"
+               asp-route-filter="notarrived"
+               class="btn btn-sm @(filter == "notarrived" ? "btn-warning" : "btn-outline-warning")">
+                Not Yet Arrived
+            </a>
+
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Visitor</th>
+                        <th>ID Number</th>
+                        <th>Company</th>
+                        <th>Visit Reference</th>
+                        <th>Valid From</th>
+                        <th>Valid To</th>
+                        <th>Last Check-In</th>
+                        <th>Last Check-Out</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="Visitor"
+                                   asp-action="Details"
+                                   asp-route-id="@item.VisitorId"
+                                   class="text-decoration-none">
+                                    <strong>@item.FullName</strong>
+                                </a>
+                            </td>
+
+                            <td>@item.IdNumber</td>
+
+                            <td>@item.CompanyName</td>
+
+                            <td>
+                                <strong>@item.VisitReference</strong>
+                            </td>
+
+                            <td>
+                                @(item.VisitFromDateTime.ToString(
+                                                            "dd-MMM-yyyy hh:mm tt"))
+                                                                                </td>
+
+                            <td>
+                                @(item.VisitToDateTime.ToString(
+                                                            "dd-MMM-yyyy hh:mm tt"))
+                                                                                </td>
+
+                            <td>
+                                @(item.LastCheckInTime?.ToString(
+                                                            "dd-MMM-yyyy hh:mm tt") ?? "-")
+                                                                                       </td>
+
+                            <td>
+                                @(item.LastCheckOutTime?.ToString(
+                                                            "dd-MMM-yyyy hh:mm tt") ?? "-")
+                        </td>
+
+                            <td>
+                            @if (item.IsCurrentlyInside)
+                                {
+                                    <span class="badge bg-success">
+                                        INSIDE
+                                    </span>
+                                }
+                                else if (item.LastCheckInTime == null)
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        NOT ARRIVED
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        OUTSIDE
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                <a asp-controller="Reception"
+                                   asp-action="VisitDetails"
+                                   asp-route-id="@item.VisitRequestId"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Open
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="10"
+                                class="text-center text-muted py-4">
+                                No visitors found.
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

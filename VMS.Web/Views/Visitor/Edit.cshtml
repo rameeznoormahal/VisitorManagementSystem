@@ -1,0 +1,149 @@
+﻿@model VMS.Domain.Entities.Visitor
+
+@{
+    ViewData["Title"] = "Edit Visitor";
+}
+
+<h2 class="mb-4">Edit Visitor</h2>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="VisitorId" />
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger mb-3">
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="IdType" class="form-label">
+                        ID Type
+                    </label>
+
+                    <select asp-for="IdType"
+                            class="form-select">
+                        <option value="">-- Select --</option>
+                        <option value="National ID">National ID</option>
+                        <option value="Passport">Passport</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="IdNumber"
+                           class="form-label">
+                        ID Number
+                    </label>
+
+                    <input asp-for="IdNumber"
+                           class="form-control" />
+
+                    <span asp-validation-for="IdNumber"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="IdExpiryDate"
+                           class="form-label">
+                        ID Expiry Date
+                    </label>
+
+                    <input asp-for="IdExpiryDate"
+                           type="date"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FullName"
+                           class="form-label">
+                        Full Name
+                    </label>
+
+                    <input asp-for="FullName"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="PhoneNumber"
+                           class="form-label">
+                        Phone Number
+                    </label>
+
+                    <input asp-for="PhoneNumber"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Email"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="Email"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CompanyName"
+                           class="form-label">
+                        Company
+                    </label>
+
+                    <input asp-for="CompanyName"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Designation"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="Designation"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Nationality"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="Nationality"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-check mt-4">
+                        <input asp-for="IsActive"
+                               class="form-check-input" />
+
+                        <label asp-for="IsActive"
+                               class="form-check-label">
+                            Active
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Save Changes
+            </button>
+
+            <a asp-action="Details"
+               asp-route-id="@Model.VisitorId"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,55 @@
+﻿@model VMS.Web.ViewModels.Reception.ReceptionLookupViewModel
+
+@{
+    ViewData["Title"] = "Reception QR Validation";
+}
+
+<h2 class="mb-4">Reception QR Validation</h2>
+
+<div class="row">
+    <div class="col-lg-6">
+
+        <div class="card shadow-sm">
+            <div class="card-header">
+                Scan or Enter QR Token
+            </div>
+
+            <div class="card-body">
+
+                <form asp-action="ValidateQr" method="post">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger mb-3">
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Token"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="Token"
+                               class="form-control"
+                               autocomplete="off"
+                               autofocus />
+
+                        <span asp-validation-for="Token"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Validate QR
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

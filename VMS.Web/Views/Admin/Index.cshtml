@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Administration";
+}
+
+<h2 class="mb-4">Administration Dashboard</h2>
+
+<div class="row g-3">
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6>Total Users</h6>
+                <h2>@ViewBag.TotalUsers</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6>Active Users</h6>
+                <h2>@ViewBag.ActiveUsers</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6>Departments</h6>
+                <h2>@ViewBag.TotalDepartments</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6>Groups</h6>
+                <h2>@ViewBag.TotalGroups</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6>Permissions</h6>
+                <h2>@ViewBag.TotalPermissions</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-4" />
+
+<h4>Administration</h4>
+
+<div class="list-group">
+
+    <a asp-controller="Department"
+       asp-action="Index"
+       class="list-group-item list-group-item-action">
+        Manage Departments
+    </a>
+
+    <a href="#"
+       class="list-group-item list-group-item-action">
+        Manage Groups
+    </a>
+
+    <a href="#"
+       class="list-group-item list-group-item-action">
+        Manage Users
+    </a>
+
+</div>

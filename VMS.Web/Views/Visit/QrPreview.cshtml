@@ -1,0 +1,58 @@
+﻿@model VMS.Web.ViewModels.Visits.QrPreviewViewModel
+
+@{
+    ViewData["Title"] = "QR Preview";
+}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+                Visitor QR Code
+            </div>
+
+            <div class="card-body text-center">
+
+                <h4 class="mb-3">
+                    @Model.VisitorName
+                </h4>
+
+                <p class="mb-1">
+                    <strong>Visit Reference:</strong>
+                    @Model.VisitReference
+                </p>
+
+                <p class="mb-1">
+                    <strong>Date:</strong>
+                    @Model.VisitFromDateTime
+                </p>
+
+                <p class="mb-4">
+                    <strong>Arrival Time:</strong>
+                    @Model.VisitToDateTime
+                </p>
+
+                <img src="data:image/png;base64,@Model.QrBase64"
+                     alt="Visitor QR Code"
+                     class="img-fluid"
+                     style="max-width:320px;" />
+
+                <div class="mt-4">
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+                        Back to Visit Requests
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

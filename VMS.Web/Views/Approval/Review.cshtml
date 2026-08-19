@@ -1,0 +1,207 @@
+﻿@model VMS.Web.ViewModels.Approvals.ApprovalViewModel
+
+@{
+    ViewData["Title"] = "Review Visit Request";
+}
+
+<h2 class="mb-4">Review Visit Request</h2>
+
+<div class="card mb-4">
+    <div class="card-header">
+        Visit Information
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <strong>Reference</strong>
+                <div>@Model.VisitReference</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Host</strong>
+                <div>@Model.HostName</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Department</strong>
+                <div>@Model.DepartmentName</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Meeting Location</strong>
+                <div>@Model.MeetingLocation</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Valid From</strong>
+                <div>
+                    @Model.VisitFromDateTime.ToString("dd-MMM-yyyy hh:mm tt")
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Valid To</strong>
+                <div>
+                    @Model.VisitToDateTime.ToString("dd-MMM-yyyy hh:mm tt")
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <strong>Purpose</strong>
+                <div>@Model.Purpose</div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <strong>Notes</strong>
+                <div>@Model.Notes</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        Visitors (@Model.Visitors.Count)
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+
+                <thead>
+                    <tr>
+                        <th>ID Type</th>
+                        <th>ID Number</th>
+                        <th>Name</th>
+                        <th>Company</th>
+                        <th>Designation</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Expiry</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var visitor in Model.Visitors)
+                    {
+                        <tr>
+                            <td>@visitor.IdType</td>
+                            <td>@visitor.IdNumber</td>
+                            <td>@visitor.FullName</td>
+                            <td>@visitor.CompanyName</td>
+                            <td>@visitor.Designation</td>
+                            <td>@visitor.PhoneNumber</td>
+                            <td>@visitor.Email</td>
+                            <td>
+                                @visitor.IdExpiryDate.ToString("dd-MMM-yyyy")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Decision
+    </div>
+
+    <div class="card-body">
+
+        <div class="mb-3">
+            <label for="comments" class="form-label">
+                Comments
+            </label>
+
+            <textarea id="comments"
+                      class="form-control"
+                      rows="4"></textarea>
+
+            <small class="text-muted">
+                Comments are optional for approval and required for rejection.
+            </small>
+        </div>
+
+        <div class="d-flex gap-2">
+
+            <form id="approveForm"
+                  asp-action="Approve"
+                  asp-route-id="@Model.VisitRequestId"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       id="approveComments"
+                       name="comments" />
+
+                <button type="submit"
+                        class="btn btn-success">
+                    Approve
+                </button>
+
+            </form>
+
+            <form id="rejectForm"
+                  asp-action="Reject"
+                  asp-route-id="@Model.VisitRequestId"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       id="rejectComments"
+                       name="comments" />
+
+                <button type="submit"
+                        class="btn btn-danger">
+                    Reject
+                </button>
+
+            </form>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const commentsBox = document.getElementById("comments");
+
+        document.getElementById("approveForm")
+            .addEventListener("submit", function () {
+                document.getElementById("approveComments").value =
+                    commentsBox.value;
+            });
+
+        document.getElementById("rejectForm")
+            .addEventListener("submit", function (event) {
+
+                const comments = commentsBox.value.trim();
+
+                if (!comments) {
+                    event.preventDefault();
+                    alert("Rejection comments are required.");
+                    commentsBox.focus();
+                    return;
+                }
+
+                document.getElementById("rejectComments").value =
+                    comments;
+            });
+    </script>
+}

@@ -1,0 +1,189 @@
+﻿@model IEnumerable<VMS.Domain.Entities.VisitRequest>
+
+@{
+    ViewData["Title"] = "Visit Requests";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Visit Requests</h2>
+
+    <a asp-action="Create"
+       class="btn btn-primary">
+        New Visit Request
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>Visitors</th>
+                        <th>Count</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Department</th>
+                        <th>Purpose</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@item.VisitReference</strong>
+                            </td>
+
+                            <td>
+                                @if (item.VisitVisitors.Any())
+                                {
+                                    @foreach (var visitVisitor in item.VisitVisitors)
+                                    {
+                                        <div>
+                                            @visitVisitor.Visitor.FullName
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">
+                                        No visitors
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                <span class="badge bg-secondary">
+                                    @item.VisitVisitors.Count visitor(s)
+                                </span>
+                            </td>
+
+                            <td>
+                                @item.VisitFromDateTime.ToString("dd-MMM-yyyy hh:mm tt")
+                            </td>
+
+                            <td>
+                                @item.VisitToDateTime.ToString("dd-MMM-yyyy hh:mm tt")
+                            </td>
+
+                            <td>
+                                @item.Department?.DepartmentName
+                            </td>
+
+                            <td>@item.Purpose</td>
+
+                            <td>
+                                @switch (item.Status)
+                                {
+                                    case VMS.Domain.Enums.VisitStatus.PendingApproval:
+                                        <span class="badge bg-warning text-dark">
+                                            Pending Approval
+                                        </span>
+                                        break;
+
+                                    case VMS.Domain.Enums.VisitStatus.Approved:
+                                        <span class="badge bg-success">
+                                            Approved
+                                        </span>
+                                        break;
+
+                                    case VMS.Domain.Enums.VisitStatus.Rejected:
+                                        <span class="badge bg-danger">
+                                            Rejected
+                                        </span>
+                                        break;
+
+                                    case VMS.Domain.Enums.VisitStatus.CheckedIn:
+                                        <span class="badge bg-primary">
+                                            Checked In
+                                        </span>
+                                        break;
+
+                                    case VMS.Domain.Enums.VisitStatus.CheckedOut:
+                                        <span class="badge bg-secondary">
+                                            Checked Out
+                                        </span>
+                                        break;
+
+                                    default:
+                                        <span class="badge bg-light text-dark">
+                                            @item.Status
+                                        </span>
+                                        break;
+                                }
+                            </td>
+                            <td>
+
+                                @* Visitor List *@
+                                @foreach (var visitVisitor in item.VisitVisitors)
+                                {
+                                    <div class="mb-1">
+                                        <span>
+                                            @visitVisitor.Visitor.FullName
+                                        </span>
+                                    </div>
+                                }
+
+                                @* Request-level QR / Permit actions *@
+                                @if (item.Status == VMS.Domain.Enums.VisitStatus.Approved ||
+                                                            item.Status == VMS.Domain.Enums.VisitStatus.ReadyForVisit)
+                                {
+                                    <div class="mt-2">
+
+                                        @if (string.IsNullOrWhiteSpace(item.QRTokenHash))
+                                        {
+                                            <form asp-controller="Visit"
+                                                  asp-action="GenerateQr"
+                                                  asp-route-id="@item.VisitRequestId"
+                                                  method="post"
+                                                  class="d-inline">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-primary">
+                                                    Generate QR
+                                                </button>
+
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <a asp-controller="Visit"
+                                               asp-action="QrPreview"
+                                               asp-route-id="@item.VisitRequestId"
+                                               class="btn btn-sm btn-outline-primary">
+                                                View QR
+                                            </a>
+
+                                            <a asp-controller="Permit"
+                                               asp-action="Preview"
+                                               asp-route-id="@item.VisitRequestId"
+                                               class="btn btn-sm btn-outline-success ms-1">
+                                                View Permit
+                                            </a>
+                                        }
+
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>

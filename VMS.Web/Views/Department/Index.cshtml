@@ -1,0 +1,67 @@
+﻿@model IEnumerable<VMS.Domain.Entities.Department>
+
+@{
+    ViewData["Title"] = "Departments";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Departments</h2>
+
+    <a asp-action="Create" class="btn btn-primary">
+        Add Department
+    </a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th style="width:180px;">Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.DepartmentCode</td>
+                <td>@item.DepartmentName</td>
+                <td>@item.Description</td>
+                <td>
+                    @if (item.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactive</span>
+                    }
+                </td>
+
+                <td>
+                    <a asp-action="Edit"
+                       asp-route-id="@item.DepartmentId"
+                       class="btn btn-sm btn-outline-primary">
+                        Edit
+                    </a>
+
+                    <form asp-action="ToggleStatus"
+                          asp-route-id="@item.DepartmentId"
+                          method="post"
+                          class="d-inline">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="btn btn-sm btn-outline-secondary">
+                            @(item.IsActive ? "Deactivate" : "Activate")
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

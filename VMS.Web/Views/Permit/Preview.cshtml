@@ -1,0 +1,193 @@
+﻿@model VMS.Web.ViewModels.Permit.VisitPermitViewModel
+
+@{
+    ViewData["Title"] = "Visit Permit";
+}
+
+<div class="permit-wrapper">
+
+    <div class="permit-top">
+
+        <div class="permit-main">
+
+            <div class="permit-title-row">
+
+                <div>
+                    <h2 class="permit-title">
+                        Data Center Work / Visitor Access Permit
+                    </h2>
+
+                    <div class="text-muted">
+                        Visitor Management System
+                    </div>
+                </div>
+
+                <div class="permit-number">
+                    <strong>Permit No.</strong>
+                    <div>@Model.VisitReference</div>
+                </div>
+
+            </div>
+
+            <div class="permit-section-title">
+                Request Information
+            </div>
+
+            <div class="request-grid">
+
+                <div class="permit-field">
+                    <strong>Requested By</strong>
+                    <span>@Model.RequestedBy</span>
+                </div>
+
+                <div class="permit-field">
+                    <strong>Host</strong>
+                    <span>@Model.HostName</span>
+                </div>
+
+                <div class="permit-field">
+                    <strong>Department</strong>
+                    <span>@Model.DepartmentName</span>
+                </div>
+
+                <div class="permit-field">
+                    <strong>Valid From</strong>
+                    <span>
+                        @(Model.VisitFromDateTime.ToString(
+                                                "dd-MMM-yyyy hh:mm tt"))
+                    </span>
+                </div>
+
+                <div class="permit-field">
+                    <strong>Valid To</strong>
+                    <span>
+                        @(Model.VisitToDateTime.ToString(
+                                                "dd-MMM-yyyy hh:mm tt"))
+                    </span>
+                </div>
+
+                <div class="permit-field">
+                    <strong>Location</strong>
+                    <span>@Model.MeetingLocation</span>
+                </div>
+
+                <div class="permit-field permit-field-wide">
+                    <strong>Purpose / Work Description</strong>
+                    <span>@Model.Purpose</span>
+                </div>
+
+                <div class="permit-field">
+                    <strong>Status</strong>
+                    <span>
+                        <span class="badge bg-success">
+                            @Model.Status
+                        </span>
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="permit-qr">
+
+            <img src="data:image/png;base64,@Model.QrBase64"
+                 alt="Visit QR Code" />
+
+            <div class="permit-qr-ref">
+                @Model.VisitReference
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="permit-section-title mt-3">
+        Visitors (@Model.Visitors.Count)
+    </div>
+
+    <table class="table table-bordered permit-visitor-table">
+
+        <thead>
+            <tr>
+                <th style="width:3%">#</th>
+                <th style="width:15%">Name</th>
+                <th style="width:9%">ID Type</th>
+                <th style="width:13%">ID Number</th>
+                <th style="width:11%">ID Expiry</th>
+                <th style="width:11%">Nationality</th>
+                <th style="width:14%">Company</th>
+                <th style="width:12%">Designation</th>
+                <th style="width:12%">Mobile</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @for (var i = 0; i < Model.Visitors.Count; i++)
+            {
+                var visitor = Model.Visitors[i];
+
+                <tr>
+
+                    <td>@(i + 1)</td>
+
+                    <td>
+                        <strong>@visitor.FullName</strong>
+                    </td>
+
+                    <td>@visitor.IdType</td>
+
+                    <td>@visitor.IdNumber</td>
+
+                    <td>
+                        @(visitor.IdExpiryDate.ToString(
+                                            "dd-MMM-yyyy"))
+                </td>
+
+                    <td>@visitor.Nationality</td>
+
+                    <td>@visitor.CompanyName</td>
+
+                    <td>@visitor.Designation</td>
+
+                    <td>@visitor.PhoneNumber</td>
+
+                </tr>
+                        }
+
+        </tbody>
+
+    </table>
+
+
+    <div class="permit-note mt-3">
+        This permit is valid only during the approved access period.
+        Reception will record each visitor's individual entry and exit.
+    </div>
+
+
+    <div class="d-flex gap-2 mt-3 no-print">
+
+        <a asp-controller="Visit"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Back to Visit Requests
+        </a>
+        <a asp-controller="Permit"
+           asp-action="Download"
+           asp-route-id="@Model.VisitRequestId"
+           class="btn btn-success">
+            Download PDF
+        </a>
+        <button type="button"
+                onclick="window.print()"
+                class="btn btn-outline-primary">
+            Print
+        </button>
+
+    </div>
+   
+
+</div>

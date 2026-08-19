@@ -51,7 +51,8 @@
 
     <link rel="stylesheet"
           href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet"
           href="~/css/site.css"
           asp-append-version="true" />
@@ -103,108 +104,113 @@
             <nav class="sidebar">
                 <div class="sidebar-menu">
 
-                <a asp-controller="Home"
-                   asp-action="Index"
-                   class="sidebar-link">
-                    Dashboard
-                </a>
-
-                @if (canManageDepartments ||
-                            canManageGroups ||
-                            canManageUsers)
-                {
-                    <a asp-controller="Admin"
-                       asp-action="Index"
-                       class="sidebar-link text-uppercase small">
-                        Administration
-                    </a>
-                }
-
-                @if (canManageDepartments)
-                {
-                    <a asp-controller="Department"
+                    <a asp-controller="Home"
                        asp-action="Index"
                        class="sidebar-link">
-                        Departments
+                        Dashboard
                     </a>
-                }
 
-                @if (canManageGroups)
-                {
-                    <a asp-controller="Group"
-                       asp-action="Index"
-                       class="sidebar-link">
-                        Groups
-                    </a>
-                }
+                    @if (canManageDepartments ||
+                                    canManageGroups ||
+                                    canManageUsers)
+                    {
+                        <a asp-controller="Home"
+                           asp-action="Index"
+                           class="sidebar-link @(controller == "Home" ? "active" : "")">
 
-                @if (canManageUsers)
-                {
-                    <a asp-controller="User"
-                       asp-action="Index"
-                       class="sidebar-link">
-                        Users
-                    </a>
-                }
+                            <i class="bi bi-house-door sidebar-icon"></i>
+                            <span>Dashboard</span>
 
-                @if (canCreateVisitor || canViewVisitor)
-                {
-                    <div class="sidebar-section-title">
-                        Visitor Management
-                    </div>
-                }
+                        </a>
 
-                @if (canViewVisitor)
-                {
-                    <a asp-controller="Visit"
-                       asp-action="Index"
-                       class="sidebar-link @(controller == "Visit" && action == "Index" ? "active" : "")">
-                        Visit Requests
-                    </a>
-                }
+                        <a asp-controller="Admin"
+                           asp-action="Index"
+                           class="sidebar-link @(controller == "Admin" ? "active" : "")">
 
-                @if (canCreateVisitor)
-                {
-                    <a asp-controller="Visit"
-                       asp-action="Create"
-                       class="sidebar-link @(controller == "Visit" && action == "Create" ? "active" : "")">
-                        Register Visitor
-                    </a>
-                }
-                
-                @if (await PermissionService.HasPermissionAsync(
-                            User, "Visitor.ValidateQR"))
-                {
-                    <a asp-controller="Reception"
-                       asp-action="Index"
-                       class="sidebar-link @(controller == "Reception" ? "active" : "")">
-                        Reception / QR Scan
-                    </a>
-                }
-                
-                @if (await PermissionService.HasPermissionAsync(
-                            User, "Visitor.ValidateQR"))
-                {
-                    <a asp-controller="Reception"
-                       asp-action="AccessHistory"
-                       class="sidebar-link @(controller == "Reception" &&
-                                                    action == "AccessHistory" ? "active" : "")">
-                Access History
-            </a>
-                        }
-                
-                @if (canApproveVisitor || canRejectVisitor)
-                {
-                    <div class="sidebar-section-title">
-                        Approvals
-                    </div>
+                            <i class="bi bi-gear sidebar-icon"></i>
+                            <span>Administration</span>
 
-                    <a asp-controller="Approval"
-                       asp-action="Index"
-                       class="sidebar-link @(controller == "Approval" ? "active" : "")">
-                        Pending Approvals
-                    </a>
-                }
+                        </a>
+                    }
+
+
+
+
+
+
+
+                    @if (canCreateVisitor || canViewVisitor)
+                    {
+                        <div class="sidebar-section-title">
+                            Visitor Management
+                        </div>
+                    }
+
+                    @if (canViewVisitor)
+                    {
+                        <a asp-controller="Visit"
+                           asp-action="Index"
+                           class="sidebar-link @(controller == "Visit" && action == "Index" ? "active" : "")">
+
+                            <i class="bi bi-clipboard2-check sidebar-icon"></i>
+                            <span>Visit Requests</span>
+
+                        </a>
+                    }
+
+                    @if (canCreateVisitor)
+                    {
+                        <a asp-controller="Visit"
+                           asp-action="Create"
+                           class="sidebar-link @(controller == "Visit" && action == "Create" ? "active" : "")">
+
+                            <i class="bi bi-person-plus sidebar-icon"></i>
+                            <span>Register Visitor</span>
+
+                        </a>
+                    }
+
+                    @if (await PermissionService.HasPermissionAsync(
+                                    User, "Visitor.ValidateQR"))
+                    {
+                        <a asp-controller="Reception"
+                           asp-action="Index"
+                           class="sidebar-link @(controller == "Reception" && action == "Index" ? "active" : "")">
+
+                            <i class="bi bi-qr-code-scan sidebar-icon"></i>
+                            <span>Reception / QR Scan</span>
+
+                        </a>
+                    }
+
+                    @if (await PermissionService.HasPermissionAsync(
+                                    User, "Visitor.ValidateQR"))
+                    {
+                        <a asp-controller="Reception"
+                           asp-action="AccessHistory"
+                           class="sidebar-link @(controller == "Reception" && action == "AccessHistory" ? "active" : "")">
+
+                            <i class="bi bi-clock-history sidebar-icon"></i>
+                            <span>Access History</span>
+
+                        </a>
+                    }
+
+                    @if (canApproveVisitor || canRejectVisitor)
+                    {
+                        <div class="sidebar-section-title">
+                            Approvals
+                        </div>
+
+                        <a asp-controller="Approval"
+                           asp-action="Index"
+                           class="sidebar-link @(controller == "Approval" ? "active" : "")">
+
+                            <i class="bi bi-shield-check sidebar-icon"></i>
+                            <span>Pending Approvals</span>
+
+                        </a>
+                    }
 
                 </div>
             </nav>

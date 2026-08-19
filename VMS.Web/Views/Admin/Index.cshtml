@@ -1,53 +1,164 @@
-﻿@{
-    ViewData["Title"] = "Administration";
+﻿@using VMS.Web.Services
+@inject IPermissionService PermissionService
+
+@{
+    ViewData["Title"] = "Administration Dashboard";
+
+    var canManageDepartments =
+        await PermissionService.HasPermissionAsync(
+            User,
+            "Department.Manage");
+
+    var canManageGroups =
+        await PermissionService.HasPermissionAsync(
+            User,
+            "Group.Manage");
+
+    var canManageUsers =
+        await PermissionService.HasPermissionAsync(
+            User,
+            "User.Manage");
 }
+
 
 <h2 class="mb-4">Administration Dashboard</h2>
 
 <div class="row g-3">
 
     <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6>Total Users</h6>
-                <h2>@ViewBag.TotalUsers</h2>
+        <a asp-controller="User"
+           asp-action="Index"
+           class="admin-stat-link">
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon admin-icon-blue">
+                    👥
+                </div>
+
+                <div>
+                    <div class="admin-stat-label">
+                        Total Users
+                    </div>
+
+                    <div class="admin-stat-value">
+                        @ViewBag.TotalUsers
+                    </div>
+
+                    <div class="admin-stat-action">
+                        View all users →
+                    </div>
+                </div>
             </div>
-        </div>
+
+        </a>
     </div>
 
     <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6>Active Users</h6>
-                <h2>@ViewBag.ActiveUsers</h2>
+        <a asp-controller="User"
+           asp-action="Index"
+           asp-route-filter="active"
+           class="admin-stat-link">
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon admin-icon-green">
+                    👤
+                </div>
+
+                <div>
+                    <div class="admin-stat-label">
+                        Active Users
+                    </div>
+
+                    <div class="admin-stat-value">
+                        @ViewBag.ActiveUsers
+                    </div>
+
+                    <div class="admin-stat-action">
+                        View active users →
+                    </div>
+                </div>
             </div>
-        </div>
+
+        </a>
     </div>
 
     <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6>Departments</h6>
-                <h2>@ViewBag.TotalDepartments</h2>
+        <a asp-controller="Department"
+           asp-action="Index"
+           class="admin-stat-link">
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon admin-icon-purple">
+                    🏢
+                </div>
+
+                <div>
+                    <div class="admin-stat-label">
+                        Departments
+                    </div>
+
+                    <div class="admin-stat-value">
+                        @ViewBag.TotalDepartments
+                    </div>
+
+                    <div class="admin-stat-action">
+                        Manage departments →
+                    </div>
+                </div>
             </div>
-        </div>
+
+        </a>
     </div>
 
     <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6>Groups</h6>
-                <h2>@ViewBag.TotalGroups</h2>
+        <a asp-controller="Group"
+           asp-action="Index"
+           class="admin-stat-link">
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon admin-icon-yellow">
+                    👥
+                </div>
+
+                <div>
+                    <div class="admin-stat-label">
+                        Groups
+                    </div>
+
+                    <div class="admin-stat-value">
+                        @ViewBag.TotalGroups
+                    </div>
+
+                    <div class="admin-stat-action">
+                        Manage groups →
+                    </div>
+                </div>
             </div>
-        </div>
+
+        </a>
     </div>
 
     <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6>Permissions</h6>
-                <h2>@ViewBag.TotalPermissions</h2>
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon admin-icon-red">
+                🛡️
             </div>
+
+            <div>
+                <div class="admin-stat-label">
+                    Permissions
+                </div>
+
+                <div class="admin-stat-value">
+                    @ViewBag.TotalPermissions
+                </div>
+
+                <div class="admin-stat-action text-muted">
+                    System permissions
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -59,20 +170,89 @@
 
 <div class="list-group">
 
-    <a asp-controller="Department"
-       asp-action="Index"
-       class="list-group-item list-group-item-action">
-        Manage Departments
-    </a>
+    <div class="admin-management">
 
-    <a href="#"
-       class="list-group-item list-group-item-action">
-        Manage Groups
-    </a>
+        @if (canManageDepartments)
+        {
+            <a asp-controller="Department"
+               asp-action="Index"
+               class="admin-management-item">
 
-    <a href="#"
-       class="list-group-item list-group-item-action">
-        Manage Users
-    </a>
+                <div class="admin-management-left">
+                    <div class="admin-management-icon admin-icon-purple">
+                        🏢
+                    </div>
+
+                    <div>
+                        <div class="admin-management-title">
+                            Manage Departments
+                        </div>
+
+                        <div class="admin-management-description">
+                            Add, edit and manage departments
+                        </div>
+                    </div>
+                </div>
+
+                <span class="admin-management-arrow">›</span>
+
+            </a>
+        }
+
+        @if (canManageGroups)
+        {
+            <a asp-controller="Group"
+               asp-action="Index"
+               class="admin-management-item">
+
+                <div class="admin-management-left">
+                    <div class="admin-management-icon admin-icon-yellow">
+                        👥
+                    </div>
+
+                    <div>
+                        <div class="admin-management-title">
+                            Manage Groups
+                        </div>
+
+                        <div class="admin-management-description">
+                            Add, edit and manage groups
+                        </div>
+                    </div>
+                </div>
+
+                <span class="admin-management-arrow">›</span>
+
+            </a>
+        }
+
+        @if (canManageUsers)
+        {
+            <a asp-controller="User"
+               asp-action="Index"
+               class="admin-management-item">
+
+                <div class="admin-management-left">
+                    <div class="admin-management-icon admin-icon-green">
+                        👤
+                    </div>
+
+                    <div>
+                        <div class="admin-management-title">
+                            Manage Users
+                        </div>
+
+                        <div class="admin-management-description">
+                            Create users and manage their access
+                        </div>
+                    </div>
+                </div>
+
+                <span class="admin-management-arrow">›</span>
+
+            </a>
+        }
+
+    </div>
 
 </div>

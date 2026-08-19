@@ -44,20 +44,30 @@
             <div class="col-md-4">
                 <a asp-controller="Visitor"
                    asp-action="Index"
-                   class="text-decoration-none">
+                   class="kpi-card-link">
 
-                    <div class="card dashboard-card h-100">
+                    <div class="card dashboard-card kpi-card">
                         <div class="card-body">
 
-                            <div class="dashboard-label">
-                                Total Registered Visitors
+                            <div class="kpi-header">
+
+                                <div>
+                                    <div class="dashboard-label">
+                                        Total Registered Visitors
+                                    </div>
+
+                                    <div class="dashboard-value">
+                                        @ViewBag.TotalRegisteredVisitors
+                                    </div>
+                                </div>
+
+                                <div class="kpi-icon kpi-blue">
+                                    <i class="bi bi-people"></i>
+                                </div>
+
                             </div>
 
-                            <div class="dashboard-value">
-                                @ViewBag.TotalRegisteredVisitors
-                            </div>
-
-                            <div class="small text-muted mt-2">
+                            <div class="kpi-action">
                                 View all visitors →
                             </div>
 
@@ -71,23 +81,27 @@
                 <a asp-controller="Visitor"
                    asp-action="Index"
                    asp-route-filter="active"
-                   class="text-decoration-none">
+                   class="kpi-card-link">
 
-                    <div class="card dashboard-card h-100">
+                    <div class="card dashboard-card kpi-card">
                         <div class="card-body">
+                            <div class="kpi-header">
+                                <div>
+                                    <div class="dashboard-label">
+                                        Active Visitors
+                                    </div>
 
-                            <div class="dashboard-label">
-                                Active Visitors
+                                    <div class="dashboard-value">
+                                        @ViewBag.ActiveVisitors
+                                    </div>
+                                </div>
+                                <div class="kpi-icon kpi-green">
+                                    <i class="bi bi-person-check"></i>
+                                </div>
                             </div>
-
-                            <div class="dashboard-value">
-                                @ViewBag.ActiveVisitors
-                            </div>
-
-                            <div class="small text-muted mt-2">
+                            <div class="kpi-action">
                                 View active visitors →
                             </div>
-
                         </div>
                     </div>
 
@@ -98,23 +112,28 @@
                 <a asp-controller="Visitor"
                    asp-action="Index"
                    asp-route-filter="expired"
-                   class="text-decoration-none">
+                   class="kpi-card-link">
 
-                    <div class="card dashboard-card h-100">
+                    <div class="card dashboard-card kpi-card">
                         <div class="card-body">
+                            <div class="kpi-header">
+                                <div>
+                                    <div class="dashboard-label">
+                                        Expired IDs
+                                    </div>
 
-                            <div class="dashboard-label">
-                                Expired IDs
+                                    <div class="dashboard-value">
+                                        @ViewBag.ExpiredIdVisitors
+                                    </div>
+                                </div>
+
+                                <div class="kpi-icon kpi-red">
+                                    <i class="bi bi-person-x"></i>
+                                </div>
                             </div>
-
-                            <div class="dashboard-value">
-                                @ViewBag.ExpiredIdVisitors
-                            </div>
-
-                            <div class="small text-muted mt-2">
+                            <div class="kpi-action">
                                 Review expired IDs →
                             </div>
-
                         </div>
                     </div>
 
@@ -135,23 +154,28 @@
                 <a asp-controller="Reception"
                    asp-action="Visitors"
                    asp-route-filter="expected"
-                   class="text-decoration-none">
+                   class="kpi-card-link">
 
-                    <div class="card dashboard-card h-100">
+                    <div class="card dashboard-card kpi-card">
                         <div class="card-body">
+                            <div class="kpi-header">
+                                <div>
+                                    <div class="dashboard-label">
+                                        Expected Today
+                                    </div>
 
-                            <div class="dashboard-label">
-                                Expected Today
+                                    <div class="dashboard-value">
+                                        @ViewBag.ExpectedToday
+                                    </div>
+                                </div>
+
+                                <div class="kpi-icon kpi-blue">
+                                    <i class="bi bi-calendar2-check"></i>
+                                </div>
                             </div>
-
-                            <div class="dashboard-value">
-                                @ViewBag.ExpectedToday
-                            </div>
-
-                            <div class="small text-muted mt-2">
+                            <div class="kpi-action">
                                 View expected visitors →
                             </div>
-
                         </div>
                     </div>
 
@@ -162,19 +186,25 @@
                 <a asp-controller="Reception"
                    asp-action="Visitors"
                    asp-route-filter="inside"
-                   class="text-decoration-none">
+                   class="kpi-card-link">
 
-
-                    <div class="card dashboard-card h-100">
+                    <div class="card dashboard-card kpi-card">
                         <div class="card-body">
-                            <div class="dashboard-label">
-                                Currently Inside
-                            </div>
+                            <div class="kpi-header">
+                                <div>
+                                    <div class="dashboard-label">
+                                        Currently Inside
+                                    </div>
 
-                            <div class="dashboard-value">
-                                @ViewBag.CurrentlyInside
+                                    <div class="dashboard-value">
+                                        @ViewBag.CurrentlyInside
+                                    </div>
+                                </div>
+                                <div class="kpi-icon kpi-purple">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                </div>
                             </div>
-                            <div class="small text-muted mt-2">
+                            <div class="kpi-action">
                                 View Currently Inside →
                             </div>
                         </div>
@@ -186,17 +216,24 @@
                 <a asp-controller="Reception"
                    asp-action="Visitors"
                    asp-route-filter="checkedout"
-                   class="text-decoration-none">
-                    <div class="card dashboard-card">
+                   class="kpi-card-link">
+                    <div class="card dashboard-card kpi-card">
                         <div class="card-body">
-                            <div class="dashboard-label">
-                                Checked Out Today
-                            </div>
+                            <div class="kpi-header">
+                                <div>
+                                    <div class="dashboard-label">
+                                        Checked Out Today
+                                    </div>
 
-                            <div class="dashboard-value">
-                                @ViewBag.CheckedOutToday
+                                    <div class="dashboard-value">
+                                        @ViewBag.CheckedOutToday
+                                    </div>
+                                </div>
+                                <div class="kpi-icon kpi-orange">
+                                    <i class="bi bi-clock-history"></i>
+                                </div>
                             </div>
-                            <div class="small text-muted mt-2">
+                            <div class="kpi-action">
                                 View Checked Out Today →
                             </div>
                         </div>
@@ -207,17 +244,24 @@
             <div class="col-md-4 col-xl-3">
                 <a asp-controller="Reception"
                    asp-action="Visitors"
-                   class="text-decoration-none">
-                    <div class="card dashboard-card">
+                   class="kpi-card-link">
+                    <div class="card dashboard-card kpi-card">
                         <div class="card-body">
-                            <div class="dashboard-label">
-                                Not Yet Arrived
-                            </div>
+                            <div class="kpi-header">
+                                <div>
+                                    <div class="dashboard-label">
+                                        Not Yet Arrived
+                                    </div>
 
-                            <div class="dashboard-value">
-                                @ViewBag.NotYetArrived
+                                    <div class="dashboard-value">
+                                        @ViewBag.NotYetArrived
+                                    </div>
+                                </div>
+                                <div class="kpi-icon kpi-yellow">
+                                    <i class="bi bi-hourglass-split"></i>
+                                </div>
                             </div>
-                            <div class="small text-muted mt-2">
+                            <div class="kpi-action">
                                 View Not Yet Arrived →
                             </div>
                         </div>
@@ -230,17 +274,24 @@
                     <a asp-controller="Reception"
                        asp-action="Visitors"
                        asp-route-filter="inside"
-                       class="text-decoration-none">
-                        <div class="card dashboard-card">
+                       class="kpi-card-link">
+                        <div class="card dashboard-card kpi-card">
                             <div class="card-body">
-                                <div class="dashboard-label">
-                                    Pending Approvals
-                                </div>
+                                <div class="kpi-header">
+                                    <div>
+                                        <div class="dashboard-label">
+                                            Pending Approvals
+                                        </div>
 
-                                <div class="dashboard-value">
-                                    @ViewBag.PendingApprovals
+                                        <div class="dashboard-value">
+                                            @ViewBag.PendingApprovals
+                                        </div>
+                                    </div>
+                                    <div class="kpi-icon kpi-yellow">
+                                        <i class="bi bi-hourglass-split"></i>
+                                    </div>
                                 </div>
-                                <div class="small text-muted mt-2">
+                                <div class="kpi-action">
                                     View Pending Approvals →
                                 </div>
                             </div>

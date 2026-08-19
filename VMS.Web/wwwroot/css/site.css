@@ -1,34 +1,35 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    text-align: start;
 }
+
 html,
 body {
     height: 100%;
@@ -128,7 +129,9 @@ body {
 /* Normal menu item */
 
 .sidebar-link {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     padding: 12px 16px;
     margin-bottom: 5px;
     color: #d7deea;
@@ -140,32 +143,39 @@ body {
     transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
 
+.sidebar-icon {
+    width: 20px;
+    min-width: 20px;
+    font-size: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+/* Hover */
 
-    /* Hover */
+.sidebar-link:hover {
+    background: #25334d;
+    color: #ffffff;
+    border-left-color: #60a5fa;
+}
 
-    .sidebar-link:hover {
-        background: #25334d;
+
+/* Current page */
+
+.sidebar-link.active {
+    background: #2563eb;
+    color: #ffffff;
+    border-left-color: #93c5fd;
+    font-weight: 600;
+}
+
+
+    /* Current page hover */
+
+    .sidebar-link.active:hover {
+        background: #1d4ed8;
         color: #ffffff;
-        border-left-color: #60a5fa;
     }
-
-
-    /* Current page */
-
-    .sidebar-link.active {
-        background: #2563eb;
-        color: #ffffff;
-        border-left-color: #93c5fd;
-        font-weight: 600;
-    }
-
-
-        /* Current page hover */
-
-        .sidebar-link.active:hover {
-            background: #1d4ed8;
-            color: #ffffff;
-        }
 
 
 /* Administration heading */
@@ -271,6 +281,7 @@ body {
         padding: 16px;
     }
 }
+
 .dashboard-card {
     border: 1px solid #e5e7eb;
     border-radius: 10px;
@@ -296,6 +307,95 @@ body {
     font-weight: 700;
     color: #1f2937;
 }
+
+/* =========================
+   DASHBOARD KPI CARDS
+   ========================= */
+
+.kpi-card-link {
+    display: block;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+}
+
+    .kpi-card-link:hover {
+        color: inherit;
+    }
+
+.kpi-card {
+    height: 100%;
+    min-height: 140px;
+}
+
+    .kpi-card .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+.kpi-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.kpi-icon {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 22px;
+}
+
+.kpi-blue {
+    background: #e8f0ff;
+    color: #2563eb;
+}
+
+.kpi-green {
+    background: #e8f7ef;
+    color: #15803d;
+}
+
+.kpi-red {
+    background: #feecec;
+    color: #dc2626;
+}
+
+.kpi-purple {
+    background: #f1eafe;
+    color: #7c3aed;
+}
+
+.kpi-orange {
+    background: #fff0e5;
+    color: #ea580c;
+}
+
+.kpi-yellow {
+    background: #fff7d6;
+    color: #ca8a04;
+}
+
+.kpi-action {
+    margin-top: 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #2563eb;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    border-color: #cbd5e1;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
 .permit-wrapper {
     max-width: 100%;
     margin: 0 auto;
@@ -486,4 +586,144 @@ body {
     .permit-note {
         break-inside: avoid;
     }
+}
+
+.admin-stat-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.admin-stat-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    min-height: 165px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+    .admin-stat-card:hover {
+        transform: translateY(-2px);
+        border-color: #cbd5e1;
+        box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08);
+    }
+
+.admin-stat-icon {
+    width: 54px;
+    height: 54px;
+    flex: 0 0 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 26px;
+}
+
+.admin-icon-blue {
+    background: #e8f0ff;
+}
+
+.admin-icon-green {
+    background: #e8f7ef;
+}
+
+.admin-icon-purple {
+    background: #f1eafe;
+}
+
+.admin-icon-yellow {
+    background: #fff5db;
+}
+
+.admin-icon-red {
+    background: #feecee;
+}
+
+.admin-stat-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.admin-stat-value {
+    margin-top: 4px;
+    font-size: 30px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.admin-stat-action {
+    margin-top: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.admin-management {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+}
+
+.admin-management-item {
+    min-height: 78px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: #111827;
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.15s ease;
+}
+
+    .admin-management-item:last-child {
+        border-bottom: none;
+    }
+
+    .admin-management-item:hover {
+        background: #f8fafc;
+        color: #111827;
+    }
+
+.admin-management-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.admin-management-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    border-radius: 10px;
+    font-size: 21px;
+}
+
+.admin-management-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.admin-management-description {
+    margin-top: 3px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.admin-management-arrow {
+    font-size: 30px;
+    line-height: 1;
+    color: #64748b;
 }

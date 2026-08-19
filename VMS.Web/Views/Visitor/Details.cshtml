@@ -1,23 +1,15 @@
-﻿@using VMS.Web.Services
+﻿@model VMS.Domain.Entities.Visitor
+
+@using VMS.Web.Services
 @inject IPermissionService PermissionService
 
 @{
+    ViewData["Title"] = "Visitor Details";
+
     var canEditVisitor =
         await PermissionService.HasPermissionAsync(
-            User, "Visitor.Edit");
-}
-@if (canEditVisitor)
-{
-    <a asp-action="Edit"
-       asp-route-id="@Model.VisitorId"
-       class="btn btn-primary">
-        Edit Visitor
-    </a>
-}
-@model VMS.Domain.Entities.Visitor
-
-@{
-    ViewData["Title"] = "Visitor Details";
+            User,
+            "Visitor.Edit");
 
     var visitHistory =
         ViewBag.VisitHistory as IEnumerable<VMS.Domain.Entities.VisitVisitor>;
@@ -29,19 +21,169 @@
     var expired = Model.IdExpiryDate < today;
 }
 
+
+
 <div class="d-flex justify-content-between align-items-center mb-4">
+
     <div>
-        <h2 class="mb-1">@Model.FullName</h2>
-        <div class="text-muted">Visitor profile and history</div>
+        <h2 class="mb-1">
+            @Model.FullName
+        </h2>
+
+        <div class="text-muted">
+            Visitor profile and history
+        </div>
     </div>
 
-    <a asp-action="Edit"
-       asp-route-id="@Model.VisitorId"
-       class="btn btn-primary">
-        Edit Visitor
-    </a>
-</div>
+    <div class="d-flex gap-2">
 
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to Visitors
+
+        </a>
+
+        @if (canEditVisitor)
+        {
+            <a asp-action="Edit"
+               asp-route-id="@Model.VisitorId"
+               class="btn btn-primary">
+
+                <i class="bi bi-pencil-square me-1"></i>
+                Edit Visitor
+
+            </a>
+        }
+
+    </div>
+
+</div>
+<div class="row g-3 mb-4">
+
+    <div class="col-md-3">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+                        <div class="dashboard-label">
+                            Total Visits
+                        </div>
+
+                        <div class="dashboard-value">
+                            @ViewBag.TotalVisits
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-blue">
+                        <i class="bi bi-calendar2-check"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+                        <div class="dashboard-label">
+                            Completed Visits
+                        </div>
+
+                        <div class="dashboard-value">
+                            @ViewBag.CompletedVisits
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-green">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+                        <div class="dashboard-label">
+                            Total Check-Ins
+                        </div>
+
+                        <div class="dashboard-value">
+                            @ViewBag.TotalCheckIns
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-purple">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+                        <div class="dashboard-label">
+                            Current Status
+                        </div>
+
+                        @if (ViewBag.CurrentlyInside == true)
+                        {
+                            <div class="mt-2">
+                                <span class="badge bg-success">
+                                    Currently Inside
+                                </span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mt-2">
+                                <span class="badge bg-secondary">
+                                    Outside
+                                </span>
+                            </div>
+                        }
+
+                    </div>
+
+                    <div class="kpi-icon @(ViewBag.CurrentlyInside == true ? "kpi-green" : "kpi-orange")">
+                        <i class="bi bi-building"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
 <div class="card shadow-sm mb-4">
     <div class="card-header">
         Visitor Profile
@@ -188,6 +330,7 @@
                         <th>Visit Reference</th>
                         <th>Check-In</th>
                         <th>Check-Out</th>
+                        <th>Duration</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -198,18 +341,50 @@
                         @foreach (var item in accessHistory)
                         {
                             <tr>
-                                <td>@item.VisitRequest.VisitReference</td>
+                                <td>
+                                    @item.VisitRequest.VisitReference
+                                </td>
 
                                 <td>
-                                    @item.EntryTime.ToString("dd-MMM-yyyy hh:mm tt")
+                                    @(item.EntryTime.ToString("dd-MMM-yyyy hh:mm tt"))
                                 </td>
 
                                 <td>
                                     @(item.ExitTime?.ToString("dd-MMM-yyyy hh:mm tt") ?? "-")
-                        </td>
+                                </td>
 
                                 <td>
-                            @if (item.ExitTime == null)
+                                    @if (item.ExitTime.HasValue)
+                                    {
+                                        var duration =
+                                        item.ExitTime.Value - item.EntryTime;
+
+                                        if (duration.TotalDays >= 1)
+                                        {
+                                            <span>
+                                                @((int)duration.TotalDays)d
+                                                @duration.Hours.ToString("00")h
+                                                @duration.Minutes.ToString("00")m
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>
+                                                @((int)duration.TotalHours)h
+                                                @duration.Minutes.ToString("00")m
+                                            </span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            Ongoing
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (item.ExitTime == null)
                                     {
                                         <span class="badge bg-success">
                                             Currently Inside
@@ -228,7 +403,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="4"
+                            <td colspan="5"
                                 class="text-center text-muted">
                                 No access history found.
                             </td>

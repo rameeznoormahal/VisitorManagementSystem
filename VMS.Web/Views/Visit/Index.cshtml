@@ -97,9 +97,19 @@
                                         break;
 
                                     case VMS.Domain.Enums.VisitStatus.Rejected:
-                                        <span class="badge bg-danger">
-                                            Rejected
-                                        </span>
+                                        <div>
+                                            <span class="badge bg-danger">
+                                                Rejected
+                                            </span>
+
+                                            @if (!string.IsNullOrWhiteSpace(item.DecisionComments))
+                                            {
+                                                <div class="small text-muted mt-1">
+                                                    <strong>Reason:</strong>
+                                                    @item.DecisionComments
+                                                </div>
+                                            }
+                                        </div>
                                         break;
 
                                     case VMS.Domain.Enums.VisitStatus.CheckedIn:

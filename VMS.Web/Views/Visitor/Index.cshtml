@@ -1,24 +1,111 @@
 ﻿@model IEnumerable<VMS.Domain.Entities.Visitor>
 
 @{
-    ViewData["Title"] = "Visitors";
+    ViewData["Title"] = "Visitor Master";
 
-    var filter = ViewBag.Filter as string;
     var search = ViewBag.Search as string;
+    var filter = ViewBag.Filter as string;
 
     var today = DateOnly.FromDateTime(DateTime.Today);
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-start mb-4">
 
     <div>
         <h2 class="mb-1">Visitor Master</h2>
+
         <div class="text-muted">
-            Registered visitor information and identification status
+            Search and maintain registered visitor records
         </div>
     </div>
 
 </div>
+
+
+<div class="row g-3 mb-4">
+
+    <div class="col-md-4">
+        <div class="card dashboard-card">
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+                        <div class="dashboard-label">
+                            Total Visitors
+                        </div>
+
+                        <div class="dashboard-value">
+                            @ViewBag.TotalVisitors
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-blue">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-4">
+        <div class="card dashboard-card">
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+                        <div class="dashboard-label">
+                            Active Visitors
+                        </div>
+
+                        <div class="dashboard-value">
+                            @ViewBag.ActiveVisitors
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-green">
+                        <i class="bi bi-person-check"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-4">
+        <div class="card dashboard-card">
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+                        <div class="dashboard-label">
+                            Expired IDs
+                        </div>
+
+                        <div class="dashboard-value">
+                            @ViewBag.ExpiredVisitors
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-red">
+                        <i class="bi bi-person-x"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
 
 <div class="card shadow-sm">
 
@@ -28,60 +115,80 @@
               asp-action="Index"
               class="row g-2 mb-4">
 
-            <input type="hidden"
-                   name="filter"
-                   value="@filter" />
+            <div class="col-lg-5 col-md-6">
 
-            <div class="col-md-5">
+                <div class="input-group">
 
-                <input type="text"
-                       name="search"
-                       value="@search"
-                       class="form-control"
-                       placeholder="Search name, ID, company or mobile..." />
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+
+                    <input type="text"
+                           name="search"
+                           value="@search"
+                           class="form-control"
+                           placeholder="Search by ID, name, company, mobile or email..." />
+
+                </div>
 
             </div>
+
+
+            <div class="col-md-3">
+
+                <select name="filter"
+                        class="form-select">
+
+                    <option value="">
+                        All Visitors
+                    </option>
+
+                    <option value="active"
+                            selected="@(filter == "active")">
+                        Active
+                    </option>
+
+                    <option value="inactive"
+                            selected="@(filter == "inactive")">
+                        Inactive
+                    </option>
+
+                    <option value="expired"
+                            selected="@(filter == "expired")">
+                        Expired ID
+                    </option>
+
+                </select>
+
+            </div>
+
 
             <div class="col-auto">
 
                 <button type="submit"
                         class="btn btn-primary">
+
+                    <i class="bi bi-search me-1"></i>
                     Search
+
                 </button>
 
             </div>
+
 
             <div class="col-auto">
 
                 <a asp-action="Index"
                    class="btn btn-outline-secondary">
+
                     Clear
+
                 </a>
 
             </div>
 
         </form>
 
-        <div class="d-flex gap-2 mb-3">
-
-            <a asp-action="Index"
-               class="btn btn-sm @(string.IsNullOrWhiteSpace(filter) ? "btn-primary" : "btn-outline-primary")">
-                All
-            </a>
-
-            <a asp-action="Index"
-               asp-route-filter="active"
-               class="btn btn-sm @(filter == "active" ? "btn-success" : "btn-outline-success")">
-                Active
-            </a>
-
-            <a asp-action="Index"
-               asp-route-filter="expired"
-               class="btn btn-sm @(filter == "expired" ? "btn-danger" : "btn-outline-danger")">
-                Expired ID
-            </a>
-
-        </div>
 
         <div class="table-responsive">
 
@@ -98,7 +205,7 @@
                         <th>Designation</th>
                         <th>Mobile</th>
                         <th>Status</th>
-                        <th></th>
+                        <th class="text-end">Action</th>
                     </tr>
                 </thead>
 
@@ -126,27 +233,27 @@
                             </td>
 
                             <td>
-                                @visitor.IdExpiryDate.ToString(
-                                "dd-MMM-yyyy")
+                                @(visitor.IdExpiryDate.ToString(
+                                                            "dd-MMM-yyyy"))
                         </td>
 
-                        <td>
-                            @visitor.Nationality
-                        </td>
+                            <td>
+                                @visitor.Nationality
+                            </td>
 
-                        <td>
-                            @visitor.CompanyName
-                        </td>
+                            <td>
+                                @visitor.CompanyName
+                            </td>
 
-                        <td>
-                            @visitor.Designation
-                        </td>
+                            <td>
+                                @visitor.Designation
+                            </td>
 
-                        <td>
-                            @visitor.PhoneNumber
-                        </td>
+                            <td>
+                                @visitor.PhoneNumber
+                            </td>
 
-                        <td>
+                            <td>
 
                             @if (expired)
                                 {
@@ -169,12 +276,17 @@
 
                             </td>
 
-                            <td>
+                            <td class="text-end">
+
                                 <a asp-action="Details"
                                    asp-route-id="@visitor.VisitorId"
                                    class="btn btn-sm btn-outline-primary">
+
+                                    <i class="bi bi-eye me-1"></i>
                                     View
+
                                 </a>
+
                             </td>
 
                         </tr>
@@ -185,7 +297,9 @@
                         <tr>
                             <td colspan="10"
                                 class="text-center text-muted py-4">
+
                                 No visitors found.
+
                             </td>
                         </tr>
                     }

@@ -15,18 +15,32 @@ public class VisitorController : Controller
     {
         _context = context;
     }
-
     [RequirePermission("Visitor.View")]
     [HttpGet]
     public async Task<IActionResult> Index(
-        string? filter,
-        string? search)
+    string? search,
+    string? filter)
     {
         var query = _context.Visitors
             .AsNoTracking()
             .AsQueryable();
 
         var today = DateOnly.FromDateTime(DateTime.Today);
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            search = search.Trim();
+
+            query = query.Where(x =>
+                x.IdNumber.Contains(search) ||
+                x.FullName.Contains(search) ||
+                (x.CompanyName != null &&
+                 x.CompanyName.Contains(search)) ||
+                (x.PhoneNumber != null &&
+                 x.PhoneNumber.Contains(search)) ||
+                (x.Email != null &&
+                 x.Email.Contains(search)));
+        }
 
         switch (filter?.ToLower())
         {
@@ -36,34 +50,38 @@ public class VisitorController : Controller
                     x.IdExpiryDate >= today);
                 break;
 
+            case "inactive":
+                query = query.Where(x =>
+                    !x.IsActive);
+                break;
+
             case "expired":
                 query = query.Where(x =>
                     x.IdExpiryDate < today);
                 break;
         }
 
-        if (!string.IsNullOrWhiteSpace(search))
-        {
-            search = search.Trim();
-
-            query = query.Where(x =>
-                x.FullName.Contains(search) ||
-                x.IdNumber.Contains(search) ||
-                (x.CompanyName != null &&
-                 x.CompanyName.Contains(search)) ||
-                (x.PhoneNumber != null &&
-                 x.PhoneNumber.Contains(search)));
-        }
-
         var visitors = await query
             .OrderBy(x => x.FullName)
             .ToListAsync();
 
-        ViewBag.Filter = filter;
         ViewBag.Search = search;
+        ViewBag.Filter = filter;
+
+        ViewBag.TotalVisitors =
+            await _context.Visitors.CountAsync();
+
+        ViewBag.ActiveVisitors =
+            await _context.Visitors.CountAsync(x =>
+                x.IsActive);
+
+        ViewBag.ExpiredVisitors =
+            await _context.Visitors.CountAsync(x =>
+                x.IdExpiryDate < today);
 
         return View(visitors);
     }
+
 
     [RequirePermission("Visitor.View")]
     [HttpGet]
@@ -84,15 +102,43 @@ public class VisitorController : Controller
             .ToListAsync();
 
         var accessHistory = await _context.VisitAccessLogs
-            .Where(x => x.VisitVisitor.VisitorId == id)
-            .Include(x => x.VisitRequest)
-            .OrderByDescending(x => x.EntryTime)
-            .ToListAsync();
+    .Where(x => x.VisitVisitor.VisitorId == id)
+    .Include(x => x.VisitRequest)
+    .OrderByDescending(x => x.EntryTime)
+    .ToListAsync();
+
+        ViewBag.TotalVisits =
+     visitHistory.Count;
+
+        ViewBag.CompletedVisits =
+            visitHistory.Count(x =>
+                x.VisitRequest.VisitToDateTime < DateTime.Now);
+
+        ViewBag.TotalCheckIns =
+            accessHistory.Count;
+
+        ViewBag.CurrentlyInside =
+            accessHistory.Any(x =>
+                x.ExitTime == null);
+
+        ViewBag.LastVisit =
+            accessHistory
+                .OrderByDescending(x => x.EntryTime)
+                .Select(x => (DateTime?)x.EntryTime)
+                .FirstOrDefault();
+
+        ViewBag.LastCheckOut =
+            accessHistory
+                .Where(x => x.ExitTime != null)
+                .OrderByDescending(x => x.ExitTime)
+                .Select(x => x.ExitTime)
+                .FirstOrDefault();
 
         ViewBag.VisitHistory = visitHistory;
         ViewBag.AccessHistory = accessHistory;
 
         return View(visitor);
+      
     }
 
     [RequirePermission("Visitor.Edit")]

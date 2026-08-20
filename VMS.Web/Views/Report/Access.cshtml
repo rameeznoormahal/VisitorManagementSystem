@@ -1,0 +1,320 @@
+﻿@model VMS.Web.ViewModels.Reports.AccessReportViewModel
+
+@{
+    ViewData["Title"] = "Access Report";
+}
+
+<div class="d-flex justify-content-between align-items-start mb-4">
+    <div>
+        <h2 class="mb-1">Access Report</h2>
+        <div class="text-muted">
+            Visitor check-in and check-out activity
+        </div>
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-1"></i>
+        Reports
+    </a>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <strong>Report Filters</strong>
+    </div>
+
+    <div class="card-body">
+        <form method="get"
+              asp-action="Access">
+
+            <div class="row g-3">
+
+                <div class="col-lg-2 col-md-4">
+                    <label class="form-label">From Date</label>
+
+                    <input type="date"
+                           name="fromDate"
+                           value="@Model.FromDate?.ToString("yyyy-MM-dd")"
+                           class="form-control" />
+                </div>
+
+                <div class="col-lg-2 col-md-4">
+                    <label class="form-label">To Date</label>
+
+                    <input type="date"
+                           name="toDate"
+                           value="@Model.ToDate?.ToString("yyyy-MM-dd")"
+                           class="form-control" />
+                </div>
+
+                <div class="col-lg-2 col-md-4">
+                    <label class="form-label">Status</label>
+
+                    <select name="status"
+                            class="form-select">
+
+                        <option value="">All</option>
+
+                        <option value="inside"
+                                selected="@(Model.Status == "inside")">
+                            Currently Inside
+                        </option>
+
+                        <option value="completed"
+                                selected="@(Model.Status == "completed")">
+                            Completed
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="col-lg-6 col-md-12">
+                    <label class="form-label">Search</label>
+
+                    <input type="text"
+                           name="search"
+                           value="@Model.Search"
+                           class="form-control"
+                           placeholder="Visitor, ID, company or visit reference..." />
+                </div>
+
+            </div>
+
+            <div class="d-flex gap-2 mt-3">
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    <i class="bi bi-search me-1"></i>
+                    Apply Filters
+                </button>
+
+                <a asp-action="Access"
+                   class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-counterclockwise me-1"></i>
+                    Reset
+                </a>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+
+    <div class="col-md-4">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+                        <div class="dashboard-label">
+                            Access Sessions
+                        </div>
+
+                        <div class="dashboard-value">
+                            @Model.Items.Count
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-blue">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+                        <div class="dashboard-label">
+                            Currently Inside
+                        </div>
+
+                        <div class="dashboard-value">
+                            @Model.Items.Count(x => x.IsCurrentlyInside)
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-green">
+                        <i class="bi bi-building-check"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+                        <div class="dashboard-label">
+                            Completed Sessions
+                        </div>
+
+                        <div class="dashboard-value">
+                            @Model.Items.Count(x => !x.IsCurrentlyInside)
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-purple">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card shadow-sm">
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+
+        <strong>Access Results</strong>
+
+        <span class="text-muted small">
+            @Model.Items.Count record(s)
+        </span>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Visitor</th>
+                        <th>ID Number</th>
+                        <th>Company</th>
+                        <th>Visit Reference</th>
+                        <th>Department</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model.Items.Any())
+                    {
+                        foreach (var item in Model.Items)
+                        {
+                            <tr>
+
+                                <td>
+                                    <a asp-controller="Visitor"
+                                       asp-action="Details"
+                                       asp-route-id="@item.VisitorId"
+                                       class="text-decoration-none">
+                                        <strong>@item.VisitorName</strong>
+                                    </a>
+                                </td>
+
+                                <td>@item.IdNumber</td>
+
+                                <td>@item.CompanyName</td>
+
+                                <td>@item.VisitReference</td>
+
+                                <td>@item.DepartmentName</td>
+
+                                <td>
+                                    @(item.EntryTime.ToString(
+                                                                "dd-MMM-yyyy hh:mm tt"))
+                                                                                    </td>
+
+                                <td>
+                                    @(item.ExitTime?.ToString(
+                                                                "dd-MMM-yyyy hh:mm tt") ?? "-")
+                        </td>
+
+                                <td>
+                            @if (item.Duration.HasValue)
+                                    {
+                                        var duration = item.Duration.Value;
+
+                                        if (duration.TotalDays >= 1)
+                                        {
+                                            <span>
+                                                @((int)duration.TotalDays)d
+                                                @duration.Hours.ToString("00")h
+                                                @duration.Minutes.ToString("00")m
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>
+                                                @((int)duration.TotalHours)h
+                                                @duration.Minutes.ToString("00")m
+                                            </span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            Ongoing
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (item.IsCurrentlyInside)
+                                    {
+                                        <span class="badge bg-success">
+                                            Currently Inside
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Completed
+                                        </span>
+                                    }
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9"
+                                class="text-center text-muted py-4">
+
+                                <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                                No access records found.
+
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>

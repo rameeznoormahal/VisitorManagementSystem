@@ -122,6 +122,15 @@ public class GroupController : Controller
         if (group == null)
             return NotFound();
 
+        if (group.GroupName == "Administrators")
+        {
+            TempData["ErrorMessage"] =
+                "The Administrators group is protected and cannot be edited.";
+
+            return RedirectToAction(nameof(Index));
+        }
+       
+
         var assignedPermissionIds = await _context.GroupPermissions
             .Where(x => x.GroupId == id)
             .Select(x => x.PermissionId)
@@ -166,6 +175,14 @@ public class GroupController : Controller
 
         if (group == null)
             return NotFound();
+
+        if (group.GroupName == "Administrators")
+        {
+            TempData["ErrorMessage"] =
+                "The Administrators group is protected and cannot be deactivated.";
+
+            return RedirectToAction(nameof(Index));
+        }
 
         var groupName = model.GroupName.Trim();
 

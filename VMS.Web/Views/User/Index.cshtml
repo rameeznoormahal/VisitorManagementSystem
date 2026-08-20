@@ -45,28 +45,48 @@
                     }
                 </td>
                 <td>
-                    <a asp-action="Edit"
-                       asp-route-id="@item.Id"
-                       class="btn btn-sm btn-outline-primary">
-                        Edit
-                    </a>
-                    <a asp-action="ResetPassword"
-                       asp-route-id="@item.Id"
-                       class="btn btn-sm btn-outline-warning">
-                        Reset Password
-                    </a>
-                    <form asp-action="ToggleStatus"
-                          asp-route-id="@item.Id"
-                          method="post"
-                          class="d-inline">
+                    @if (item.Email == "admin@vms.local")
+                    {
+                        <span class="badge bg-secondary me-1">
+                            Protected
+                        </span>
 
-                        @Html.AntiForgeryToken()
+                        <a asp-action="ResetPassword"
+                           asp-route-id="@item.Id"
+                           class="btn btn-sm btn-outline-warning">
+                            Reset Password
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="Edit"
+                           asp-route-id="@item.Id"
+                           class="btn btn-sm btn-outline-primary">
+                            Edit
+                        </a>
 
-                        <button type="submit"
-                                class="btn btn-sm btn-outline-secondary">
-                            @(item.IsActive ? "Deactivate" : "Activate")
-                        </button>
-                    </form>
+                        <a asp-action="ResetPassword"
+                           asp-route-id="@item.Id"
+                           class="btn btn-sm btn-outline-warning">
+                            Reset Password
+                        </a>
+
+                        @if (item.IsActive)
+                        {
+                            <form asp-action="Deactivate"
+                                  asp-route-id="@item.Id"
+                                  method="post"
+                                  class="d-inline">
+
+                                @Html.AntiForgeryToken()
+
+                                <button type="submit"
+                                        class="btn btn-sm btn-outline-secondary">
+                                    Deactivate
+                                </button>
+                            </form>
+                        }
+                    }
                 </td>
             </tr>
         }

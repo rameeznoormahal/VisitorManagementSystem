@@ -180,6 +180,14 @@ public class UserController : Controller
         if (user == null)
             return NotFound();
 
+        if (user.Email == "admin@vms.local")
+        {
+            TempData["ErrorMessage"] =
+                "The built-in administrator account is protected and cannot be edited.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
         var groupIds = await _context.UserGroups
             .Where(x => x.UserId == id)
             .Select(x => x.GroupId)
@@ -218,6 +226,14 @@ public class UserController : Controller
 
         if (user == null)
             return NotFound();
+
+        if (user.Email == "admin@vms.local")
+        {
+            TempData["ErrorMessage"] =
+                "The built-in administrator account is protected and cannot be edited.";
+
+            return RedirectToAction(nameof(Index));
+        }
 
         var employeeCodeExists = await _context.Users
             .AnyAsync(x =>
@@ -359,6 +375,14 @@ public class UserController : Controller
 
         if (user == null)
             return NotFound();
+
+        if (user.Email == "admin@vms.local")
+        {
+            TempData["ErrorMessage"] =
+                "The built-in administrator account cannot be deactivated.";
+
+            return RedirectToAction(nameof(Index));
+        }
 
         user.IsActive = !user.IsActive;
         user.UpdatedDate = DateTime.UtcNow;

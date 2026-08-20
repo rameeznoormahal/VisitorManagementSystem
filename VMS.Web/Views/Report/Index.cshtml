@@ -1,0 +1,221 @@
+﻿@{
+    ViewData["Title"] = "Reports";
+}
+
+<div class="mb-4">
+    <h2 class="mb-1">Reports</h2>
+    <div class="text-muted">
+        Visitor management reports and operational analysis
+    </div>
+</div>
+
+<div class="row g-3">
+
+    <div class="col-md-6 col-xl-4">
+        <a asp-controller="Report"
+           asp-action="Visits"
+           class="text-decoration-none">
+
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="kpi-header">
+                        <div>
+                            <div class="dashboard-label">
+                                Visit Report
+                            </div>
+
+                            <div class="text-muted small mt-2">
+                                Review visit requests by date, department and status
+                            </div>
+                        </div>
+
+                        <div class="kpi-icon kpi-blue">
+                            <i class="bi bi-calendar2-check"></i>
+                        </div>
+                    </div>
+
+                    <div class="kpi-action">
+                        Open Visit Report →
+                    </div>
+
+                </div>
+            </div>
+
+        </a>
+    </div>
+
+
+    <div class="col-md-6 col-xl-4">
+        <a asp-controller="Report"
+           asp-action="Visitors"
+           class="text-decoration-none">
+
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="kpi-header">
+
+                        <div>
+                            <div class="dashboard-label">
+                                Visitor Report
+                            </div>
+
+                            <div class="text-muted small mt-2">
+                                Visitor history, company and visit statistics
+                            </div>
+                        </div>
+
+                        <div class="kpi-icon kpi-green">
+                            <i class="bi bi-people"></i>
+                        </div>
+
+                    </div>
+
+                    <div class="kpi-action">
+                        Open Visitor Report →
+                    </div>
+
+                </div>
+            </div>
+
+        </a>
+    </div>
+
+
+    <div class="col-md-6 col-xl-4">
+    <a asp-controller="Report"
+       asp-action="Access"
+       class="text-decoration-none">
+
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+                        <div class="dashboard-label">
+                            Access Report
+                        </div>
+
+                        <div class="text-muted small mt-2">
+                            Check-in, check-out and duration history
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-purple">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+
+                </div>
+
+                <div class="kpi-action">
+                    Open Access Report →
+                </div>
+
+            </div>
+        </div>
+
+    </a>
+</div>
+
+
+    <div class="col-md-6 col-xl-4">
+        <a asp-controller="Report"
+   asp-action="CurrentlyInside"
+   class="text-decoration-none">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+
+                <div class="kpi-header">
+                    <div>
+                        <div class="dashboard-label">
+                            Currently Inside
+                        </div>
+
+                        <div class="text-muted small mt-2">
+                            Visitors currently present on site
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-green">
+                        <i class="bi bi-building-check"></i>
+                    </div>
+                </div>
+
+                    <div class="kpi-action">
+                        Open Currently Inside →
+                    </div>
+
+            </div>
+        </div>
+        </a>
+    </div>
+
+
+    <div class="col-md-6 col-xl-4">
+        <a asp-controller="Report"
+   asp-action="Approvals"
+   class="text-decoration-none">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+
+                <div class="kpi-header">
+                    <div>
+                        <div class="dashboard-label">
+                            Approval Report
+                        </div>
+
+                        <div class="text-muted small mt-2">
+                            Approved, rejected and pending request decisions
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-yellow">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                </div>
+
+                    <div class="kpi-action">
+                        Open Approval Report →
+                    </div>
+
+            </div>
+        </div>
+        </a>
+    </div>
+
+
+    <div class="col-md-6 col-xl-4">
+        <a asp-controller="Report"
+   asp-action="Departments"
+   class="text-decoration-none">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+
+                <div class="kpi-header">
+                    <div>
+                        <div class="dashboard-label">
+                            Department Summary
+                        </div>
+
+                        <div class="text-muted small mt-2">
+                            Visitor and visit statistics by department
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-orange">
+                        <i class="bi bi-building"></i>
+                    </div>
+                </div>
+
+                    <div class="kpi-action">
+                        Open Department Summary →
+                    </div>
+
+            </div>
+        </div>
+        </a>
+    </div>
+
+</div>

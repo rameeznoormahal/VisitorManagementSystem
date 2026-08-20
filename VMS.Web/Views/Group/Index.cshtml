@@ -40,24 +40,36 @@
                 </td>
 
                 <td>
-                    <a asp-action="Edit"
-                       asp-route-id="@item.GroupId"
-                       class="btn btn-sm btn-outline-primary">
-                        Edit
-                    </a>
+                    @if (item.GroupName == "Administrators")
+                    {
+                        <span class="badge bg-secondary">
+                            Protected
+                        </span>
+                    }
+                    else
+                    {
+                        <a asp-action="Edit"
+                           asp-route-id="@item.GroupId"
+                           class="btn btn-sm btn-outline-primary">
+                            Edit
+                        </a>
 
-                    <form asp-action="ToggleStatus"
-                          asp-route-id="@item.GroupId"
-                          method="post"
-                          class="d-inline">
+                        @if (item.IsActive)
+                        {
+                            <form asp-action="Deactivate"
+                                  asp-route-id="@item.GroupId"
+                                  method="post"
+                                  class="d-inline">
 
-                        @Html.AntiForgeryToken()
+                                @Html.AntiForgeryToken()
 
-                        <button type="submit"
-                                class="btn btn-sm btn-outline-secondary">
-                            @(item.IsActive ? "Deactivate" : "Activate")
-                        </button>
-                    </form>
+                                <button type="submit"
+                                        class="btn btn-sm btn-outline-secondary">
+                                    Deactivate
+                                </button>
+                            </form>
+                        }
+                    }
                 </td>
             </tr>
         }

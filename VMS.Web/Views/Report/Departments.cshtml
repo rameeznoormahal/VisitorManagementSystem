@@ -1,0 +1,300 @@
+﻿@model VMS.Web.ViewModels.Reports.DepartmentSummaryViewModel
+
+@{
+    ViewData["Title"] = "Department Summary";
+}
+
+<div class="d-flex justify-content-between align-items-start mb-4">
+
+    <div>
+        <h2 class="mb-1">Department Summary</h2>
+
+        <div class="text-muted">
+            Visit and visitor activity by department
+        </div>
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-outline-secondary">
+
+        <i class="bi bi-arrow-left me-1"></i>
+        Reports
+
+    </a>
+
+</div>
+
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+        <strong>Report Filters</strong>
+    </div>
+
+    <div class="card-body">
+
+        <form method="get"
+              asp-action="Departments">
+
+            <div class="row g-3">
+
+                <div class="col-md-3">
+
+                    <label class="form-label">
+                        From Date
+                    </label>
+
+                    <input type="date"
+                           name="fromDate"
+                           value="@Model.FromDate?.ToString("yyyy-MM-dd")"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <label class="form-label">
+                        To Date
+                    </label>
+
+                    <input type="date"
+                           name="toDate"
+                           value="@Model.ToDate?.ToString("yyyy-MM-dd")"
+                           class="form-control" />
+
+                </div>
+
+            </div>
+
+
+            <div class="d-flex gap-2 mt-3">
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    <i class="bi bi-search me-1"></i>
+                    Apply Filters
+
+                </button>
+
+                <a asp-action="Departments"
+                   class="btn btn-outline-secondary">
+
+                    <i class="bi bi-arrow-counterclockwise me-1"></i>
+                    Reset
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+<div class="row g-3 mb-4">
+
+    <div class="col-md-4">
+
+        <div class="card dashboard-card h-100">
+
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+
+                        <div class="dashboard-label">
+                            Departments
+                        </div>
+
+                        <div class="dashboard-value">
+                            @Model.Items.Count
+                        </div>
+
+                    </div>
+
+                    <div class="kpi-icon kpi-blue">
+                        <i class="bi bi-building"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="card dashboard-card h-100">
+
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+
+                        <div class="dashboard-label">
+                            Total Visits
+                        </div>
+
+                        <div class="dashboard-value">
+                            @Model.Items.Sum(x => x.TotalVisits)
+                        </div>
+
+                    </div>
+
+                    <div class="kpi-icon kpi-green">
+                        <i class="bi bi-calendar2-check"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="card dashboard-card h-100">
+
+            <div class="card-body">
+
+                <div class="kpi-header">
+
+                    <div>
+
+                        <div class="dashboard-label">
+                            Total Visitors
+                        </div>
+
+                        <div class="dashboard-value">
+                            @Model.Items.Sum(x => x.TotalVisitors)
+                        </div>
+
+                    </div>
+
+                    <div class="kpi-icon kpi-purple">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card shadow-sm">
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+
+        <strong>Department Results</strong>
+
+        <span class="text-muted small">
+            @Model.Items.Count department(s)
+        </span>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Department</th>
+                        <th>Total Visits</th>
+                        <th>Total Visitors</th>
+                        <th>Pending</th>
+                        <th>Approved / Ready</th>
+                        <th>Rejected</th>
+                        <th>Completed</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model.Items.Any())
+                    {
+                        foreach (var item in Model.Items)
+                        {
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        @item.DepartmentName
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    @item.TotalVisits
+                                </td>
+
+                                <td>
+                                    @item.TotalVisitors
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-warning text-dark">
+                                        @item.PendingVisits
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-success">
+                                        @item.ApprovedVisits
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-danger">
+                                        @item.RejectedVisits
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        @item.CompletedVisits
+                                    </span>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="7"
+                                class="text-center text-muted py-4">
+
+                                No department data found.
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

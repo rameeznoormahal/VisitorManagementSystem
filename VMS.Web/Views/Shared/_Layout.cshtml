@@ -39,6 +39,13 @@
     var canRejectVisitor =
         await PermissionService.HasPermissionAsync(
             User, "Visitor.Reject");
+   
+}
+@{
+    var canViewReports =
+        await PermissionService.HasPermissionAsync(
+            User,
+            "Report.View");
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -189,7 +196,21 @@
 
                         </a>
                     }
+                    @if (canViewReports)
+                    {
+                        <div class="sidebar-section-title">
+                            Reports
+                        </div>
 
+                        <a asp-controller="Report"
+                           asp-action="Index"
+                           class="sidebar-link @(controller == "Report" ? "active" : "")">
+
+                            <i class="bi bi-bar-chart-line me-2"></i>
+
+                            Reports
+                        </a>
+                    }
                     @if (canApproveVisitor || canRejectVisitor)
                     {
                         <div class="sidebar-section-title">

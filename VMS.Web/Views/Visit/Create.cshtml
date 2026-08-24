@@ -21,7 +21,7 @@
             <div class="row">
 
                 <div class="col-md-6 mb-3">
-                    <label asp-for="HostUserId" class="form-label"></label>
+                    <label asp-for="HostUserId" class="form-label">Host</label>
                     <select asp-for="HostUserId"
                             asp-items="Model.Hosts"
                             class="form-select">
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    <label asp-for="DepartmentId" class="form-label"></label>
+                    <label asp-for="DepartmentId" class="form-label">Department</label>
                     <select asp-for="DepartmentId"
                             asp-items="Model.Departments"
                             class="form-select">
@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    <label asp-for="MeetingLocation" class="form-label"></label>
+                    <label asp-for="MeetingLocation" class="form-label">Meeting Location</label>
                     <input asp-for="MeetingLocation"
                            class="form-control" />
                 </div>

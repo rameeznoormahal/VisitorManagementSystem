@@ -1,4 +1,20 @@
 ﻿@using VMS.Web.Services
+@using Microsoft.AspNetCore.Identity
+@using VMS.Infrastructure.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ApplicationUser? currentUser = null;
+
+    if (User.Identity?.IsAuthenticated == true)
+    {
+        currentUser = await UserManager.GetUserAsync(User);
+    }
+
+    var displayName =
+        currentUser?.FullName
+        ?? User.Identity?.Name
+        ?? "User";
+}
 @inject IPermissionService PermissionService
 @{
     var controller =
@@ -82,9 +98,26 @@
 
             <div class="top-header-user">
 
-                <span class="me-3">
-                    @User.Identity.Name
-                </span>
+                <div class="header-user-info">
+
+                    <div class="header-user-icon">
+                        <i class="bi bi-person"></i>
+                    </div>
+
+                    <div class="header-user-text">
+                        <div class="header-user-name">
+                            @displayName
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(currentUser?.JobTitle))
+                        {
+                            <div class="header-user-role">
+                                @currentUser.JobTitle
+                            </div>
+                        }
+                    </div>
+
+                </div>
 
                 <form asp-controller="Account"
                       asp-action="Logout"
@@ -94,8 +127,11 @@
                     @Html.AntiForgeryToken()
 
                     <button type="submit"
-                            class="btn btn-sm btn-outline-danger">
-                        Logout
+                            class="btn premium-logout-button"
+                            title="Logout">
+
+                        <i class="bi bi-box-arrow-right"></i>
+
                     </button>
 
                 </form>
@@ -134,12 +170,6 @@
                         </a>
                     }
 
-
-
-
-
-
-
                     @if (canCreateVisitor || canViewVisitor)
                     {
                         <div class="sidebar-section-title">
@@ -161,12 +191,12 @@
 
                     @if (canCreateVisitor)
                     {
-                        <a asp-controller="Visit"
-                           asp-action="Create"
-                           class="sidebar-link @(controller == "Visit" && action == "Create" ? "active" : "")">
+                        <a asp-controller="Visitor"
+                           asp-action="Index"
+                           class="sidebar-link @(controller == "Visitor" && action == "Index" ? "active" : "")">
 
-                            <i class="bi bi-person-plus sidebar-icon"></i>
-                            <span>Register Visitor</span>
+                            <i class="bi bi-people sidebar-icon"></i>
+                            <span>Visitors</span>
 
                         </a>
                     }

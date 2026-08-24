@@ -98,6 +98,133 @@ namespace VMS.Web.Controllers
                 expectedVisitorIds
                     .Except(arrivedVisitorIds)
                     .Count();
+            // =====================================================
+            // DASHBOARD CHARTS
+            // =====================================================
+
+
+            // -----------------------------------------------------
+            // 1. VISITOR TREND - LAST 7 DAYS
+            // -----------------------------------------------------
+
+            var trendStartDate =
+                todayStart.AddDays(-6);
+
+            var trendVisitVisitors =
+                await _context.VisitVisitors
+                    .AsNoTracking()
+                    .Where(x =>
+                        x.VisitRequest.VisitFromDateTime >= trendStartDate &&
+                        x.VisitRequest.VisitFromDateTime < tomorrowStart)
+                    .Select(x => new
+                    {
+                        x.VisitRequest.VisitFromDateTime
+                    })
+                    .ToListAsync();
+
+
+            var trendLabels =
+                new List<string>();
+
+            var trendValues =
+                new List<int>();
+
+
+            for (var i = 0; i < 7; i++)
+            {
+                var date =
+                    trendStartDate.AddDays(i);
+
+                trendLabels.Add(
+                    date.ToString("dd MMM"));
+
+                trendValues.Add(
+                    trendVisitVisitors.Count(x =>
+                        x.VisitFromDateTime.Date == date.Date));
+            }
+
+
+            ViewBag.VisitorTrendLabels =
+                trendLabels;
+
+            ViewBag.VisitorTrendValues =
+                trendValues;
+
+
+            // -----------------------------------------------------
+            // 2. VISITS BY DEPARTMENT
+            // -----------------------------------------------------
+
+            var departmentVisits =
+                await _context.VisitRequests
+                    .AsNoTracking()
+                    .Include(x => x.Department)
+                    .Where(x => x.DepartmentId != null)
+                    .GroupBy(x => new
+                    {
+                        x.DepartmentId,
+                        x.Department!.DepartmentName
+                    })
+                    .Select(x => new
+                    {
+                        Department =
+                            x.Key.DepartmentName,
+
+                        VisitCount =
+                            x.Count()
+                    })
+                    .OrderByDescending(x =>
+                        x.VisitCount)
+                    .Take(6)
+                    .ToListAsync();
+
+
+            ViewBag.DepartmentLabels =
+                departmentVisits
+                    .Select(x => x.Department)
+                    .ToList();
+
+            ViewBag.DepartmentValues =
+                departmentVisits
+                    .Select(x => x.VisitCount)
+                    .ToList();
+
+
+            // -----------------------------------------------------
+            // 3. VISITOR ID TYPE DISTRIBUTION
+            // -----------------------------------------------------
+
+            var visitorDistribution =
+                await _context.Visitors
+                    .AsNoTracking()
+                    .GroupBy(x => x.IdType)
+                    .Select(x => new
+                    {
+                        IdType =
+                            x.Key,
+
+                        VisitorCount =
+                            x.Count()
+                    })
+                    .OrderByDescending(x =>
+                        x.VisitorCount)
+                    .ToListAsync();
+
+
+            ViewBag.VisitorTypeLabels =
+                visitorDistribution
+                    .Select(x =>
+                        string.IsNullOrWhiteSpace(x.IdType)
+                            ? "Other"
+                            : x.IdType)
+                    .ToList();
+
+            ViewBag.VisitorTypeValues =
+                visitorDistribution
+                    .Select(x => x.VisitorCount)
+                    .ToList();
+            ViewBag.TotalVisits =
+    await _context.VisitRequests.CountAsync();
 
             return View();
         }

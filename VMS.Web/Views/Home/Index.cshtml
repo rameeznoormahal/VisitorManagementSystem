@@ -28,278 +28,678 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="mb-4">
-    <h2 class="mb-1">Dashboard</h2>
-    <div class="text-muted">
-        Visitor management overview
-    </div>
-</div>
-@if (canViewVisitor)
-{
-    <div class="mb-4">
-        <h5 class="mb-3">Visitor Master</h5>
-
-        <div class="row g-3">
-
-            <div class="col-md-4">
-                <a asp-controller="Visitor"
-                   asp-action="Index"
-                   class="kpi-card-link">
-
-                    <div class="card dashboard-card kpi-card">
-                        <div class="card-body">
-
-                            <div class="kpi-header">
-
-                                <div>
-                                    <div class="dashboard-label">
-                                        Total Registered Visitors
-                                    </div>
-
-                                    <div class="dashboard-value">
-                                        @ViewBag.TotalRegisteredVisitors
-                                    </div>
-                                </div>
-
-                                <div class="kpi-icon kpi-blue">
-                                    <i class="bi bi-people"></i>
-                                </div>
-
-                            </div>
-
-                            <div class="kpi-action">
-                                View all visitors →
-                            </div>
-
-                        </div>
-                    </div>
-
-                </a>
-            </div>
-
-            <div class="col-md-4">
-                <a asp-controller="Visitor"
-                   asp-action="Index"
-                   asp-route-filter="active"
-                   class="kpi-card-link">
-
-                    <div class="card dashboard-card kpi-card">
-                        <div class="card-body">
-                            <div class="kpi-header">
-                                <div>
-                                    <div class="dashboard-label">
-                                        Active Visitors
-                                    </div>
-
-                                    <div class="dashboard-value">
-                                        @ViewBag.ActiveVisitors
-                                    </div>
-                                </div>
-                                <div class="kpi-icon kpi-green">
-                                    <i class="bi bi-person-check"></i>
-                                </div>
-                            </div>
-                            <div class="kpi-action">
-                                View active visitors →
-                            </div>
-                        </div>
-                    </div>
-
-                </a>
-            </div>
-
-            <div class="col-md-4">
-                <a asp-controller="Visitor"
-                   asp-action="Index"
-                   asp-route-filter="expired"
-                   class="kpi-card-link">
-
-                    <div class="card dashboard-card kpi-card">
-                        <div class="card-body">
-                            <div class="kpi-header">
-                                <div>
-                                    <div class="dashboard-label">
-                                        Expired IDs
-                                    </div>
-
-                                    <div class="dashboard-value">
-                                        @ViewBag.ExpiredIdVisitors
-                                    </div>
-                                </div>
-
-                                <div class="kpi-icon kpi-red">
-                                    <i class="bi bi-person-x"></i>
-                                </div>
-                            </div>
-                            <div class="kpi-action">
-                                Review expired IDs →
-                            </div>
-                        </div>
-                    </div>
-
-                </a>
-            </div>
-
+<div class="dashboard-page-header mb-3">
+    <div>
+        <h2 class="dashboard-title">Dashboard</h2>
+        <div class="dashboard-subtitle">
+            Overview of today's visitor activities and system status.
         </div>
     </div>
-}
-@if (canValidateQr)
+
+    <div class="dashboard-date">
+        <i class="bi bi-calendar3"></i>
+        @DateTime.Today.ToString("dd MMM yyyy")
+    </div>
+</div>
+
+
+@if (canViewVisitor)
 {
-    <div class="mb-4">
-        <h5 class="mb-3">Today / Live Operations</h5>
+    <div class="row g-3 mb-3">
 
-        <div class="row g-3">
+        <!-- TOTAL VISITORS -->
+        <div class="col-6 col-md-4 col-xl">
+            <a asp-controller="Visitor"
+               asp-action="Index"
+               class="kpi-card-link">
 
-            <div class="col-md-4 col-xl-3">
+                <div class="premium-kpi-card">
+
+                    <div class="premium-kpi-icon kpi-purple">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                    <div>
+                        <div class="premium-kpi-label">
+                            Total Registered Visitors
+                        </div>
+
+                        <div class="premium-kpi-value">
+                            @ViewBag.TotalRegisteredVisitors
+                        </div>
+                    </div>
+
+                </div>
+
+            </a>
+        </div>
+
+
+        <!-- ACTIVE -->
+        <div class="col-6 col-md-4 col-xl">
+            <a asp-controller="Visitor"
+               asp-action="Index"
+               asp-route-filter="active"
+               class="kpi-card-link">
+
+                <div class="premium-kpi-card">
+
+                    <div class="premium-kpi-icon kpi-green">
+                        <i class="bi bi-person-check"></i>
+                    </div>
+
+                    <div>
+                        <div class="premium-kpi-label">
+                            Active Visitors
+                        </div>
+
+                        <div class="premium-kpi-value">
+                            @ViewBag.ActiveVisitors
+                        </div>
+                    </div>
+
+                </div>
+
+            </a>
+        </div>
+
+
+        <!-- EXPIRED -->
+        <div class="col-6 col-md-4 col-xl">
+            <a asp-controller="Visitor"
+               asp-action="Index"
+               asp-route-filter="expired"
+               class="kpi-card-link">
+
+                <div class="premium-kpi-card">
+
+                    <div class="premium-kpi-icon kpi-red">
+                        <i class="bi bi-person-x"></i>
+                    </div>
+
+                    <div>
+                        <div class="premium-kpi-label">
+                            Expired IDs
+                        </div>
+
+                        <div class="premium-kpi-value">
+                            @ViewBag.ExpiredIdVisitors
+                        </div>
+                    </div>
+
+                </div>
+
+            </a>
+        </div>
+
+
+        @if (canValidateQr)
+        {
+            <!-- EXPECTED -->
+            <div class="col-6 col-md-4 col-xl">
                 <a asp-controller="Reception"
                    asp-action="Visitors"
                    asp-route-filter="expected"
                    class="kpi-card-link">
 
-                    <div class="card dashboard-card kpi-card">
-                        <div class="card-body">
-                            <div class="kpi-header">
-                                <div>
-                                    <div class="dashboard-label">
-                                        Expected Today
-                                    </div>
+                    <div class="premium-kpi-card">
 
-                                    <div class="dashboard-value">
-                                        @ViewBag.ExpectedToday
-                                    </div>
-                                </div>
+                        <div class="premium-kpi-icon kpi-blue">
+                            <i class="bi bi-calendar2-check"></i>
+                        </div>
 
-                                <div class="kpi-icon kpi-blue">
-                                    <i class="bi bi-calendar2-check"></i>
-                                </div>
+                        <div>
+                            <div class="premium-kpi-label">
+                                Expected Today
                             </div>
-                            <div class="kpi-action">
-                                View expected visitors →
+
+                            <div class="premium-kpi-value">
+                                @ViewBag.ExpectedToday
                             </div>
                         </div>
+
                     </div>
 
                 </a>
             </div>
 
-            <div class="col-md-4 col-xl-3">
+
+            <!-- CURRENTLY INSIDE -->
+            <div class="col-6 col-md-4 col-xl">
                 <a asp-controller="Reception"
                    asp-action="Visitors"
                    asp-route-filter="inside"
                    class="kpi-card-link">
 
-                    <div class="card dashboard-card kpi-card">
-                        <div class="card-body">
-                            <div class="kpi-header">
-                                <div>
-                                    <div class="dashboard-label">
-                                        Currently Inside
-                                    </div>
+                    <div class="premium-kpi-card">
 
-                                    <div class="dashboard-value">
-                                        @ViewBag.CurrentlyInside
-                                    </div>
-                                </div>
-                                <div class="kpi-icon kpi-purple">
-                                    <i class="bi bi-box-arrow-right"></i>
-                                </div>
+                        <div class="premium-kpi-icon kpi-purple">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                        </div>
+
+                        <div>
+                            <div class="premium-kpi-label">
+                                Currently Inside
                             </div>
-                            <div class="kpi-action">
-                                View Currently Inside →
+
+                            <div class="premium-kpi-value">
+                                @ViewBag.CurrentlyInside
                             </div>
                         </div>
+
                     </div>
+
                 </a>
             </div>
+        }
 
-            <div class="col-md-4 col-xl-3">
-                <a asp-controller="Reception"
-                   asp-action="Visitors"
-                   asp-route-filter="checkedout"
-                   class="kpi-card-link">
-                    <div class="card dashboard-card kpi-card">
-                        <div class="card-body">
-                            <div class="kpi-header">
-                                <div>
-                                    <div class="dashboard-label">
-                                        Checked Out Today
-                                    </div>
+    </div>
+}
 
-                                    <div class="dashboard-value">
-                                        @ViewBag.CheckedOutToday
-                                    </div>
-                                </div>
-                                <div class="kpi-icon kpi-orange">
-                                    <i class="bi bi-clock-history"></i>
-                                </div>
-                            </div>
-                            <div class="kpi-action">
-                                View Checked Out Today →
-                            </div>
+
+@if (canValidateQr)
+{
+    <div class="row g-3 mb-4">
+
+        <!-- CHECKED OUT -->
+        <div class="col-6 col-md-4 col-xl-3">
+
+            <a asp-controller="Reception"
+               asp-action="Visitors"
+               asp-route-filter="checkedout"
+               class="kpi-card-link">
+
+                <div class="premium-kpi-card">
+
+                    <div class="premium-kpi-icon kpi-orange">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+
+                    <div>
+                        <div class="premium-kpi-label">
+                            Checked Out Today
+                        </div>
+
+                        <div class="premium-kpi-value">
+                            @ViewBag.CheckedOutToday
                         </div>
                     </div>
-                </a>
-            </div>
 
-            <div class="col-md-4 col-xl-3">
-                <a asp-controller="Reception"
-                   asp-action="Visitors"
-                   class="kpi-card-link">
-                    <div class="card dashboard-card kpi-card">
-                        <div class="card-body">
-                            <div class="kpi-header">
-                                <div>
-                                    <div class="dashboard-label">
-                                        Not Yet Arrived
-                                    </div>
-
-                                    <div class="dashboard-value">
-                                        @ViewBag.NotYetArrived
-                                    </div>
-                                </div>
-                                <div class="kpi-icon kpi-yellow">
-                                    <i class="bi bi-hourglass-split"></i>
-                                </div>
-                            </div>
-                            <div class="kpi-action">
-                                View Not Yet Arrived →
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            @if (canApproveVisitor || canRejectVisitor)
-            {
-                <div class="col-md-4 col-xl-3">
-                    <a asp-controller="Reception"
-                       asp-action="Visitors"
-                       asp-route-filter="inside"
-                       class="kpi-card-link">
-                        <div class="card dashboard-card kpi-card">
-                            <div class="card-body">
-                                <div class="kpi-header">
-                                    <div>
-                                        <div class="dashboard-label">
-                                            Pending Approvals
-                                        </div>
-
-                                        <div class="dashboard-value">
-                                            @ViewBag.PendingApprovals
-                                        </div>
-                                    </div>
-                                    <div class="kpi-icon kpi-yellow">
-                                        <i class="bi bi-hourglass-split"></i>
-                                    </div>
-                                </div>
-                                <div class="kpi-action">
-                                    View Pending Approvals →
-                                </div>
-                            </div>
-                        </div>
-                    </a>
                 </div>
-            }
+
+            </a>
 
         </div>
+
+
+        <!-- NOT ARRIVED -->
+        <div class="col-6 col-md-4 col-xl-3">
+
+            <a asp-controller="Reception"
+               asp-action="Visitors"
+               class="kpi-card-link">
+
+                <div class="premium-kpi-card">
+
+                    <div class="premium-kpi-icon kpi-yellow">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
+
+                    <div>
+                        <div class="premium-kpi-label">
+                            Not Yet Arrived
+                        </div>
+
+                        <div class="premium-kpi-value">
+                            @ViewBag.NotYetArrived
+                        </div>
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        @if (canApproveVisitor || canRejectVisitor)
+        {
+            <!-- PENDING APPROVALS -->
+            <div class="col-6 col-md-4 col-xl-3">
+
+                <a asp-controller="Approval"
+                   asp-action="Index"
+                   class="kpi-card-link">
+
+                    <div class="premium-kpi-card">
+
+                        <div class="premium-kpi-icon kpi-coral">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+
+                        <div>
+                            <div class="premium-kpi-label">
+                                Pending Approvals
+                            </div>
+
+                            <div class="premium-kpi-value">
+                                @ViewBag.PendingApprovals
+                            </div>
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+        }
+
     </div>
+}
+<div class="row g-3 mb-4">
+
+    <!-- VISITOR TREND -->
+    <div class="col-xl-6">
+
+        <div class="premium-chart-card">
+
+            <div class="premium-chart-header">
+
+                <div>
+                    <h5>Visitor Trend</h5>
+                    <span>Scheduled visitors during the last 7 days</span>
+                </div>
+
+                <div class="premium-chart-icon kpi-purple">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+
+            </div>
+
+            <div class="premium-chart-body">
+                <canvas id="visitorTrendChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- DEPARTMENT BAR CHART -->
+    <div class="col-xl-6">
+
+        <div class="premium-chart-card">
+
+            <div class="premium-chart-header">
+
+                <div>
+                    <h5>Visits by Department</h5>
+                    <span>Top departments by visit request volume</span>
+                </div>
+
+                <div class="premium-chart-icon kpi-blue">
+                    <i class="bi bi-bar-chart"></i>
+                </div>
+
+            </div>
+
+            <div class="premium-chart-body">
+                <canvas id="departmentChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="row g-3 mb-4">
+
+    <!-- VISITOR DISTRIBUTION -->
+    <div class="col-xl-4">
+
+        <div class="premium-chart-card">
+
+            <div class="premium-chart-header">
+
+                <div>
+                    <h5>Visitor Distribution</h5>
+                    <span>Visitors grouped by identification type</span>
+                </div>
+
+                <div class="premium-chart-icon kpi-coral">
+                    <i class="bi bi-pie-chart"></i>
+                </div>
+
+            </div>
+
+            <div class="premium-chart-body premium-chart-body-small">
+                <canvas id="visitorDistributionChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- REAL-TIME STATUS -->
+    <div class="col-xl-8">
+
+        <div class="premium-status-card">
+
+            <div class="premium-chart-header">
+
+                <div>
+                    <h5>Real-Time Visitor Status</h5>
+                    <span>Current operational position</span>
+                </div>
+
+                <span class="live-status-badge">
+                    <span class="live-dot"></span>
+                    LIVE
+                </span>
+
+            </div>
+
+
+            <div class="status-grid">
+
+                <div class="status-item">
+                    <div class="status-number status-purple">
+                        @ViewBag.ExpectedToday
+                    </div>
+
+                    <div class="status-label">
+                        Expected Today
+                    </div>
+                </div>
+
+
+                <div class="status-item">
+                    <div class="status-number status-green">
+                        @ViewBag.CurrentlyInside
+                    </div>
+
+                    <div class="status-label">
+                        Currently Inside
+                    </div>
+                </div>
+
+
+                <div class="status-item">
+                    <div class="status-number status-orange">
+                        @ViewBag.CheckedOutToday
+                    </div>
+
+                    <div class="status-label">
+                        Checked Out
+                    </div>
+                </div>
+
+
+                <div class="status-item">
+                    <div class="status-number status-red">
+                        @ViewBag.NotYetArrived
+                    </div>
+
+                    <div class="status-label">
+                        Not Arrived
+                    </div>
+                </div>
+
+
+                <div class="status-item">
+                    <div class="status-number status-blue">
+                        @ViewBag.PendingApprovals
+                    </div>
+
+                    <div class="status-label">
+                        Pending Approval
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+@section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        Chart.defaults.font.family =
+            "'Aptos', 'Segoe UI', sans-serif";
+
+        Chart.defaults.color =
+            "#7a7480";
+
+
+        // ==========================================
+        // VISITOR TREND
+        // ==========================================
+
+        const visitorTrendLabels =
+            @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                        ViewBag.VisitorTrendLabels));
+
+    const visitorTrendValues =
+        @Html.Raw(
+                        System.Text.Json.JsonSerializer.Serialize(
+                                ViewBag.VisitorTrendValues));
+
+
+    new Chart(
+        document.getElementById(
+            "visitorTrendChart"),
+        {
+            type: "line",
+
+            data: {
+                labels: visitorTrendLabels,
+
+                datasets: [{
+                    label: "Visitors",
+
+                    data:
+                        visitorTrendValues,
+
+                    borderColor:
+                        "#6500ae",
+
+                    backgroundColor:
+                        "rgba(101, 0, 174, 0.08)",
+
+                    fill: true,
+
+                    borderWidth: 2,
+
+                    tension: 0.4,
+
+                    pointRadius: 3,
+
+                    pointBackgroundColor:
+                        "#6500ae"
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            precision: 0
+                        },
+
+                        grid: {
+                            color:
+                                "rgba(0,0,0,0.04)"
+                        }
+                    },
+
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+
+    // ==========================================
+    // DEPARTMENT BAR CHART
+    // ==========================================
+
+    const departmentLabels =
+        @Html.Raw(
+                        System.Text.Json.JsonSerializer.Serialize(
+                                ViewBag.DepartmentLabels));
+
+    const departmentValues =
+        @Html.Raw(
+                        System.Text.Json.JsonSerializer.Serialize(
+                                ViewBag.DepartmentValues));
+
+
+    new Chart(
+        document.getElementById(
+            "departmentChart"),
+        {
+            type: "bar",
+
+            data: {
+                labels:
+                    departmentLabels,
+
+                datasets: [{
+                    data:
+                        departmentValues,
+
+                    backgroundColor:
+                        "#7651d6",
+
+                    borderRadius: 7,
+
+                    borderSkipped: false
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            precision: 0
+                        },
+
+                        grid: {
+                            color:
+                                "rgba(0,0,0,0.04)"
+                        }
+                    },
+
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+
+    // ==========================================
+    // VISITOR TYPE DOUGHNUT
+    // ==========================================
+
+    const visitorTypeLabels =
+        @Html.Raw(
+                        System.Text.Json.JsonSerializer.Serialize(
+                                ViewBag.VisitorTypeLabels));
+
+    const visitorTypeValues =
+        @Html.Raw(
+                        System.Text.Json.JsonSerializer.Serialize(
+                                ViewBag.VisitorTypeValues));
+
+
+    new Chart(
+        document.getElementById(
+            "visitorDistributionChart"),
+        {
+            type: "doughnut",
+
+            data: {
+                labels:
+                    visitorTypeLabels,
+
+                datasets: [{
+                    data:
+                        visitorTypeValues,
+
+                    backgroundColor: [
+                        "#6500ae",
+                        "#ff5b6e",
+                        "#3867f4",
+                        "#15955c",
+                        "#f26a32"
+                    ],
+
+                    borderWidth: 0,
+
+                    hoverOffset: 5
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                cutout: "70%",
+
+                plugins: {
+                    legend: {
+                        position: "bottom",
+
+                        labels: {
+                            usePointStyle: true,
+                            boxWidth: 7,
+                            padding: 15,
+
+                            font: {
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+</script>
 }

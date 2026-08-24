@@ -28,41 +28,28 @@ public class AccountController : Controller
         return View();
     }
 
-    [AllowAnonymous]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Login(
-        LoginViewModel model,
-        string? returnUrl = null)
+    public async Task<IActionResult> Login( LoginViewModel model, string? returnUrl = null)
     {
-        ViewData["ReturnUrl"] = returnUrl;
+        model.ReturnUrl = returnUrl;
 
         if (!ModelState.IsValid)
             return View(model);
 
-        var user = await _userManager.FindByEmailAsync(model.Email);
-
-        if (user == null || !user.IsActive)
-        {
-            ModelState.AddModelError(
-                string.Empty,
-                "Invalid login attempt.");
-
-            return View(model);
-        }
-
-        var result = await _signInManager.PasswordSignInAsync(
-            user,
-            model.Password,
-            model.RememberMe,
-            lockoutOnFailure: true);
+        var result =
+            await _signInManager.PasswordSignInAsync(
+                model.Email,
+                model.Password,
+                model.RememberMe,   // IMPORTANT
+                lockoutOnFailure: true);
 
         if (result.Succeeded)
         {
-            if (!string.IsNullOrWhiteSpace(returnUrl)
-                && Url.IsLocalUrl(returnUrl))
+            if (!string.IsNullOrWhiteSpace(returnUrl) &&
+                Url.IsLocalUrl(returnUrl))
             {
-                return Redirect(returnUrl);
+                return LocalRedirect(returnUrl);
             }
 
             return RedirectToAction(
@@ -81,7 +68,7 @@ public class AccountController : Controller
 
         ModelState.AddModelError(
             string.Empty,
-            "Invalid login attempt.");
+            "Invalid email or password.");
 
         return View(model);
     }

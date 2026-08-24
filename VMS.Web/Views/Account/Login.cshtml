@@ -4,78 +4,253 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="row justify-content-center mt-5">
-    <div class="col-md-5 col-lg-4">
+<div class="premium-login-page">
 
-        <div class="card shadow-sm">
-            <div class="card-body p-4">
+    <div class="login-shell">
 
-                <h3 class="text-center mb-4">
-                    Visitor Management System
-                </h3>
+        <!-- LEFT BRAND PANEL -->
+        <div class="login-brand-panel">
 
-                <form asp-action="Login" method="post">
+            <div class="login-brand-content">
 
-                    <div asp-validation-summary="ModelOnly"
-                         class="text-danger mb-3">
+                <div class="login-logo-mark">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+
+                <div class="login-brand-name">
+                    VMS
+                </div>
+
+                <h1>
+                    Visitor Management
+                    <br />
+                    System
+                </h1>
+
+                <p>
+                    Secure visitor access, approvals,
+                    real-time monitoring and complete
+                    audit visibility.
+                </p>
+
+                <div class="login-feature-list">
+
+                    <div class="login-feature">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Secure visitor registration
                     </div>
+
+                    <div class="login-feature">
+                        <i class="bi bi-check-circle-fill"></i>
+                        QR based access control
+                    </div>
+
+                    <div class="login-feature">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Real-time visitor tracking
+                    </div>
+
+                    <div class="login-feature">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Management reporting
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="login-brand-footer">
+                Smart. Secure. Seamless.
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT LOGIN PANEL -->
+        <div class="login-form-panel">
+
+            <div class="login-form-wrapper">
+
+                <div class="login-mobile-brand">
+                    Visitor Management System
+                </div>
+
+                <div class="login-heading">
+                    <span class="login-eyebrow">
+                        SECURE ACCESS
+                    </span>
+
+                    <h2>Welcome back</h2>
+
+                    <p>
+                        Sign in to continue to the
+                        Visitor Management System.
+                    </p>
+                </div>
+
+
+                <form asp-controller="Account"
+                      asp-action="Login"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
 
                     <input type="hidden"
-                           name="returnUrl"
-                           value="@ViewData["ReturnUrl"]" />
+                           asp-for="ReturnUrl" />
 
-                    <div class="mb-3">
+                    <div asp-validation-summary="ModelOnly"
+                         class="alert alert-danger py-2">
+                    </div>
+
+
+                    <!-- EMAIL -->
+                    <div class="premium-form-group">
+
                         <label asp-for="Email"
                                class="form-label">
+                            Email address
                         </label>
 
-                        <input asp-for="Email"
-                               class="form-control"
-                               autocomplete="username" />
+                        <div class="premium-input-group">
+
+                            <span class="premium-input-icon">
+                                <i class="bi bi-envelope"></i>
+                            </span>
+
+                            <input asp-for="Email"
+                                   class="form-control premium-input"
+                                   autocomplete="username"
+                                   placeholder="name@company.com" />
+
+                        </div>
 
                         <span asp-validation-for="Email"
-                              class="text-danger">
+                              class="text-danger small">
                         </span>
+
                     </div>
 
-                    <div class="mb-3">
+
+                    <!-- PASSWORD -->
+                    <div class="premium-form-group">
+
                         <label asp-for="Password"
                                class="form-label">
+                            Password
                         </label>
 
-                        <input asp-for="Password"
-                               class="form-control"
-                               autocomplete="current-password" />
+                        <div class="premium-input-group">
+
+                            <span class="premium-input-icon">
+                                <i class="bi bi-lock"></i>
+                            </span>
+
+                            <input asp-for="Password"
+                                   id="loginPassword"
+                                   class="form-control premium-input premium-password-input"
+                                   autocomplete="current-password"
+                                   placeholder="Enter your password" />
+
+                            <button type="button"
+                                    class="password-toggle"
+                                    onclick="toggleLoginPassword()"
+                                    aria-label="Show password">
+
+                                <i id="passwordToggleIcon"
+                                   class="bi bi-eye">
+                                </i>
+
+                            </button>
+
+                        </div>
 
                         <span asp-validation-for="Password"
-                              class="text-danger">
+                              class="text-danger small">
                         </span>
+
                     </div>
 
-                    <div class="form-check mb-3">
-                        <input asp-for="RememberMe"
-                               class="form-check-input" />
 
-                        <label asp-for="RememberMe"
-                               class="form-check-label">
-                            Remember me
-                        </label>
+                    <!-- REMEMBER -->
+                    <div class="login-options">
+
+                        <div class="form-check premium-check">
+
+                            <input asp-for="RememberMe"
+                                   class="form-check-input" />
+
+                            <label asp-for="RememberMe"
+                                   class="form-check-label">
+                                Remember me
+                            </label>
+
+                        </div>
+
                     </div>
+
 
                     <button type="submit"
-                            class="btn btn-primary w-100">
-                        Login
+                            class="btn premium-login-button">
+
+                        <span>Sign in</span>
+
+                        <i class="bi bi-arrow-right"></i>
+
                     </button>
 
                 </form>
 
+
+                <div class="login-security-note">
+
+                    <i class="bi bi-shield-lock"></i>
+
+                    <span>
+                        Authorized access only.
+                        All activities may be audited.
+                    </span>
+
+                </div>
+
             </div>
+
         </div>
 
     </div>
+
 </div>
 
-@section Scripts
-{
+
+@section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function toggleLoginPassword() {
+
+            const password =
+                document.getElementById("loginPassword");
+
+            const icon =
+                document.getElementById("passwordToggleIcon");
+
+            if (password.type === "password") {
+
+                password.type = "text";
+
+                icon.classList.remove("bi-eye");
+
+                icon.classList.add("bi-eye-slash");
+            }
+            else {
+
+                password.type = "password";
+
+                icon.classList.remove("bi-eye-slash");
+
+                icon.classList.add("bi-eye");
+            }
+        }
+    </script>
+
 }

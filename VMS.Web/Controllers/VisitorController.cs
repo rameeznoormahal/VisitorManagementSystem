@@ -206,4 +206,58 @@ public class VisitorController : Controller
             nameof(Details),
             new { id = visitor.VisitorId });
     }
+
+    [RequirePermission("Visitor.Create")]
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [RequirePermission("Visitor.Create")]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(
+        VMS.Domain.Entities.Visitor model)
+    {
+        if (!ModelState.IsValid)
+            return View(model);
+
+        model.IdType = model.IdType.Trim();
+        model.IdNumber = model.IdNumber.Trim();
+        model.FullName = model.FullName.Trim();
+        model.PhoneNumber = model.PhoneNumber.Trim();
+
+        model.Email = model.Email?.Trim();
+        model.CompanyName = model.CompanyName?.Trim();
+        model.Designation = model.Designation?.Trim();
+        model.Nationality = model.Nationality?.Trim();
+
+        var duplicateId = await _context.Visitors
+            .AnyAsync(x => x.IdNumber == model.IdNumber);
+
+        if (duplicateId)
+        {
+            ModelState.AddModelError(
+                nameof(model.IdNumber),
+                "A visitor with this ID number already exists.");
+
+            return View(model);
+        }
+
+        model.IsActive = true;
+        model.CreatedDate = DateTime.UtcNow;
+        model.UpdatedDate = DateTime.UtcNow;
+
+        _context.Visitors.Add(model);
+
+        await _context.SaveChangesAsync();
+
+        TempData["SuccessMessage"] =
+            $"Visitor {model.FullName} registered successfully.";
+
+        return RedirectToAction(
+            nameof(Details),
+            new { id = model.VisitorId });
+    }
 }

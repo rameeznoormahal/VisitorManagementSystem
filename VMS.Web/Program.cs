@@ -26,8 +26,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequiredLength = 8;
     options.Password.RequireNonAlphanumeric = true;
 })
-.AddEntityFrameworkStores<VmsDbContext>()
-.AddDefaultTokenProviders();
+.AddEntityFrameworkStores<VmsDbContext>().AddDefaultTokenProviders();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -40,23 +39,25 @@ builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IQrCodeService, QrCodeService>();
 builder.Services.AddDataProtection();
 builder.Services.AddScoped<IVisitPermitPdfService, VisitPermitPdfService>();
-QuestPDF.Settings.License =LicenseType.Evaluation;
+QuestPDF.Settings.License = LicenseType.Evaluation;
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.ExpireTimeSpan = TimeSpan.FromDays(14);
+    options.SlidingExpiration = true;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
-    var dbContext =
-        services.GetRequiredService<VmsDbContext>();
-
-    var userManager =
-        services.GetRequiredService<UserManager<ApplicationUser>>();
-
-    await DatabaseSeeder.SeedAsync(
-        dbContext,
-        userManager);
+    var dbContext = services.GetRequiredService<VmsDbContext>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    await DatabaseSeeder.SeedAsync(dbContext, userManager);
 }
 
 // Configure the HTTP request pipeline.
@@ -78,6 +79,5 @@ app.MapStaticAssets();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
 app.Run();

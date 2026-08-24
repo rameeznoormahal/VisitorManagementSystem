@@ -1,0 +1,189 @@
+﻿@model VMS.Domain.Entities.Visitor
+
+@{
+    ViewData["Title"] = "Add Visitor";
+}
+
+<div class="d-flex justify-content-between align-items-start mb-4">
+    <div>
+        <h2 class="mb-1">Add Visitor</h2>
+        <div class="text-muted">
+            Register a visitor in the visitor master
+        </div>
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-1"></i>
+        Back to Visitors
+    </a>
+</div>
+
+<form asp-action="Create" method="post">
+
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger mb-3">
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            Visitor Information
+        </div>
+
+        <div class="card-body">
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <label asp-for="IdType"
+                           class="form-label">
+                        ID Type
+                    </label>
+
+                    <select asp-for="IdType"
+                            class="form-select">
+                        <option value="">-- Select ID Type --</option>
+                        <option value="National ID">National ID</option>
+                        <option value="Passport">Passport</option>
+                    </select>
+
+                    <span asp-validation-for="IdType"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="IdNumber"
+                           class="form-label">
+                        ID Number
+                    </label>
+
+                    <input asp-for="IdNumber"
+                           class="form-control"
+                           placeholder="Enter ID number" />
+
+                    <span asp-validation-for="IdNumber"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="IdExpiryDate"
+                           class="form-label">
+                        ID Expiry Date
+                    </label>
+
+                    <input asp-for="IdExpiryDate"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="IdExpiryDate"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="FullName"
+                           class="form-label">
+                        Full Name
+                    </label>
+
+                    <input asp-for="FullName"
+                           class="form-control"
+                           placeholder="Enter visitor full name" />
+
+                    <span asp-validation-for="FullName"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="PhoneNumber"
+                           class="form-label">
+                        Mobile Number
+                    </label>
+
+                    <input asp-for="PhoneNumber"
+                           class="form-control"
+                           placeholder="Enter mobile number" />
+
+                    <span asp-validation-for="PhoneNumber"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Email"
+                           class="form-label">
+                        Email
+                    </label>
+
+                    <input asp-for="Email"
+                           type="email"
+                           class="form-control"
+                           placeholder="Enter email address" />
+
+                    <span asp-validation-for="Email"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Nationality"
+                           class="form-label">
+                        Nationality
+                    </label>
+
+                    <input asp-for="Nationality"
+                           class="form-control"
+                           placeholder="Enter nationality" />
+
+                    <span asp-validation-for="Nationality"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="CompanyName"
+                           class="form-label">
+                        Company
+                    </label>
+
+                    <input asp-for="CompanyName"
+                           class="form-control"
+                           placeholder="Enter company name" />
+
+                    <span asp-validation-for="CompanyName"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Designation"
+                           class="form-label">
+                        Designation
+                    </label>
+
+                    <input asp-for="Designation"
+                           class="form-control"
+                           placeholder="Enter designation" />
+
+                    <span asp-validation-for="Designation"
+                          class="text-danger"></span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card-footer bg-white d-flex justify-content-end gap-2">
+            <a asp-action="Index"
+               class="btn btn-outline-secondary">
+                Cancel
+            </a>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                <i class="bi bi-person-plus me-1"></i>
+                Save Visitor
+            </button>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

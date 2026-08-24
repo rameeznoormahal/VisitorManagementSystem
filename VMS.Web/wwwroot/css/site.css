@@ -1191,6 +1191,7 @@ body {
         padding: 35px 22px;
     }
 }
+
 .premium-kpi-card {
     min-height: 92px;
     display: flex;
@@ -2182,6 +2183,7 @@ textarea.premium-form-control {
             background-color: #6500ae;
             border-color: #6500ae;
         }
+
 .group-table-icon {
     width: 30px;
     height: 30px;
@@ -2204,6 +2206,7 @@ textarea.premium-form-control {
     font-size: 9px;
     font-weight: 700;
 }
+
 .permission-section {
     padding: 20px;
     border-top: 1px solid #eeeaf1;
@@ -2301,6 +2304,7 @@ textarea.premium-form-control {
         grid-template-columns: 1fr;
     }
 }
+
 .permission-toolbar {
     display: flex;
     gap: 7px;
@@ -2357,4 +2361,283 @@ textarea.premium-form-control {
     .permission-icon {
         background: #6500ae;
         color: #ffffff;
+    }
+
+.employee-code {
+    display: inline-flex;
+    padding: 4px 7px;
+    border-radius: 6px;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.user-table-profile {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.user-table-avatar {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 32px;
+    border-radius: 50%;
+    background: #f1e8fb;
+    color: #6500ae;
+}
+
+.user-protected-label {
+    margin-top: 2px;
+    color: #9a949e;
+    font-size: 8px;
+}
+
+.table-action-warning {
+    margin-left: 4px;
+    color: #c98c00;
+}
+
+    .table-action-warning:hover {
+        border-color: #c98c00;
+        background: #c98c00;
+        color: #ffffff;
+    }
+/* ==========================================
+   PREMIUM USER FORM
+   ========================================== */
+
+.user-form-section {
+    padding: 20px;
+    border-top: 1px solid #eeeaf1;
+}
+
+.form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 15px;
+}
+
+    .form-section-title > i {
+        width: 31px;
+        height: 31px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: #f1e8fb;
+        color: #6500ae;
+        font-size: 13px;
+    }
+
+    .form-section-title strong {
+        display: block;
+        color: #3d3544;
+        font-size: 11px;
+    }
+
+    .form-section-title span {
+        display: block;
+        margin-top: 2px;
+        color: #98919d;
+        font-size: 9px;
+    }
+
+.premium-form-icon-control {
+    padding-left: 42px;
+}
+
+.premium-password-control {
+    padding-right: 44px;
+}
+
+.premium-group-select {
+    max-width: 620px;
+}
+
+    .premium-group-select select {
+        min-height: 125px;
+        padding: 8px;
+    }
+
+    .premium-group-select option {
+        padding: 7px 9px;
+        border-radius: 6px;
+    }
+
+        .premium-group-select option:checked {
+            background: #6500ae linear-gradient( 0deg, #6500ae 0%, #6500ae 100% );
+            color: #ffffff;
+        }
+/* ==========================================
+   PREMIUM PASSWORD RESET
+   ========================================== */
+
+.premium-security-card {
+    overflow: hidden;
+    max-width: 900px;
+    background: #ffffff;
+    border: 1px solid #e9e5ed;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(43,25,60,.05);
+}
+
+
+.premium-security-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 17px 20px;
+    border-bottom: 1px solid #eeeaf1;
+    background: linear-gradient( 90deg, #fffaf4, #ffffff );
+}
+
+
+.premium-security-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 42px;
+    border-radius: 11px;
+    background: #fff3d8;
+    color: #c88d00;
+    font-size: 18px;
+}
+
+
+.premium-security-header h5 {
+    margin: 0 0 3px;
+    color: #302830;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+.premium-security-header span {
+    color: #928c97;
+    font-size: 10px;
+}
+
+
+/* USER SUMMARY */
+
+.reset-user-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 20px 0;
+    padding: 14px;
+    background: #faf8fb;
+    border: 1px solid #ebe6ef;
+    border-radius: 11px;
+}
+
+
+.reset-user-avatar {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 42px;
+    border-radius: 50%;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 17px;
+}
+
+
+.reset-user-details {
+    flex: 1;
+}
+
+
+    .reset-user-details strong {
+        display: block;
+        color: #342d3a;
+        font-size: 12px;
+    }
+
+
+    .reset-user-details span {
+        display: block;
+        margin-top: 2px;
+        color: #8f8994;
+        font-size: 10px;
+    }
+
+
+.reset-security-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    border-radius: 8px;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+
+/* SECURITY NOTE */
+
+.password-security-note {
+    display: flex;
+    gap: 9px;
+    margin-top: 18px;
+    padding: 12px 13px;
+    border: 1px solid #f1dfb4;
+    border-radius: 9px;
+    background: #fffaf0;
+}
+
+
+    .password-security-note > i {
+        margin-top: 2px;
+        color: #c88d00;
+    }
+
+
+    .password-security-note strong {
+        display: block;
+        margin-bottom: 2px;
+        color: #5a4a24;
+        font-size: 10px;
+    }
+
+
+    .password-security-note span {
+        display: block;
+        color: #897a59;
+        font-size: 9px;
+    }
+
+
+/* RESET BUTTON */
+
+.premium-warning-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 15px;
+    border: 0;
+    border-radius: 9px;
+    background: linear-gradient( 90deg, #d69800, #e7aa17 );
+    color: #ffffff;
+    box-shadow: 0 6px 15px rgba(201,140,0,.18);
+}
+
+
+    .premium-warning-button:hover {
+        color: #ffffff;
+        transform: translateY(-1px);
+        box-shadow: 0 9px 19px rgba(201,140,0,.25);
     }

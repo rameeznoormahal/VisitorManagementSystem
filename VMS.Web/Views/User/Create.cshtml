@@ -4,109 +4,466 @@
     ViewData["Title"] = "Create User";
 }
 
-<h2 class="mb-4">Create User</h2>
+<div class="management-page-header mb-4">
 
-<form asp-action="Create" method="post">
+    <div>
+        <div class="admin-eyebrow">
+            USER MANAGEMENT
+        </div>
 
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger mb-3">
+        <h2>Create User</h2>
+
+        <p>
+            Create a system user and assign department,
+            manager and access groups.
+        </p>
     </div>
 
-    <div class="row">
+    <a asp-action="Index"
+       class="btn premium-secondary-button">
 
-        <div class="col-md-6 mb-3">
-            <label asp-for="EmployeeCode" class="form-label"></label>
-            <input asp-for="EmployeeCode" class="form-control" />
-            <span asp-validation-for="EmployeeCode" class="text-danger"></span>
-        </div>
+        <i class="bi bi-arrow-left"></i>
+        Back to Users
 
-        <div class="col-md-6 mb-3">
-            <label asp-for="FullName" class="form-label"></label>
-            <input asp-for="FullName" class="form-control" />
-            <span asp-validation-for="FullName" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="Email" class="form-label"></label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="PhoneNumber" class="form-label"></label>
-            <input asp-for="PhoneNumber" class="form-control" />
-            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="JobTitle" class="form-label"></label>
-            <input asp-for="JobTitle" class="form-control" />
-            <span asp-validation-for="JobTitle" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="DepartmentId" class="form-label"></label>
-            <select asp-for="DepartmentId"
-                    asp-items="Model.Departments"
-                    class="form-select">
-                <option value="">-- Select Department --</option>
-            </select>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="ManagerUserId" class="form-label"></label>
-            <select asp-for="ManagerUserId"
-                    asp-items="Model.Managers"
-                    class="form-select">
-                <option value="">-- Select Manager --</option>
-            </select>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="SelectedGroupIds" class="form-label"></label>
-
-            <select asp-for="SelectedGroupIds"
-                    asp-items="Model.Groups"
-                    class="form-select"
-                    multiple
-                    size="6">
-            </select>
-
-            <small class="text-muted">
-                Hold Ctrl to select multiple groups.
-            </small>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="TemporaryPassword" class="form-label"></label>
-            <input asp-for="TemporaryPassword" class="form-control" />
-            <span asp-validation-for="TemporaryPassword" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="ConfirmPassword" class="form-label"></label>
-            <input asp-for="ConfirmPassword" class="form-control" />
-            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <div class="form-check mt-4">
-                <input asp-for="IsActive" class="form-check-input" />
-                <label asp-for="IsActive" class="form-check-label"></label>
-            </div>
-        </div>
-
-    </div>
-
-    <button type="submit" class="btn btn-primary">
-        Create User
-    </button>
-
-    <a asp-action="Index" class="btn btn-secondary">
-        Cancel
     </a>
-</form>
+
+</div>
+
+
+<div class="premium-form-card">
+
+    <div class="premium-form-card-header">
+
+        <div>
+            <h5>User Information</h5>
+
+            <span>
+                Enter the user's profile and system access details.
+            </span>
+        </div>
+
+        <div class="premium-form-header-icon stat-purple">
+            <i class="bi bi-person-plus"></i>
+        </div>
+
+    </div>
+
+
+    <form asp-action="Create"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger m-3">
+        </div>
+
+
+        <!-- BASIC INFORMATION -->
+        <div class="premium-form-body">
+
+            <div class="form-section-title">
+                <i class="bi bi-person"></i>
+
+                <div>
+                    <strong>Basic Information</strong>
+                    <span>User identity and contact information</span>
+                </div>
+            </div>
+
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <label asp-for="EmployeeCode"
+                           class="premium-form-label">
+                        Employee Code
+                    </label>
+
+                    <input asp-for="EmployeeCode"
+                           class="form-control premium-form-control"
+                           placeholder="e.g. EMP101" />
+
+                    <span asp-validation-for="EmployeeCode"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-8">
+
+                    <label asp-for="FullName"
+                           class="premium-form-label">
+                        Full Name
+                    </label>
+
+                    <input asp-for="FullName"
+                           class="form-control premium-form-control"
+                           placeholder="Enter full name" />
+
+                    <span asp-validation-for="FullName"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="Email"
+                           class="premium-form-label">
+                        Email Address
+                    </label>
+
+                    <div class="premium-input-group">
+
+                        <span class="premium-input-icon">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+
+                        <input asp-for="Email"
+                               type="email"
+                               class="form-control premium-form-control premium-form-icon-control"
+                               placeholder="name@company.com" />
+
+                    </div>
+
+                    <span asp-validation-for="Email"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="PhoneNumber"
+                           class="premium-form-label">
+                        Phone Number
+                    </label>
+
+                    <div class="premium-input-group">
+
+                        <span class="premium-input-icon">
+                            <i class="bi bi-telephone"></i>
+                        </span>
+
+                        <input asp-for="PhoneNumber"
+                               class="form-control premium-form-control premium-form-icon-control"
+                               placeholder="Enter phone number" />
+
+                    </div>
+
+                    <span asp-validation-for="PhoneNumber"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="JobTitle"
+                           class="premium-form-label">
+                        Job Title
+                    </label>
+
+                    <input asp-for="JobTitle"
+                           class="form-control premium-form-control"
+                           placeholder="e.g. Reception Officer" />
+
+                    <span asp-validation-for="JobTitle"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="DepartmentId"
+                           class="premium-form-label">
+                        Department
+                    </label>
+
+                    <select asp-for="DepartmentId"
+                            asp-items="Model.Departments"
+                            class="form-select premium-form-control">
+
+                        <option value="">
+                            -- Select Department --
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="DepartmentId"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="ManagerUserId"
+                           class="premium-form-label">
+                        Manager
+                    </label>
+
+                    <select asp-for="ManagerUserId"
+                            asp-items="Model.Managers"
+                            class="form-select premium-form-control">
+
+                        <option value="">
+                            -- Select Manager --
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="ManagerUserId"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACCESS GROUPS -->
+        <div class="user-form-section">
+
+            <div class="form-section-title">
+
+                <i class="bi bi-shield-lock"></i>
+
+                <div>
+                    <strong>Access Groups</strong>
+
+                    <span>
+                        Assign one or more security groups to this user.
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="premium-group-select">
+
+                <select asp-for="SelectedGroupIds"
+                        asp-items="Model.Groups"
+                        class="form-select premium-form-control"
+                        multiple
+                        size="5">
+                </select>
+
+                <div class="premium-field-help">
+                    Select one or more groups. Use Ctrl / Cmd for multiple selection.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PASSWORD -->
+        <div class="user-form-section">
+
+            <div class="form-section-title">
+
+                <i class="bi bi-key"></i>
+
+                <div>
+                    <strong>Temporary Password</strong>
+
+                    <span>
+                        Set the initial password for the new account.
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+
+                    <label asp-for="TemporaryPassword"
+                           class="premium-form-label">
+                        Temporary Password
+                    </label>
+
+                    <div class="premium-input-group">
+
+                        <span class="premium-input-icon">
+                            <i class="bi bi-lock"></i>
+                        </span>
+
+                        <input asp-for="TemporaryPassword"
+                               id="temporaryPassword"
+                               class="form-control premium-form-control premium-form-icon-control premium-password-control" />
+
+                        <button type="button"
+                                class="password-toggle"
+                                onclick="toggleUserPassword(
+                                    'temporaryPassword',
+                                    'temporaryPasswordIcon')">
+
+                            <i id="temporaryPasswordIcon"
+                               class="bi bi-eye">
+                            </i>
+
+                        </button>
+
+                    </div>
+
+                    <span asp-validation-for="TemporaryPassword"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="ConfirmPassword"
+                           class="premium-form-label">
+                        Confirm Password
+                    </label>
+
+                    <div class="premium-input-group">
+
+                        <span class="premium-input-icon">
+                            <i class="bi bi-lock-fill"></i>
+                        </span>
+
+                        <input asp-for="ConfirmPassword"
+                               id="confirmPassword"
+                               class="form-control premium-form-control premium-form-icon-control premium-password-control" />
+
+                        <button type="button"
+                                class="password-toggle"
+                                onclick="toggleUserPassword(
+                                    'confirmPassword',
+                                    'confirmPasswordIcon')">
+
+                            <i id="confirmPasswordIcon"
+                               class="bi bi-eye">
+                            </i>
+
+                        </button>
+
+                    </div>
+
+                    <span asp-validation-for="ConfirmPassword"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACCOUNT STATUS -->
+        <div class="user-form-section">
+
+            <div class="premium-toggle-box">
+
+                <div>
+
+                    <strong>
+                        Account Status
+                    </strong>
+
+                    <span>
+                        Active users can sign in and access
+                        functions assigned through their groups.
+                    </span>
+
+                </div>
+
+                <div class="form-check form-switch">
+
+                    <input asp-for="IsActive"
+                           class="form-check-input"
+                           role="switch" />
+
+                    <label asp-for="IsActive"
+                           class="form-check-label">
+                        Active
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+        <div class="premium-form-footer">
+
+            <a asp-action="Index"
+               class="btn premium-secondary-button">
+
+                Cancel
+
+            </a>
+
+            <button type="submit"
+                    class="btn premium-primary-button">
+
+                <i class="bi bi-person-plus"></i>
+                Create User
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
 
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        function toggleUserPassword(
+            inputId,
+            iconId) {
+
+            const input =
+                document.getElementById(inputId);
+
+            const icon =
+                document.getElementById(iconId);
+
+            if (input.type === "password") {
+
+                input.type = "text";
+
+                icon.classList.remove("bi-eye");
+
+                icon.classList.add("bi-eye-slash");
+            }
+            else {
+
+                input.type = "password";
+
+                icon.classList.remove("bi-eye-slash");
+
+                icon.classList.add("bi-eye");
+            }
+        }
+
+    </script>
+
 }

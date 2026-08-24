@@ -34,7 +34,58 @@ public class UserController : Controller
 
         return View(users);
     }
+    [HttpGet]
+    public async Task<IActionResult> Index(
+    string? search,
+    string? status)
+    {
+        var query = _context.Users
+            .AsNoTracking()
+            .Include(x => x.Department)
+            .AsQueryable();
 
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            search = search.Trim();
+
+            query = query.Where(x =>
+                x.EmployeeCode.Contains(search) ||
+                x.FullName.Contains(search) ||
+                (x.Email != null &&
+                 x.Email.Contains(search)));
+        }
+
+        switch (status?.ToLower())
+        {
+            case "active":
+                query = query.Where(x => x.IsActive);
+                break;
+
+            case "inactive":
+                query = query.Where(x => !x.IsActive);
+                break;
+        }
+
+        var users = await query
+            .OrderBy(x => x.FullName)
+            .ToListAsync();
+
+        ViewBag.Search = search;
+        ViewBag.Status = status;
+
+        ViewBag.TotalUsers =
+            await _context.Users.CountAsync();
+
+        ViewBag.ActiveUsers =
+            await _context.Users.CountAsync(x =>
+                x.IsActive);
+
+        ViewBag.InactiveUsers =
+            await _context.Users.CountAsync(x =>
+                !x.IsActive);
+
+        return View(users);
+    }
     [HttpGet]
     public async Task<IActionResult> Create()
     {
@@ -446,6 +497,41 @@ public class UserController : Controller
 
         TempData["SuccessMessage"] =
             $"Password for {user.FullName} has been reset successfully.";
+
+        return RedirectToAction(nameof(Index));
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Deactivate(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+
+        if (user == null)
+            return NotFound();
+
+        // Protect system administrator
+        if (user.Email == "admin@vms.local")
+        {
+            TempData["ErrorMessage"] =
+                "The system administrator account cannot be deactivated.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        user.IsActive = false;
+
+        var result = await _userManager.UpdateAsync(user);
+
+        if (!result.Succeeded)
+        {
+            TempData["ErrorMessage"] =
+                "Unable to deactivate the user.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        TempData["SuccessMessage"] =
+            $"{user.FullName} has been deactivated.";
 
         return RedirectToAction(nameof(Index));
     }

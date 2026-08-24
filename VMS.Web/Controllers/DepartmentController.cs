@@ -188,4 +188,32 @@ public class DepartmentController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Deactivate(long id)
+    {
+        var department = await _context.Departments
+            .FirstOrDefaultAsync(x => x.DepartmentId == id);
+
+        if (department == null)
+            return NotFound();
+
+        if (!department.IsActive)
+        {
+            TempData["ErrorMessage"] =
+                "This department is already inactive.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        department.IsActive = false;
+
+        await _context.SaveChangesAsync();
+
+        TempData["SuccessMessage"] =
+            $"Department '{department.DepartmentName}' deactivated successfully.";
+
+        return RedirectToAction(nameof(Index));
+    }
 }

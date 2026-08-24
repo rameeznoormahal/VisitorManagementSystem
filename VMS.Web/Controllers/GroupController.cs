@@ -321,4 +321,39 @@ public class GroupController : Controller
             })
             .ToListAsync();
     }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Deactivate(long id)
+    {
+        var group = await _context.Groups
+            .FirstOrDefaultAsync(x => x.GroupId == id);
+
+        if (group == null)
+            return NotFound();
+
+        if (group.GroupName == "Administrators")
+        {
+            TempData["ErrorMessage"] =
+                "The Administrators group is protected and cannot be deactivated.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        if (!group.IsActive)
+        {
+            TempData["ErrorMessage"] =
+                "This group is already inactive.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        group.IsActive = false;
+
+        await _context.SaveChangesAsync();
+
+        TempData["SuccessMessage"] =
+            $"Group '{group.GroupName}' deactivated successfully.";
+
+        return RedirectToAction(nameof(Index));
+    }
 }

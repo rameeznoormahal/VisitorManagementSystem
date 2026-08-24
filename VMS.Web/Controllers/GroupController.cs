@@ -27,7 +27,52 @@ public class GroupController : Controller
 
         return View(groups);
     }
+    [HttpGet]
+    public async Task<IActionResult> Index(string? search,string? status)
+    {
+        var query = _context.Groups
+            .AsNoTracking()
+            .AsQueryable();
 
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            search = search.Trim();
+
+            query = query.Where(x =>
+                x.GroupName.Contains(search));
+        }
+
+        switch (status?.ToLower())
+        {
+            case "active":
+                query = query.Where(x => x.IsActive);
+                break;
+
+            case "inactive":
+                query = query.Where(x => !x.IsActive);
+                break;
+        }
+
+        var groups = await query
+            .OrderBy(x => x.GroupName)
+            .ToListAsync();
+
+        ViewBag.Search = search;
+        ViewBag.Status = status;
+
+        ViewBag.TotalGroups =
+            await _context.Groups.CountAsync();
+
+        ViewBag.ActiveGroups =
+            await _context.Groups.CountAsync(x =>
+                x.IsActive);
+
+        ViewBag.InactiveGroups =
+            await _context.Groups.CountAsync(x =>
+                !x.IsActive);
+
+        return View(groups);
+    }
     [HttpGet]
     public async Task<IActionResult> Create()
     {

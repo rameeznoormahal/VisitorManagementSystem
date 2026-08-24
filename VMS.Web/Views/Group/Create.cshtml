@@ -4,70 +4,324 @@
     ViewData["Title"] = "Create Group";
 }
 
-<h2 class="mb-4">Create Group</h2>
+<div class="management-page-header mb-4">
 
-<form asp-action="Create" method="post">
+    <div>
+        <div class="admin-eyebrow">
+            ACCESS CONTROL
+        </div>
 
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger mb-3">
+        <h2>Create Group</h2>
+
+        <p>
+            Create a security group and assign system permissions.
+        </p>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="GroupName" class="form-label"></label>
-        <input asp-for="GroupName" class="form-control" />
-        <span asp-validation-for="GroupName" class="text-danger"></span>
+    <a asp-action="Index"
+       class="btn premium-secondary-button">
+
+        <i class="bi bi-arrow-left"></i>
+        Back to Groups
+
+    </a>
+
+</div>
+
+
+<div class="premium-form-card">
+
+    <div class="premium-form-card-header">
+
+        <div>
+            <h5>Group Information</h5>
+
+            <span>
+                Define the group and select the permissions it should have.
+            </span>
+        </div>
+
+        <div class="premium-form-header-icon stat-purple">
+            <i class="bi bi-people"></i>
+        </div>
+
     </div>
 
-    <div class="mb-3">
-        <label asp-for="Description" class="form-label"></label>
-        <textarea asp-for="Description"
-                  class="form-control"
-                  rows="3">
-        </textarea>
-    </div>
 
-    <h5 class="mt-4">Permissions</h5>
+    <form asp-action="Create"
+          method="post">
 
-    <div class="row">
-        @for (int i = 0; i < Model.Permissions.Count; i++)
-        {
-            <div class="col-md-6 mb-2">
+        @Html.AntiForgeryToken()
 
-                <input type="hidden"
-                       asp-for="Permissions[i].PermissionId" />
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger m-3">
+        </div>
 
-                <input type="hidden"
-                       asp-for="Permissions[i].PermissionCode" />
 
-                <input type="hidden"
-                       asp-for="Permissions[i].PermissionName" />
+        <div class="premium-form-body">
 
-                <div class="form-check">
-                    <input asp-for="Permissions[i].IsSelected"
-                           class="form-check-input" />
+            <div class="row g-3">
 
-                    <label class="form-check-label">
-                        @Model.Permissions[i].PermissionName
-                        <small class="text-muted">
-                            (@Model.Permissions[i].PermissionCode)
-                        </small>
+                <div class="col-md-5">
+
+                    <label asp-for="GroupName"
+                           class="premium-form-label">
+                        Group Name
                     </label>
+
+                    <input asp-for="GroupName"
+                           class="form-control premium-form-control"
+                           placeholder="e.g. Reception" />
+
+                    <span asp-validation-for="GroupName"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-7">
+
+                    <label asp-for="Description"
+                           class="premium-form-label">
+                        Description
+                    </label>
+
+                    <input asp-for="Description"
+                           class="form-control premium-form-control"
+                           placeholder="Describe the purpose of this group" />
+
+                    <span asp-validation-for="Description"
+                          class="text-danger small">
+                    </span>
+
                 </div>
 
             </div>
-        }
-    </div>
 
-    <button type="submit" class="btn btn-primary mt-3">
-        Save
-    </button>
+        </div>
 
-    <a asp-action="Index"
-       class="btn btn-secondary mt-3">
-        Cancel
-    </a>
-</form>
+
+        <!-- PERMISSIONS -->
+        <div class="permission-section">
+
+            <div class="permission-section-header">
+
+                <div>
+
+                    <h5>Permissions</h5>
+
+                    <p>
+                        Select the functions users in this group
+                        should be allowed to access.
+                    </p>
+
+                </div>
+
+
+                <div class="permission-count">
+
+                    <i class="bi bi-shield-check"></i>
+
+                    <span>
+                        @Model.Permissions.Count(x => x.IsSelected)
+                        selected
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="permission-toolbar">
+
+                <button type="button"
+                        class="permission-toolbar-button"
+                        onclick="selectAllPermissions()">
+
+                    <i class="bi bi-check2-square"></i>
+                    Select All
+
+                </button>
+
+                <button type="button"
+                        class="permission-toolbar-button"
+                        onclick="clearAllPermissions()">
+
+                    <i class="bi bi-square"></i>
+                    Clear All
+
+                </button>
+
+            </div>
+
+
+            <div class="permission-grid">
+
+                @for (int i = 0; i < Model.Permissions.Count; i++)
+                {
+                    <label class="permission-card">
+
+                        <input type="hidden"
+                               asp-for="Permissions[i].PermissionId" />
+
+                        <input type="hidden"
+                               asp-for="Permissions[i].PermissionCode" />
+
+                        <input type="hidden"
+                               asp-for="Permissions[i].PermissionName" />
+
+
+                        <input asp-for="Permissions[i].IsSelected"
+                               class="form-check-input permission-checkbox" />
+
+
+                        <div class="permission-card-content">
+
+                            <div class="permission-icon">
+
+                                @if (Model.Permissions[i]
+                                                            .PermissionCode
+                                                            .StartsWith("Visitor."))
+                                {
+                                    <i class="bi bi-person-badge"></i>
+                                }
+                                else if (Model.Permissions[i]
+                                .PermissionCode
+                                .StartsWith("Report."))
+                                {
+                                    <i class="bi bi-bar-chart"></i>
+                                }
+                                else if (Model.Permissions[i]
+                                .PermissionCode
+                                .StartsWith("Department."))
+                                {
+                                    <i class="bi bi-building"></i>
+                                }
+                                else if (Model.Permissions[i]
+                                .PermissionCode
+                                .StartsWith("Group."))
+                                {
+                                    <i class="bi bi-people"></i>
+                                }
+                                else if (Model.Permissions[i]
+                                .PermissionCode
+                                .StartsWith("User."))
+                                {
+                                    <i class="bi bi-person-gear"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-shield-check"></i>
+                                }
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="permission-card-title">
+                                    @Model.Permissions[i].PermissionName
+                                </div>
+
+                                <div class="permission-code">
+                                    @Model.Permissions[i].PermissionCode
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </label>
+                }
+
+            </div>
+
+        </div>
+
+
+        <div class="premium-form-footer">
+
+            <a asp-action="Index"
+               class="btn premium-secondary-button">
+
+                Cancel
+
+            </a>
+
+            <button type="submit"
+                    class="btn premium-primary-button">
+
+                <i class="bi bi-plus-lg"></i>
+                Create Group
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
 
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        function selectAllPermissions() {
+
+            document
+                .querySelectorAll('.permission-checkbox')
+                .forEach(function (checkbox) {
+                    checkbox.checked = true;
+                });
+
+            updatePermissionCount();
+        }
+
+
+        function clearAllPermissions() {
+
+            document
+                .querySelectorAll('.permission-checkbox')
+                .forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+
+            updatePermissionCount();
+        }
+
+
+        function updatePermissionCount() {
+
+            const selected =
+                document.querySelectorAll(
+                    '.permission-checkbox:checked')
+                .length;
+
+            const label =
+                document.querySelector(
+                    '.permission-count span');
+
+            if (label) {
+                label.textContent =
+                    selected + ' selected';
+            }
+        }
+
+
+        document
+            .querySelectorAll('.permission-checkbox')
+            .forEach(function (checkbox) {
+
+                checkbox.addEventListener(
+                    'change',
+                    updatePermissionCount);
+
+            });
+
+    </script>
+
 }

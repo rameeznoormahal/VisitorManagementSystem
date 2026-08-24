@@ -247,5 +247,31 @@ namespace VMS.Web.Controllers
                     HttpContext.TraceIdentifier
             });
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult StatusCode(int code)
+        {
+            ViewBag.StatusCode = code;
+
+            ViewBag.Title = code switch
+            {
+                403 => "Access Denied",
+                404 => "Page Not Found",
+                405 => "Action Not Allowed",
+                _ => "Something Went Wrong"
+            };
+
+            ViewBag.Message = code switch
+            {
+                403 => "You do not have permission to access this page.",
+                404 => "The page you requested could not be found.",
+                405 => "This action cannot be accessed using this request method.",
+                _ => "The request could not be completed."
+            };
+
+            return View("StatusCode");
+        }
     }
+
 }

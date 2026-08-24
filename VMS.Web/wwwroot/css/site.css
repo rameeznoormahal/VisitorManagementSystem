@@ -2641,3 +2641,64 @@ textarea.premium-form-control {
         transform: translateY(-1px);
         box-shadow: 0 9px 19px rgba(201,140,0,.25);
     }
+.premium-error-page {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.premium-error-card {
+    width: 100%;
+    max-width: 520px;
+    padding: 42px 35px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #e9e5ed;
+    border-radius: 18px;
+    box-shadow: 0 16px 45px rgba(43,25,60,.08);
+}
+
+.premium-error-icon {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 29px;
+}
+
+.premium-error-code {
+    margin-bottom: 4px;
+    color: #ff5b6e;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.premium-error-card h2 {
+    margin-bottom: 9px;
+    color: #261d2d;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.premium-error-card p {
+    max-width: 390px;
+    margin: 0 auto;
+    color: #8c8591;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.premium-error-actions {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 25px;
+}

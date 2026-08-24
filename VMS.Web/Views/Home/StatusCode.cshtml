@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = ViewBag.Title;
+    var code = (int)ViewBag.StatusCode;
+}
+
+<div class="premium-error-page">
+
+    <div class="premium-error-card">
+
+        <div class="premium-error-icon">
+
+            @switch (code)
+            {
+                case 403:
+                    <i class="bi bi-shield-lock"></i>
+                    break;
+
+                case 404:
+                    <i class="bi bi-search"></i>
+                    break;
+
+                case 405:
+                    <i class="bi bi-slash-circle"></i>
+                    break;
+
+                default:
+                    <i class="bi bi-exclamation-triangle"></i>
+                    break;
+            }
+
+        </div>
+
+        <div class="premium-error-code">
+            @code
+        </div>
+
+        <h2>
+            @ViewBag.Title
+        </h2>
+
+        <p>
+            @ViewBag.Message
+        </p>
+
+        <div class="premium-error-actions">
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn premium-primary-button">
+
+                <i class="bi bi-house"></i>
+                Back to Dashboard
+
+            </a>
+
+            <button type="button"
+                    class="btn premium-secondary-button"
+                    onclick="history.back()">
+
+                <i class="bi bi-arrow-left"></i>
+                Go Back
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

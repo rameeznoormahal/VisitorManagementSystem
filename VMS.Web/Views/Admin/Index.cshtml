@@ -21,238 +21,295 @@
 }
 
 
-<h2 class="mb-4">Administration Dashboard</h2>
+<div class="admin-page">
 
-<div class="row g-3">
+    <!-- PAGE HEADER -->
+    <div class="admin-page-header">
 
-    <div class="col-md-4">
-        <a asp-controller="User"
-           asp-action="Index"
-           class="admin-stat-link">
-
-            <div class="admin-stat-card">
-                <div class="admin-stat-icon admin-icon-blue">
-                    👥
-                </div>
-
-                <div>
-                    <div class="admin-stat-label">
-                        Total Users
-                    </div>
-
-                    <div class="admin-stat-value">
-                        @ViewBag.TotalUsers
-                    </div>
-
-                    <div class="admin-stat-action">
-                        View all users →
-                    </div>
-                </div>
+        <div>
+            <div class="admin-eyebrow">
+                SYSTEM MANAGEMENT
             </div>
 
-        </a>
-    </div>
+            <h2>Administration</h2>
 
-    <div class="col-md-4">
-        <a asp-controller="User"
-           asp-action="Index"
-           asp-route-filter="active"
-           class="admin-stat-link">
+            <p>
+                Manage users, organizational structure,
+                access groups and system permissions.
+            </p>
+        </div>
 
-            <div class="admin-stat-card">
-                <div class="admin-stat-icon admin-icon-green">
-                    👤
-                </div>
-
-                <div>
-                    <div class="admin-stat-label">
-                        Active Users
-                    </div>
-
-                    <div class="admin-stat-value">
-                        @ViewBag.ActiveUsers
-                    </div>
-
-                    <div class="admin-stat-action">
-                        View active users →
-                    </div>
-                </div>
-            </div>
-
-        </a>
-    </div>
-
-    <div class="col-md-4">
-        <a asp-controller="Department"
-           asp-action="Index"
-           class="admin-stat-link">
-
-            <div class="admin-stat-card">
-                <div class="admin-stat-icon admin-icon-purple">
-                    🏢
-                </div>
-
-                <div>
-                    <div class="admin-stat-label">
-                        Departments
-                    </div>
-
-                    <div class="admin-stat-value">
-                        @ViewBag.TotalDepartments
-                    </div>
-
-                    <div class="admin-stat-action">
-                        Manage departments →
-                    </div>
-                </div>
-            </div>
-
-        </a>
-    </div>
-
-    <div class="col-md-4">
-        <a asp-controller="Group"
-           asp-action="Index"
-           class="admin-stat-link">
-
-            <div class="admin-stat-card">
-                <div class="admin-stat-icon admin-icon-yellow">
-                    👥
-                </div>
-
-                <div>
-                    <div class="admin-stat-label">
-                        Groups
-                    </div>
-
-                    <div class="admin-stat-value">
-                        @ViewBag.TotalGroups
-                    </div>
-
-                    <div class="admin-stat-action">
-                        Manage groups →
-                    </div>
-                </div>
-            </div>
-
-        </a>
-    </div>
-
-    <div class="col-md-4">
-        <div class="admin-stat-card">
-
-            <div class="admin-stat-icon admin-icon-red">
-                🛡️
-            </div>
+        <div class="admin-security-status">
+            <span class="admin-status-dot"></span>
 
             <div>
-                <div class="admin-stat-label">
-                    Permissions
+                <strong>System Active</strong>
+                <small>Administration services available</small>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- KPI CARDS -->
+    <div class="row g-3 mb-4">
+
+        <!-- USERS -->
+        <div class="col-6 col-md-4 col-xl">
+
+            <a asp-controller="User"
+               asp-action="Index"
+               class="admin-stat-link">
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-icon stat-purple">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                    <div class="admin-stat-info">
+
+                        <span>Total Users</span>
+
+                        <strong>
+                            @ViewBag.TotalUsers
+                        </strong>
+
+                    </div>
+
+                    <i class="bi bi-arrow-up-right admin-stat-arrow"></i>
+
                 </div>
 
-                <div class="admin-stat-value">
-                    @ViewBag.TotalPermissions
+            </a>
+
+        </div>
+
+
+        <!-- ACTIVE USERS -->
+        <div class="col-6 col-md-4 col-xl">
+
+            <a asp-controller="User"
+               asp-action="Index"
+               asp-route-filter="active"
+               class="admin-stat-link">
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-icon stat-green">
+                        <i class="bi bi-person-check"></i>
+                    </div>
+
+                    <div class="admin-stat-info">
+
+                        <span>Active Users</span>
+
+                        <strong>
+                            @ViewBag.ActiveUsers
+                        </strong>
+
+                    </div>
+
+                    <i class="bi bi-arrow-up-right admin-stat-arrow"></i>
+
                 </div>
 
-                <div class="admin-stat-action text-muted">
-                    System permissions
+            </a>
+
+        </div>
+
+
+        <!-- DEPARTMENTS -->
+        <div class="col-6 col-md-4 col-xl">
+
+            <a asp-controller="Department"
+               asp-action="Index"
+               class="admin-stat-link">
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-icon stat-blue">
+                        <i class="bi bi-building"></i>
+                    </div>
+
+                    <div class="admin-stat-info">
+
+                        <span>Departments</span>
+
+                        <strong>
+                            @ViewBag.TotalDepartments
+                        </strong>
+
+                    </div>
+
+                    <i class="bi bi-arrow-up-right admin-stat-arrow"></i>
+
                 </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- GROUPS -->
+        <div class="col-6 col-md-4 col-xl">
+
+            <a asp-controller="Group"
+               asp-action="Index"
+               class="admin-stat-link">
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-icon stat-yellow">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+
+                    <div class="admin-stat-info">
+
+                        <span>Groups</span>
+
+                        <strong>
+                            @ViewBag.TotalGroups
+                        </strong>
+
+                    </div>
+
+                    <i class="bi bi-arrow-up-right admin-stat-arrow"></i>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- PERMISSIONS -->
+        <div class="col-6 col-md-4 col-xl">
+
+            <div class="admin-stat-card">
+
+                <div class="admin-stat-icon stat-coral">
+                    <i class="bi bi-shield-lock"></i>
+                </div>
+
+                <div class="admin-stat-info">
+
+                    <span>Permissions</span>
+
+                    <strong>
+                        @ViewBag.TotalPermissions
+                    </strong>
+
+                </div>
+
             </div>
 
         </div>
+
     </div>
 
-</div>
+    <div class="admin-section-header">
+        <div>
+            <h4>Management</h4>
+            <p>
+                Configure core system administration.
+            </p>
+        </div>
+    </div>
 
-<hr class="my-4" />
-
-<h4>Administration</h4>
-
-<div class="list-group">
-
-    <div class="admin-management">
+    <div class="row g-3">
 
         @if (canManageDepartments)
         {
-            <a asp-controller="Department"
-               asp-action="Index"
-               class="admin-management-item">
+            <div class="col-md-6 col-xl-4">
+                <a asp-controller="Department"
+                   asp-action="Index"
+                   class="admin-action-card">
 
-                <div class="admin-management-left">
-                    <div class="admin-management-icon admin-icon-purple">
-                        🏢
+                    <div class="admin-action-icon stat-blue">
+                        <i class="bi bi-building"></i>
                     </div>
 
-                    <div>
-                        <div class="admin-management-title">
-                            Manage Departments
-                        </div>
+                    <div class="admin-action-content">
+                        <h5>Manage Departments</h5>
 
-                        <div class="admin-management-description">
-                            Add, edit and manage departments
-                        </div>
+                        <p>
+                            Add, edit and maintain the organizational
+                            department structure.
+                        </p>
+
+                        <span>
+                            Open departments
+                            <i class="bi bi-arrow-right"></i>
+                        </span>
                     </div>
-                </div>
 
-                <span class="admin-management-arrow">›</span>
-
-            </a>
+                </a>
+            </div>
         }
+
 
         @if (canManageGroups)
         {
-            <a asp-controller="Group"
-               asp-action="Index"
-               class="admin-management-item">
+            <div class="col-md-6 col-xl-4">
+                <a asp-controller="Group"
+                   asp-action="Index"
+                   class="admin-action-card">
 
-                <div class="admin-management-left">
-                    <div class="admin-management-icon admin-icon-yellow">
-                        👥
+                    <div class="admin-action-icon stat-yellow">
+                        <i class="bi bi-people"></i>
                     </div>
 
-                    <div>
-                        <div class="admin-management-title">
-                            Manage Groups
-                        </div>
+                    <div class="admin-action-content">
+                        <h5>Manage Groups</h5>
 
-                        <div class="admin-management-description">
-                            Add, edit and manage groups
-                        </div>
+                        <p>
+                            Configure security groups and assign
+                            system access permissions.
+                        </p>
+
+                        <span>
+                            Open groups
+                            <i class="bi bi-arrow-right"></i>
+                        </span>
                     </div>
-                </div>
 
-                <span class="admin-management-arrow">›</span>
-
-            </a>
+                </a>
+            </div>
         }
+
 
         @if (canManageUsers)
         {
-            <a asp-controller="User"
-               asp-action="Index"
-               class="admin-management-item">
+            <div class="col-md-6 col-xl-4">
+                <a asp-controller="User"
+                   asp-action="Index"
+                   class="admin-action-card">
 
-                <div class="admin-management-left">
-                    <div class="admin-management-icon admin-icon-green">
-                        👤
+                    <div class="admin-action-icon stat-green">
+                        <i class="bi bi-person-gear"></i>
                     </div>
 
-                    <div>
-                        <div class="admin-management-title">
-                            Manage Users
-                        </div>
+                    <div class="admin-action-content">
+                        <h5>Manage Users</h5>
 
-                        <div class="admin-management-description">
-                            Create users and manage their access
-                        </div>
+                        <p>
+                            Create users, maintain profiles and
+                            control account access.
+                        </p>
+
+                        <span>
+                            Open users
+                            <i class="bi bi-arrow-right"></i>
+                        </span>
                     </div>
-                </div>
 
-                <span class="admin-management-arrow">›</span>
-
-            </a>
+                </a>
+            </div>
         }
 
     </div>
+
+
 
 </div>

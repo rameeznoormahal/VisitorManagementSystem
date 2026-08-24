@@ -4,63 +4,150 @@
     ViewData["Title"] = "Create Department";
 }
 
-<h2 class="mb-4">Create Department</h2>
+<div class="management-page-header mb-4">
 
-<form asp-action="Create" method="post">
+    <div>
+        <div class="admin-eyebrow">
+            ORGANIZATION
+        </div>
 
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger mb-3">
+        <h2>Create Department</h2>
+
+        <p>
+            Add a new department to the organizational structure.
+        </p>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="DepartmentCode"
-               class="form-label">
-            Department Code
-        </label>
-
-        <input asp-for="DepartmentCode"
-               class="form-control" />
-
-        <span asp-validation-for="DepartmentCode"
-              class="text-danger">
-        </span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="DepartmentName"
-               class="form-label">
-            Department Name
-        </label>
-
-        <input asp-for="DepartmentName"
-               class="form-control" />
-
-        <span asp-validation-for="DepartmentName"
-              class="text-danger">
-        </span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Description"
-               class="form-label">
-        </label>
-
-        <textarea asp-for="Description"
-                  class="form-control"
-                  rows="3">
-        </textarea>
-    </div>
-
-    <button type="submit"
-            class="btn btn-primary">
-        Save
-    </button>
 
     <a asp-action="Index"
-       class="btn btn-secondary">
-        Cancel
+       class="btn premium-secondary-button">
+
+        <i class="bi bi-arrow-left"></i>
+        Back to Departments
+
     </a>
-</form>
+
+</div>
+
+
+<div class="premium-form-card">
+
+    <div class="premium-form-card-header">
+
+        <div>
+            <h5>Department Information</h5>
+            <span>
+                Enter the department details below.
+            </span>
+        </div>
+
+        <div class="premium-form-header-icon stat-blue">
+            <i class="bi bi-building-add"></i>
+        </div>
+
+    </div>
+
+
+    <form asp-action="Create"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger">
+        </div>
+
+
+        <div class="premium-form-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <label asp-for="DepartmentCode"
+                           class="premium-form-label">
+                        Department Code
+                    </label>
+
+                    <input asp-for="DepartmentCode"
+                           class="form-control premium-form-control"
+                           placeholder="e.g. DCO" />
+
+                    <span asp-validation-for="DepartmentCode"
+                          class="text-danger small">
+                    </span>
+
+                    <div class="premium-field-help">
+                        Use a short unique code for the department.
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-8">
+
+                    <label asp-for="DepartmentName"
+                           class="premium-form-label">
+                        Department Name
+                    </label>
+
+                    <input asp-for="DepartmentName"
+                           class="form-control premium-form-control"
+                           placeholder="e.g. Data Center Operations" />
+
+                    <span asp-validation-for="DepartmentName"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-12">
+
+                    <label asp-for="Description"
+                           class="premium-form-label">
+                        Description
+                    </label>
+
+                    <textarea asp-for="Description"
+                              rows="4"
+                              class="form-control premium-form-control"
+                              placeholder="Enter a short description of this department">
+                    </textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="premium-form-footer">
+
+            <a asp-action="Index"
+               class="btn premium-secondary-button">
+
+                Cancel
+
+            </a>
+
+            <button type="submit"
+                    class="btn premium-primary-button">
+
+                <i class="bi bi-check-lg"></i>
+                Save Department
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -25,7 +25,57 @@ public class DepartmentController : Controller
 
         return View(departments);
     }
+    [HttpGet]
+    public async Task<IActionResult> Index(string? search, string? status)
+    {
+        var query = _context.Departments
+            .AsNoTracking()
+            .AsQueryable();
 
+        // Search by department code or name
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            search = search.Trim();
+
+            query = query.Where(x =>
+                x.DepartmentCode.Contains(search) ||
+                x.DepartmentName.Contains(search));
+        }
+
+        // Status filter
+        switch (status?.ToLower())
+        {
+            case "active":
+                query = query.Where(x => x.IsActive);
+                break;
+
+            case "inactive":
+                query = query.Where(x => !x.IsActive);
+                break;
+        }
+
+        var departments = await query
+            .OrderBy(x => x.DepartmentName)
+            .ToListAsync();
+
+        ViewBag.Search = search;
+        ViewBag.Status = status;
+
+        // Summary cards should represent ALL departments,
+        // not only the filtered result.
+        ViewBag.TotalDepartments =
+            await _context.Departments.CountAsync();
+
+        ViewBag.ActiveDepartments =
+            await _context.Departments.CountAsync(x =>
+                x.IsActive);
+
+        ViewBag.InactiveDepartments =
+            await _context.Departments.CountAsync(x =>
+                !x.IsActive);
+
+        return View(departments);
+    }
     [HttpGet]
     public IActionResult Create()
     {

@@ -4,80 +4,300 @@
     ViewData["Title"] = "Departments";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="management-page-header mb-4">
+
     <div>
-        <h2 class="mb-1">Departments</h2>
-        <div class="text-muted">
-            Manage departments
+        <div class="admin-eyebrow">
+            ORGANIZATION
         </div>
+
+        <h2>Departments</h2>
+
+        <p>
+            Manage department structure and availability.
+        </p>
     </div>
 
     <div class="d-flex gap-2">
+
         <a asp-controller="Admin"
            asp-action="Index"
-           class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left me-1"></i>
+           class="btn premium-secondary-button">
+
+            <i class="bi bi-arrow-left"></i>
             Administration
+
         </a>
 
         <a asp-action="Create"
-           class="btn btn-primary">
-            <i class="bi bi-plus-lg me-1"></i>
+           class="btn premium-primary-button">
+
+            <i class="bi bi-plus-lg"></i>
             Add Department
+
         </a>
+
     </div>
+
 </div>
+<div class="row g-3 mb-3">
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th style="width:180px;">Actions</th>
-        </tr>
-    </thead>
+    <div class="col-md-4 col-xl-3">
 
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.DepartmentCode</td>
-                <td>@item.DepartmentName</td>
-                <td>@item.Description</td>
-                <td>
-                    @if (item.IsActive)
+        <div class="mini-summary-card">
+
+            <div class="mini-summary-icon stat-blue">
+                <i class="bi bi-building"></i>
+            </div>
+
+            <div>
+                <span>Total Departments</span>
+
+                <strong>
+                    @ViewBag.TotalDepartments
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 col-xl-3">
+
+        <div class="mini-summary-card">
+
+            <div class="mini-summary-icon stat-green">
+                <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div>
+                <span>Active</span>
+
+                <strong>
+                    @ViewBag.ActiveDepartments
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 col-xl-3">
+
+        <div class="mini-summary-card">
+
+            <div class="mini-summary-icon stat-coral">
+                <i class="bi bi-x-circle"></i>
+            </div>
+
+            <div>
+                <span>Inactive</span>
+
+                <strong>
+                    @ViewBag.InactiveDepartments
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="premium-table-card">
+
+    <div class="premium-table-header">
+
+        <div>
+            <h5>Department Directory</h5>
+            <span>
+                @Model.Count() department(s)
+            </span>
+        </div>
+
+    </div>
+    <div class="premium-filter-card mb-3">
+
+        <form asp-action="Index"
+              method="get"
+              class="department-filter-form">
+
+            <!-- SEARCH -->
+            <div class="premium-search-box">
+
+                <i class="bi bi-search"></i>
+
+                <input type="text"
+                       name="search"
+                       value="@ViewBag.Search"
+                       class="form-control"
+                       placeholder="Search by department code or name..." />
+
+            </div>
+
+
+            <!-- STATUS -->
+            <div class="premium-filter-select">
+
+                <select name="status"
+                        class="form-select">
+
+                    <option value="">
+                        All Status
+                    </option>
+
+                    <option value="active"
+                            selected="@(ViewBag.Status == "active")">
+                        Active
+                    </option>
+
+                    <option value="inactive"
+                            selected="@(ViewBag.Status == "inactive")">
+                        Inactive
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SEARCH -->
+            <button type="submit"
+                    class="btn premium-primary-button">
+
+                <i class="bi bi-search"></i>
+                Search
+
+            </button>
+
+
+            <!-- CLEAR -->
+            <a asp-action="Index"
+               class="btn premium-secondary-button">
+
+                <i class="bi bi-x-lg"></i>
+                Clear
+
+            </a>
+
+        </form>
+
+    </div>
+    <div class="table-responsive">
+
+        <table class="table premium-table align-middle mb-0">
+
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Any())
+                {
+                    @foreach (var item in Model)
                     {
-                        <span class="badge bg-success">Active</span>
+                        // your existing department row
                     }
-                    else
-                    {
-                        <span class="badge bg-secondary">Inactive</span>
-                    }
-                </td>
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5"
+                            class="text-center py-5">
 
-                <td>
-                    <a asp-action="Edit"
-                       asp-route-id="@item.DepartmentId"
-                       class="btn btn-sm btn-outline-primary">
-                        Edit
-                    </a>
+                            <div class="text-muted">
+                                <i class="bi bi-search fs-4 d-block mb-2"></i>
 
-                    <form asp-action="ToggleStatus"
-                          asp-route-id="@item.DepartmentId"
-                          method="post"
-                          class="d-inline">
+                                No departments match your search.
+                            </div>
 
-                        @Html.AntiForgeryToken()
+                        </td>
+                    </tr>
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
 
-                        <button type="submit"
-                                class="btn btn-sm btn-outline-secondary">
-                            @(item.IsActive ? "Deactivate" : "Activate")
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                        <td>
+                            <span class="department-code">
+                                @item.DepartmentCode
+                            </span>
+                        </td>
+
+                        <td>
+                            <strong>
+                                @item.DepartmentName
+                            </strong>
+                        </td>
+
+                        <td class="text-muted">
+                            @item.Description
+                        </td>
+
+                        <td>
+
+                            @if (item.IsActive)
+                            {
+                                <span class="premium-status-badge status-active">
+                                    <span></span>
+                                    Active
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="premium-status-badge status-inactive">
+                                    <span></span>
+                                    Inactive
+                                </span>
+                            }
+
+                        </td>
+
+                        <td class="text-end">
+
+                            <a asp-action="Edit"
+                               asp-route-id="@item.DepartmentId"
+                               class="btn table-action-button"
+                               title="Edit">
+
+                                <i class="bi bi-pencil"></i>
+
+                            </a>
+
+                            @if (item.IsActive)
+                            {
+                                <form asp-action="Deactivate"
+                                      asp-route-id="@item.DepartmentId"
+                                      method="post"
+                                      class="d-inline">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <button type="submit"
+                                            class="btn table-action-button table-action-danger"
+                                            title="Deactivate">
+
+                                        <i class="bi bi-slash-circle"></i>
+
+                                    </button>
+
+                                </form>
+                            }
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

@@ -4,66 +4,180 @@
     ViewData["Title"] = "Edit Department";
 }
 
-<h2 class="mb-4">Edit Department</h2>
+<div class="management-page-header mb-4">
 
-<form asp-action="Edit" method="post">
+    <div>
+        <div class="admin-eyebrow">
+            ORGANIZATION
+        </div>
 
-    <input type="hidden"
-           asp-for="DepartmentId" />
+        <h2>Edit Department</h2>
 
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger mb-3">
+        <p>
+            Update department information and availability.
+        </p>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="DepartmentCode"
-               class="form-label">
-            Department Code
-        </label>
-
-        <input asp-for="DepartmentCode"
-               class="form-control" />
-
-        <span asp-validation-for="DepartmentCode"
-              class="text-danger">
-        </span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="DepartmentName"
-               class="form-label">
-            Department Name
-        </label>
-
-        <input asp-for="DepartmentName"
-               class="form-control" />
-
-        <span asp-validation-for="DepartmentName"
-              class="text-danger">
-        </span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Description"
-               class="form-label">
-        </label>
-
-        <textarea asp-for="Description"
-                  class="form-control"
-                  rows="3">
-        </textarea>
-    </div>
-
-    <button type="submit"
-            class="btn btn-primary">
-        Save Changes
-    </button>
 
     <a asp-action="Index"
-       class="btn btn-secondary">
-        Cancel
+       class="btn premium-secondary-button">
+
+        <i class="bi bi-arrow-left"></i>
+        Back to Departments
+
     </a>
-</form>
+
+</div>
+
+
+<div class="premium-form-card">
+
+    <div class="premium-form-card-header">
+
+        <div>
+            <h5>Department Information</h5>
+            <span>
+                Update the selected department details.
+            </span>
+        </div>
+
+        <div class="premium-form-header-icon stat-purple">
+            <i class="bi bi-pencil-square"></i>
+        </div>
+
+    </div>
+
+
+    <form asp-action="Edit"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden"
+               asp-for="DepartmentId" />
+
+
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger">
+        </div>
+
+
+        <div class="premium-form-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <label asp-for="DepartmentCode"
+                           class="premium-form-label">
+                        Department Code
+                    </label>
+
+                    <input asp-for="DepartmentCode"
+                           class="form-control premium-form-control" />
+
+                    <span asp-validation-for="DepartmentCode"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-8">
+
+                    <label asp-for="DepartmentName"
+                           class="premium-form-label">
+                        Department Name
+                    </label>
+
+                    <input asp-for="DepartmentName"
+                           class="form-control premium-form-control" />
+
+                    <span asp-validation-for="DepartmentName"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-12">
+
+                    <label asp-for="Description"
+                           class="premium-form-label">
+                        Description
+                    </label>
+
+                    <textarea asp-for="Description"
+                              rows="4"
+                              class="form-control premium-form-control">
+                    </textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="premium-toggle-box">
+
+                        <div>
+                            <strong>
+                                Department Status
+                            </strong>
+
+                            <span>
+                                Controls whether this department
+                                is available for new requests.
+                            </span>
+                        </div>
+
+                        <div class="form-check form-switch">
+
+                            <input asp-for="IsActive"
+                                   class="form-check-input"
+                                   role="switch" />
+
+                            <label asp-for="IsActive"
+                                   class="form-check-label">
+                                Active
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="premium-form-footer">
+
+            <a asp-action="Index"
+               class="btn premium-secondary-button">
+
+                Cancel
+
+            </a>
+
+            <button type="submit"
+                    class="btn premium-primary-button">
+
+                <i class="bi bi-check-lg"></i>
+                Save Changes
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -3740,3 +3740,473 @@ textarea.premium-form-control {
         color: #ffffff;
         transform: translateY(-1px);
     }
+/* ==========================================
+   PREMIUM VISITOR MASTER
+   ========================================== */
+
+.visitor-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+
+/* PROFILE */
+
+.visitor-table-profile {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 160px;
+}
+
+.visitor-table-avatar {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 14px;
+}
+
+.visitor-table-profile strong {
+    display: block;
+    color: #342c3a;
+    font-size: 10px;
+}
+
+.visitor-table-profile span {
+    display: block;
+    margin-top: 2px;
+    color: #9a939e;
+    font-size: 8px;
+}
+
+
+/* ID */
+
+.visitor-id-display {
+    min-width: 130px;
+}
+
+.visitor-id-type {
+    display: inline-block;
+    margin-bottom: 4px;
+    padding: 3px 6px;
+    border-radius: 5px;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 7px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.visitor-id-display strong {
+    display: block;
+    color: #4b434f;
+    font-size: 9px;
+}
+
+
+/* EXPIRY */
+
+.visitor-expiry-display {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #5d5562;
+    font-size: 9px;
+}
+
+    .visitor-expiry-display i {
+        color: #7651d6;
+    }
+
+    .visitor-expiry-display.expired-date {
+        color: #df465e;
+    }
+
+        .visitor-expiry-display.expired-date i {
+            color: #df465e;
+        }
+
+
+/* COMPANY */
+
+.visitor-company-display {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 170px;
+    color: #554d59;
+    font-size: 9px;
+}
+
+    .visitor-company-display i {
+        color: #7651d6;
+    }
+
+
+/* PHONE */
+
+.visitor-phone-display {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #554d59;
+    font-size: 9px;
+}
+
+    .visitor-phone-display i {
+        color: #15955c;
+    }
+
+
+/* STATUS */
+
+.visitor-master-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.status-active-visitor {
+    background: #e8f7ef;
+    color: #168954;
+}
+
+.status-expired-id {
+    background: #ffebef;
+    color: #df465e;
+}
+
+.status-inactive-visitor {
+    background: #f1eff3;
+    color: #716a76;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 767px) {
+
+    .visitor-filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+/* ==========================================
+   PREMIUM VISITOR DETAILS
+   ========================================== */
+
+.visitor-profile-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px;
+    background: linear-gradient(100deg, #faf6fd, #ffffff);
+    border: 1px solid #e7e0ec;
+    border-radius: 13px;
+}
+
+.visitor-profile-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.visitor-profile-avatar {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #6500ae;
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.visitor-profile-label {
+    color: #6500ae;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.visitor-profile-main h3 {
+    margin: 2px 0 4px;
+    color: #332a39;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.visitor-profile-meta {
+    display: flex;
+    gap: 13px;
+    color: #8f8794;
+    font-size: 9px;
+}
+
+    .visitor-profile-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+.visitor-profile-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 9px;
+    border-radius: 20px;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.profile-active {
+    background: #e8f7ef;
+    color: #168954;
+}
+
+.profile-expired {
+    background: #ffebef;
+    color: #df465e;
+}
+
+.profile-inactive {
+    background: #f0edf2;
+    color: #706977;
+}
+
+
+/* PROFILE INFORMATION */
+
+.premium-profile-card {
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e8e3ec;
+    border-radius: 13px;
+    box-shadow: 0 5px 18px rgba(43,25,60,.04);
+}
+
+.premium-profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    border-bottom: 1px solid #eeeaf1;
+}
+
+    .premium-profile-header h5 {
+        margin: 0;
+        color: #39303f;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .premium-profile-header span {
+        display: block;
+        margin-top: 2px;
+        color: #99929d;
+        font-size: 8px;
+    }
+
+.visitor-information-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+}
+
+.visitor-info-item {
+    min-height: 78px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 15px;
+    border-right: 1px solid #f0ecf2;
+    border-bottom: 1px solid #f0ecf2;
+}
+
+.visitor-info-icon {
+    width: 31px;
+    height: 31px;
+    flex: 0 0 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 12px;
+}
+
+.visitor-info-danger {
+    background: #ffebef;
+    color: #df465e;
+}
+
+.visitor-info-item span {
+    display: block;
+    color: #9a939e;
+    font-size: 7px;
+    text-transform: uppercase;
+}
+
+.visitor-info-item strong {
+    display: block;
+    margin-top: 3px;
+    color: #463d4b;
+    font-size: 9px;
+    overflow-wrap: anywhere;
+}
+
+.visitor-expired-text {
+    display: block;
+    margin-top: 2px;
+    color: #df465e;
+    font-size: 7px;
+}
+
+
+/* HISTORY */
+
+.premium-table-header-icon {
+    width: 31px;
+    height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f1e8fb;
+    color: #6500ae;
+}
+
+.visitor-history-reference {
+    color: #6500ae;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.visitor-history-date strong {
+    display: block;
+    color: #443b49;
+    font-size: 9px;
+}
+
+.visitor-history-date span {
+    display: block;
+    margin-top: 2px;
+    color: #96909a;
+    font-size: 8px;
+}
+
+.visitor-history-department {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 9px;
+}
+
+    .visitor-history-department i {
+        color: #7651d6;
+    }
+
+.history-status-badge,
+.duration-badge {
+    display: inline-flex;
+    padding: 4px 7px;
+    border-radius: 20px;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+
+/* ACCESS */
+
+.access-time {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 8px;
+}
+
+.access-entry i {
+    color: #15955c;
+}
+
+.access-exit i {
+    color: #7651d6;
+}
+
+.duration-ongoing {
+    color: #15955c;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.access-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.access-inside {
+    background: #e8f7ef;
+    color: #168954;
+}
+
+    .access-inside .bi-circle-fill {
+        font-size: 5px;
+    }
+
+.access-completed {
+    background: #f0edf2;
+    color: #706977;
+}
+
+.inside-text {
+    color: #15955c !important;
+}
+
+.outside-text {
+    color: #8a818e !important;
+}
+
+
+@media (max-width: 992px) {
+
+    .visitor-information-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+@media (max-width: 576px) {
+
+    .visitor-profile-banner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .visitor-information-grid {
+        grid-template-columns: 1fr;
+    }
+}

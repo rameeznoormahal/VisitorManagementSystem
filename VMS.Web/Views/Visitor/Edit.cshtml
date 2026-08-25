@@ -4,145 +4,396 @@
     ViewData["Title"] = "Edit Visitor";
 }
 
-<h2 class="mb-4">Edit Visitor</h2>
+<div class="management-page-header mb-4">
 
-<form asp-action="Edit" method="post">
+    <div>
+        <div class="admin-eyebrow">
+            VISITOR MANAGEMENT
+        </div>
 
-    <input type="hidden" asp-for="VisitorId" />
+        <h2>Edit Visitor</h2>
 
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger mb-3">
+        <p>
+            Update visitor identity, contact and company information.
+        </p>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
+    <a asp-action="Details"
+       asp-route-id="@Model.VisitorId"
+       class="btn premium-secondary-button">
 
-            <div class="row">
+        <i class="bi bi-arrow-left"></i>
+        Back to Visitor
 
-                <div class="col-md-4 mb-3">
-                    <label asp-for="IdType" class="form-label">
+    </a>
+
+</div>
+
+
+<div class="premium-form-card">
+
+    <div class="premium-form-card-header">
+
+        <div>
+            <h5>Visitor Information</h5>
+
+            <span>
+                Maintain visitor identity and profile details.
+            </span>
+        </div>
+
+        <div class="premium-form-header-icon stat-purple">
+            <i class="bi bi-person-vcard"></i>
+        </div>
+
+    </div>
+
+
+    <form asp-action="Edit"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden"
+               asp-for="VisitorId" />
+
+
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger m-3">
+        </div>
+
+
+        <!-- IDENTIFICATION -->
+        <div class="premium-form-body">
+
+            <div class="form-section-title">
+
+                <i class="bi bi-person-badge"></i>
+
+                <div>
+                    <strong>Identification</strong>
+
+                    <span>
+                        Visitor identity document information
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <label asp-for="IdType"
+                           class="premium-form-label">
                         ID Type
                     </label>
 
                     <select asp-for="IdType"
-                            class="form-select">
-                        <option value="">-- Select --</option>
-                        <option value="National ID">National ID</option>
-                        <option value="Passport">Passport</option>
+                            class="form-select premium-form-control">
+
+                        <option value="">
+                            -- Select ID Type --
+                        </option>
+
+                        <option value="National ID">
+                            National ID
+                        </option>
+
+                        <option value="Passport">
+                            Passport
+                        </option>
+
                     </select>
+
+                    <span asp-validation-for="IdType"
+                          class="text-danger small">
+                    </span>
+
                 </div>
 
-                <div class="col-md-4 mb-3">
+
+                <div class="col-md-4">
+
                     <label asp-for="IdNumber"
-                           class="form-label">
+                           class="premium-form-label">
                         ID Number
                     </label>
 
                     <input asp-for="IdNumber"
-                           class="form-control" />
+                           class="form-control premium-form-control"
+                           placeholder="Enter ID or passport number" />
 
                     <span asp-validation-for="IdNumber"
-                          class="text-danger">
+                          class="text-danger small">
                     </span>
+
                 </div>
 
-                <div class="col-md-4 mb-3">
+
+                <div class="col-md-4">
+
                     <label asp-for="IdExpiryDate"
-                           class="form-label">
+                           class="premium-form-label">
                         ID Expiry Date
                     </label>
 
                     <input asp-for="IdExpiryDate"
                            type="date"
-                           class="form-control" />
-                </div>
+                           class="form-control premium-form-control" />
 
-                <div class="col-md-6 mb-3">
-                    <label asp-for="FullName"
-                           class="form-label">
-                        Full Name
-                    </label>
+                    <span asp-validation-for="IdExpiryDate"
+                          class="text-danger small">
+                    </span>
 
-                    <input asp-for="FullName"
-                           class="form-control" />
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label asp-for="PhoneNumber"
-                           class="form-label">
-                        Phone Number
-                    </label>
-
-                    <input asp-for="PhoneNumber"
-                           class="form-control" />
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Email"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Email"
-                           class="form-control" />
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label asp-for="CompanyName"
-                           class="form-label">
-                        Company
-                    </label>
-
-                    <input asp-for="CompanyName"
-                           class="form-control" />
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Designation"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Designation"
-                           class="form-control" />
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Nationality"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Nationality"
-                           class="form-control" />
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <div class="form-check mt-4">
-                        <input asp-for="IsActive"
-                               class="form-check-input" />
-
-                        <label asp-for="IsActive"
-                               class="form-check-label">
-                            Active
-                        </label>
-                    </div>
                 </div>
 
             </div>
 
-            <button type="submit"
-                    class="btn btn-primary">
-                Save Changes
-            </button>
+        </div>
+
+
+        <!-- PERSONAL INFORMATION -->
+        <div class="user-form-section">
+
+            <div class="form-section-title">
+
+                <i class="bi bi-person"></i>
+
+                <div>
+                    <strong>Personal Information</strong>
+
+                    <span>
+                        Visitor name and contact information
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+
+                    <label asp-for="FullName"
+                           class="premium-form-label">
+                        Full Name
+                    </label>
+
+                    <input asp-for="FullName"
+                           class="form-control premium-form-control"
+                           placeholder="Enter visitor full name" />
+
+                    <span asp-validation-for="FullName"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="PhoneNumber"
+                           class="premium-form-label">
+                        Phone Number
+                    </label>
+
+                    <div class="premium-input-group">
+
+                        <span class="premium-input-icon">
+                            <i class="bi bi-telephone"></i>
+                        </span>
+
+                        <input asp-for="PhoneNumber"
+                               class="form-control premium-form-control premium-form-icon-control"
+                               placeholder="Enter phone number" />
+
+                    </div>
+
+                    <span asp-validation-for="PhoneNumber"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="Email"
+                           class="premium-form-label">
+                        Email
+                    </label>
+
+                    <div class="premium-input-group">
+
+                        <span class="premium-input-icon">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+
+                        <input asp-for="Email"
+                               type="email"
+                               class="form-control premium-form-control premium-form-icon-control"
+                               placeholder="Enter email address" />
+
+                    </div>
+
+                    <span asp-validation-for="Email"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="Nationality"
+                           class="premium-form-label">
+                        Nationality
+                    </label>
+
+                    <div class="premium-input-group">
+
+                        <span class="premium-input-icon">
+                            <i class="bi bi-globe"></i>
+                        </span>
+
+                        <input asp-for="Nationality"
+                               class="form-control premium-form-control premium-form-icon-control"
+                               placeholder="Enter nationality" />
+
+                    </div>
+
+                    <span asp-validation-for="Nationality"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- COMPANY -->
+        <div class="user-form-section">
+
+            <div class="form-section-title">
+
+                <i class="bi bi-building"></i>
+
+                <div>
+                    <strong>Company Information</strong>
+
+                    <span>
+                        Organization and designation details
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+
+                    <label asp-for="CompanyName"
+                           class="premium-form-label">
+                        Company
+                    </label>
+
+                    <input asp-for="CompanyName"
+                           class="form-control premium-form-control"
+                           placeholder="Enter company name" />
+
+                    <span asp-validation-for="CompanyName"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label asp-for="Designation"
+                           class="premium-form-label">
+                        Designation
+                    </label>
+
+                    <input asp-for="Designation"
+                           class="form-control premium-form-control"
+                           placeholder="Enter designation" />
+
+                    <span asp-validation-for="Designation"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATUS -->
+        <div class="user-form-section">
+
+            <div class="premium-toggle-box">
+
+                <div>
+                    <strong>
+                        Visitor Status
+                    </strong>
+
+                    <span>
+                        Inactive visitors remain in history but cannot be used
+                        as active visitor records.
+                    </span>
+                </div>
+
+                <div class="form-check form-switch">
+
+                    <input asp-for="IsActive"
+                           class="form-check-input"
+                           role="switch" />
+
+                    <label asp-for="IsActive"
+                           class="form-check-label">
+                        Active
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+        <div class="premium-form-footer">
 
             <a asp-action="Details"
                asp-route-id="@Model.VisitorId"
-               class="btn btn-secondary">
+               class="btn premium-secondary-button">
+
                 Cancel
+
             </a>
 
-        </div>
-    </div>
+            <button type="submit"
+                    class="btn premium-primary-button">
 
-</form>
+                <i class="bi bi-check-lg"></i>
+                Save Changes
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

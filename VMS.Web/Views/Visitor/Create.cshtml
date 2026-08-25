@@ -4,185 +4,354 @@
     ViewData["Title"] = "Add Visitor";
 }
 
-<div class="d-flex justify-content-between align-items-start mb-4">
+<div class="management-page-header mb-4">
+
     <div>
-        <h2 class="mb-1">Add Visitor</h2>
-        <div class="text-muted">
-            Register a visitor in the visitor master
+        <div class="admin-eyebrow">
+            VISITOR MANAGEMENT
         </div>
+
+        <h2>Add Visitor</h2>
+
+        <p>
+            Register a new visitor in the visitor master.
+        </p>
     </div>
 
     <a asp-action="Index"
-       class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>
+       class="btn premium-secondary-button">
+
+        <i class="bi bi-arrow-left"></i>
         Back to Visitors
+
     </a>
+
 </div>
 
-<form asp-action="Create" method="post">
 
-    @Html.AntiForgeryToken()
+<div class="premium-form-card">
 
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger mb-3">
-    </div>
+    <div class="premium-form-card-header">
 
-    <div class="card shadow-sm">
-        <div class="card-header">
-            Visitor Information
+        <div>
+            <h5>Visitor Information</h5>
+
+            <span>
+                Enter identity, contact and company details.
+            </span>
         </div>
 
-        <div class="card-body">
+        <div class="premium-form-header-icon stat-purple">
+            <i class="bi bi-person-plus"></i>
+        </div>
+
+    </div>
+
+
+    <form asp-action="Create"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger m-3">
+        </div>
+
+
+        <!-- IDENTIFICATION -->
+        <div class="premium-form-body">
+
+            <div class="form-section-title">
+
+                <i class="bi bi-person-badge"></i>
+
+                <div>
+                    <strong>Identification</strong>
+
+                    <span>
+                        Visitor identity document information
+                    </span>
+                </div>
+
+            </div>
+
+
             <div class="row g-3">
 
                 <div class="col-md-4">
+
                     <label asp-for="IdType"
-                           class="form-label">
+                           class="premium-form-label">
                         ID Type
                     </label>
 
                     <select asp-for="IdType"
-                            class="form-select">
-                        <option value="">-- Select ID Type --</option>
-                        <option value="National ID">National ID</option>
-                        <option value="Passport">Passport</option>
+                            class="form-select premium-form-control">
+
+                        <option value="">
+                            -- Select ID Type --
+                        </option>
+
+                        <option value="National ID">
+                            National ID
+                        </option>
+
+                        <option value="Passport">
+                            Passport
+                        </option>
+
                     </select>
 
                     <span asp-validation-for="IdType"
-                          class="text-danger"></span>
+                          class="text-danger small">
+                    </span>
+
                 </div>
 
+
                 <div class="col-md-4">
+
                     <label asp-for="IdNumber"
-                           class="form-label">
+                           class="premium-form-label">
                         ID Number
                     </label>
 
                     <input asp-for="IdNumber"
-                           class="form-control"
-                           placeholder="Enter ID number" />
+                           class="form-control premium-form-control"
+                           placeholder="Enter ID or passport number" />
 
                     <span asp-validation-for="IdNumber"
-                          class="text-danger"></span>
+                          class="text-danger small">
+                    </span>
+
                 </div>
 
+
                 <div class="col-md-4">
+
                     <label asp-for="IdExpiryDate"
-                           class="form-label">
+                           class="premium-form-label">
                         ID Expiry Date
                     </label>
 
                     <input asp-for="IdExpiryDate"
                            type="date"
-                           class="form-control" />
+                           class="form-control premium-form-control" />
 
                     <span asp-validation-for="IdExpiryDate"
-                          class="text-danger"></span>
+                          class="text-danger small">
+                    </span>
+
                 </div>
 
+            </div>
+
+        </div>
+
+
+        <!-- PERSONAL INFORMATION -->
+        <div class="user-form-section">
+
+            <div class="form-section-title">
+
+                <i class="bi bi-person"></i>
+
+                <div>
+                    <strong>Personal Information</strong>
+
+                    <span>
+                        Visitor name and contact details
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="row g-3">
+
                 <div class="col-md-6">
+
                     <label asp-for="FullName"
-                           class="form-label">
+                           class="premium-form-label">
                         Full Name
                     </label>
 
                     <input asp-for="FullName"
-                           class="form-control"
+                           class="form-control premium-form-control"
                            placeholder="Enter visitor full name" />
 
                     <span asp-validation-for="FullName"
-                          class="text-danger"></span>
+                          class="text-danger small">
+                    </span>
+
                 </div>
 
+
                 <div class="col-md-6">
+
                     <label asp-for="PhoneNumber"
-                           class="form-label">
+                           class="premium-form-label">
                         Mobile Number
                     </label>
 
-                    <input asp-for="PhoneNumber"
-                           class="form-control"
-                           placeholder="Enter mobile number" />
+                    <div class="premium-input-group">
+
+                        <span class="premium-input-icon">
+                            <i class="bi bi-telephone"></i>
+                        </span>
+
+                        <input asp-for="PhoneNumber"
+                               class="form-control premium-form-control premium-form-icon-control"
+                               placeholder="Enter mobile number" />
+
+                    </div>
 
                     <span asp-validation-for="PhoneNumber"
-                          class="text-danger"></span>
+                          class="text-danger small">
+                    </span>
+
                 </div>
 
+
                 <div class="col-md-6">
+
                     <label asp-for="Email"
-                           class="form-label">
+                           class="premium-form-label">
                         Email
                     </label>
 
-                    <input asp-for="Email"
-                           type="email"
-                           class="form-control"
-                           placeholder="Enter email address" />
+                    <div class="premium-input-group">
+
+                        <span class="premium-input-icon">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+
+                        <input asp-for="Email"
+                               type="email"
+                               class="form-control premium-form-control premium-form-icon-control"
+                               placeholder="Enter email address" />
+
+                    </div>
 
                     <span asp-validation-for="Email"
-                          class="text-danger"></span>
+                          class="text-danger small">
+                    </span>
+
                 </div>
 
+
                 <div class="col-md-6">
+
                     <label asp-for="Nationality"
-                           class="form-label">
+                           class="premium-form-label">
                         Nationality
                     </label>
 
-                    <input asp-for="Nationality"
-                           class="form-control"
-                           placeholder="Enter nationality" />
+                    <div class="premium-input-group">
+
+                        <span class="premium-input-icon">
+                            <i class="bi bi-globe"></i>
+                        </span>
+
+                        <input asp-for="Nationality"
+                               class="form-control premium-form-control premium-form-icon-control"
+                               placeholder="Enter nationality" />
+
+                    </div>
 
                     <span asp-validation-for="Nationality"
-                          class="text-danger"></span>
+                          class="text-danger small">
+                    </span>
+
                 </div>
 
+            </div>
+
+        </div>
+
+
+        <!-- COMPANY INFORMATION -->
+        <div class="user-form-section">
+
+            <div class="form-section-title">
+
+                <i class="bi bi-building"></i>
+
+                <div>
+                    <strong>Company Information</strong>
+
+                    <span>
+                        Organization and designation details
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="row g-3">
+
                 <div class="col-md-6">
+
                     <label asp-for="CompanyName"
-                           class="form-label">
+                           class="premium-form-label">
                         Company
                     </label>
 
                     <input asp-for="CompanyName"
-                           class="form-control"
+                           class="form-control premium-form-control"
                            placeholder="Enter company name" />
 
                     <span asp-validation-for="CompanyName"
-                          class="text-danger"></span>
+                          class="text-danger small">
+                    </span>
+
                 </div>
 
+
                 <div class="col-md-6">
+
                     <label asp-for="Designation"
-                           class="form-label">
+                           class="premium-form-label">
                         Designation
                     </label>
 
                     <input asp-for="Designation"
-                           class="form-control"
+                           class="form-control premium-form-control"
                            placeholder="Enter designation" />
 
                     <span asp-validation-for="Designation"
-                          class="text-danger"></span>
+                          class="text-danger small">
+                    </span>
+
                 </div>
 
             </div>
+
         </div>
 
-        <div class="card-footer bg-white d-flex justify-content-end gap-2">
+
+        <!-- ACTIONS -->
+        <div class="premium-form-footer">
+
             <a asp-action="Index"
-               class="btn btn-outline-secondary">
+               class="btn premium-secondary-button">
                 Cancel
             </a>
 
             <button type="submit"
-                    class="btn btn-primary">
-                <i class="bi bi-person-plus me-1"></i>
-                Save Visitor
-            </button>
-        </div>
-    </div>
+                    class="btn premium-primary-button">
 
-</form>
+                <i class="bi bi-person-plus"></i>
+                Save Visitor
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

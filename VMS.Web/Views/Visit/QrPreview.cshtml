@@ -1,55 +1,209 @@
 ﻿@model VMS.Web.ViewModels.Visits.QrPreviewViewModel
 
 @{
-    ViewData["Title"] = "QR Preview";
+    ViewData["Title"] = "Visitor QR Code";
 }
 
-<div class="row justify-content-center">
+<div class="management-page-header mb-4">
 
-    <div class="col-md-6">
+    <div>
+        <div class="admin-eyebrow">
+            VISITOR ACCESS
+        </div>
 
-        <div class="card shadow-sm">
+        <h2>Visitor QR Code</h2>
 
-            <div class="card-header">
-                Visitor QR Code
+        <p>
+            Digital access code for the scheduled visitor.
+        </p>
+    </div>
+
+    <a asp-action="Index"
+       class="btn premium-secondary-button">
+
+        <i class="bi bi-arrow-left"></i>
+        Back to Visits
+
+    </a>
+
+</div>
+
+
+<div class="qr-preview-wrapper">
+
+    <div class="premium-qr-card">
+
+        <!-- HEADER -->
+
+        <div class="premium-qr-header">
+
+            <div class="qr-header-left">
+
+                <div class="qr-header-icon">
+                    <i class="bi bi-qr-code"></i>
+                </div>
+
+                <div>
+                    <h5>Visitor Access Pass</h5>
+                    <span>Present this QR code at reception</span>
+                </div>
+
             </div>
 
-            <div class="card-body text-center">
 
-                <h4 class="mb-3">
-                    @Model.VisitorName
-                </h4>
+            <span class="qr-valid-badge">
+                <i class="bi bi-shield-check"></i>
+                Ready for Visit
+            </span>
 
-                <p class="mb-1">
-                    <strong>Visit Reference:</strong>
-                    @Model.VisitReference
-                </p>
+        </div>
 
-                <p class="mb-1">
-                    <strong>Date:</strong>
-                    @Model.VisitFromDateTime
-                </p>
 
-                <p class="mb-4">
-                    <strong>Arrival Time:</strong>
-                    @Model.VisitToDateTime
-                </p>
+        <!-- BODY -->
 
-                <img src="data:image/png;base64,@Model.QrBase64"
-                     alt="Visitor QR Code"
-                     class="img-fluid"
-                     style="max-width:320px;" />
+        <div class="premium-qr-body">
 
-                <div class="mt-4">
+            <!-- VISITOR -->
 
-                    <a asp-action="Index"
-                       class="btn btn-secondary">
-                        Back to Visit Requests
-                    </a>
+            <div class="qr-visitor-profile">
+
+                <div class="qr-avatar">
+                    <i class="bi bi-person"></i>
+                </div>
+
+                <div>
+                    <span class="qr-small-label">
+                        VISITOR
+                    </span>
+
+                    <h3>
+                        @Model.VisitorName
+                    </h3>
+
+                    <span class="qr-reference">
+                        @Model.VisitReference
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!-- QR -->
+
+            <div class="qr-code-panel">
+
+                <div class="qr-code-frame">
+
+                    <img src="data:image/png;base64,@Model.QrBase64"
+                         alt="QR code for @Model.VisitorName"
+                         class="visitor-qr-image" />
+
+                </div>
+
+                <div class="qr-scan-text">
+
+                    <i class="bi bi-upc-scan"></i>
+
+                    <span>
+                        Scan at reception for verification
+                    </span>
 
                 </div>
 
             </div>
+
+
+            <!-- VISIT DETAILS -->
+
+            <div class="qr-visit-details">
+
+                <div class="qr-detail-item">
+
+                    <div class="qr-detail-icon">
+                        <i class="bi bi-calendar3"></i>
+                    </div>
+
+                    <div>
+                        <span>Visit Date</span>
+
+                        <strong>
+                            @Model.VisitFromDateTime.ToString("dd MMM yyyy")
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="qr-detail-item">
+
+                    <div class="qr-detail-icon">
+                        <i class="bi bi-clock"></i>
+                    </div>
+
+                    <div>
+                        <span>Arrival</span>
+
+                        <strong>
+                            @Model.VisitFromDateTime.ToString("hh:mm tt")
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="qr-detail-item">
+
+                    <div class="qr-detail-icon">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+
+                    <div>
+                        <span>Valid Until</span>
+
+                        <strong>
+                            @Model.VisitToDateTime.ToString("dd MMM, hh:mm tt")
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SECURITY NOTE -->
+
+            <div class="qr-security-note">
+
+                <i class="bi bi-shield-lock"></i>
+
+                <div>
+                    <strong>Secure Visitor Pass</strong>
+
+                    <span>
+                        This QR code is associated with this visit request
+                        and should only be used by the registered visitor.
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="premium-qr-footer">
+
+            <a asp-action="Index"
+               class="btn premium-secondary-button">
+
+                <i class="bi bi-arrow-left"></i>
+                Back to Visit Requests
+
+            </a>
+
+
+           
 
         </div>
 

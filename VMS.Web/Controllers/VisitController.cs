@@ -21,16 +21,79 @@ public class VisitController : Controller
     private readonly IQrCodeService _qrCodeService;
     private readonly IDataProtector _qrProtector;
 
-    public VisitController(
-        VmsDbContext context,
-        UserManager<ApplicationUser> userManager,
-        IQrCodeService qrCodeService,
-        IDataProtectionProvider dataProtectionProvider)
+    public VisitController(VmsDbContext context, UserManager<ApplicationUser> userManager,IQrCodeService qrCodeService, IDataProtectionProvider dataProtectionProvider)
     {
         _context = context;
         _userManager = userManager;
         _qrCodeService = qrCodeService;
         _qrProtector = dataProtectionProvider.CreateProtector("VMS.QR.Token");
+    }
+    [RequirePermission("Visitor.View")]
+    [HttpGet]
+    public async Task<IActionResult> Index(string? search,string? status)
+    {
+        var query = _context.VisitRequests
+            .AsNoTracking()
+            .Include(x => x.Department)
+            .Include(x => x.VisitVisitors)
+                .ThenInclude(x => x.Visitor)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            search = search.Trim();
+
+            query = query.Where(x =>
+                x.VisitReference.Contains(search) ||
+                x.Purpose.Contains(search) ||
+                (x.Department != null &&
+                 x.Department.DepartmentName.Contains(search)) ||
+                x.VisitVisitors.Any(v =>
+                    v.Visitor.FullName.Contains(search) ||
+                    v.Visitor.IdNumber.Contains(search)));
+        }
+
+        switch (status?.ToLower())
+        {
+            case "pending":
+                query = query.Where(x =>
+                    x.Status == VisitStatus.PendingApproval);
+                break;
+
+            case "approved":
+                query = query.Where(x =>
+                    x.Status == VisitStatus.Approved);
+                break;
+
+            case "ready":
+                query = query.Where(x =>
+                    x.Status == VisitStatus.ReadyForVisit);
+                break;
+
+            case "rejected":
+                query = query.Where(x =>
+                    x.Status == VisitStatus.Rejected);
+                break;
+
+            case "checkedin":
+                query = query.Where(x =>
+                    x.Status == VisitStatus.CheckedIn);
+                break;
+
+            case "checkedout":
+                query = query.Where(x =>
+                    x.Status == VisitStatus.CheckedOut);
+                break;
+        }
+
+        var visits = await query
+            .OrderByDescending(x => x.VisitFromDateTime)
+            .ToListAsync();
+
+        ViewBag.Search = search;
+        ViewBag.Status = status;
+
+        return View(visits);
     }
 
     [RequirePermission("Visitor.Create")]
@@ -57,8 +120,7 @@ public class VisitController : Controller
     [RequirePermission("Visitor.Create")]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(
-    CreateVisitRequestViewModel model)
+    public async Task<IActionResult> Create(CreateVisitRequestViewModel model)
     {
         if (model.Visitors == null || model.Visitors.Count == 0)
         {
@@ -259,8 +321,7 @@ public class VisitController : Controller
         return View(visits);
     }
 
-    private async Task LoadLookups(
-        CreateVisitRequestViewModel model)
+    private async Task LoadLookups( CreateVisitRequestViewModel model)
     {
         model.Hosts = await _context.Users
             .Where(x => x.IsActive)

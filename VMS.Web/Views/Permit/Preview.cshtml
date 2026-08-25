@@ -4,6 +4,31 @@
     ViewData["Title"] = "Visit Permit";
 }
 
+<div class="management-page-header mb-4 no-print">
+
+    <div>
+        <div class="admin-eyebrow">
+            VISITOR ACCESS
+        </div>
+
+        <h2>Visit Permit</h2>
+
+        <p>
+            Review, print or download the approved visitor access permit.
+        </p>
+    </div>
+
+    <a asp-controller="Visit"
+       asp-action="Index"
+       class="btn premium-secondary-button">
+
+        <i class="bi bi-arrow-left"></i>
+        Back to Visits
+
+    </a>
+
+</div>
+
 <div class="permit-wrapper">
 
     <div class="permit-top">
@@ -12,19 +37,37 @@
 
             <div class="permit-title-row">
 
-                <div>
-                    <h2 class="permit-title">
-                        Data Center Work / Visitor Access Permit
-                    </h2>
+                <div class="permit-brand">
 
-                    <div class="text-muted">
-                        Visitor Management System
+                    <div class="permit-brand-icon">
+                        <i class="bi bi-shield-check"></i>
                     </div>
+
+                    <div>
+                        <div class="permit-eyebrow">
+                            VISITOR ACCESS PERMIT
+                        </div>
+
+                        <h2 class="permit-title">
+                            Data Center Work / Visitor Access Permit
+                        </h2>
+
+                        <div class="permit-subtitle">
+                            Visitor Management System
+                        </div>
+                    </div>
+
                 </div>
 
+
                 <div class="permit-number">
-                    <strong>Permit No.</strong>
-                    <div>@Model.VisitReference</div>
+
+                    <span>Permit No.</span>
+
+                    <strong>
+                        @Model.VisitReference
+                    </strong>
+
                 </div>
 
             </div>
@@ -78,11 +121,11 @@
 
                 <div class="permit-field">
                     <strong>Status</strong>
-                    <span>
-                        <span class="badge bg-success">
-                            @Model.Status
-                        </span>
+                    <span class="permit-status-badge">
+                        <i class="bi bi-check-circle"></i>
+                        @Model.Status
                     </span>
+                   
                 </div>
 
             </div>
@@ -168,23 +211,36 @@
     </div>
 
 
-    <div class="d-flex gap-2 mt-3 no-print">
+    <div class="permit-actions no-print">
 
         <a asp-controller="Visit"
            asp-action="Index"
-           class="btn btn-secondary">
+           class="btn premium-secondary-button">
+
+            <i class="bi bi-arrow-left"></i>
             Back to Visit Requests
+
         </a>
+
+
         <a asp-controller="Permit"
            asp-action="Download"
            asp-route-id="@Model.VisitRequestId"
-           class="btn btn-success">
+           class="btn premium-success-button">
+
+            <i class="bi bi-file-earmark-pdf"></i>
             Download PDF
+
         </a>
+
+
         <button type="button"
                 onclick="window.print()"
-                class="btn btn-outline-primary">
-            Print
+                class="btn premium-primary-button">
+
+            <i class="bi bi-printer"></i>
+            Print Permit
+
         </button>
 
     </div>

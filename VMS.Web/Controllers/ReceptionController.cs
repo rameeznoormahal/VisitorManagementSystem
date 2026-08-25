@@ -64,6 +64,41 @@ public class ReceptionController : Controller
 
             return View("Index", model);
         }
+        if (visit.Status == VisitStatus.PendingApproval)
+        {
+            ModelState.AddModelError(
+                nameof(model.Token),
+                "Access denied. This visit request is still pending approval.");
+
+            return View("Index", model);
+        }
+
+
+        // ==========================================
+        // BLOCK REJECTED VISITS
+        // ==========================================
+
+        if (visit.Status == VisitStatus.Rejected)
+        {
+            ModelState.AddModelError(
+                nameof(model.Token),
+                "Access denied. This visit request has been rejected.");
+
+            return View("Index", model);
+        }
+        // ==========================================
+        // ONLY ALLOW VALID ACCESS STATUSES
+        // ==========================================
+
+        if (visit.Status != VisitStatus.Approved &&
+            visit.Status != VisitStatus.ReadyForVisit)
+        {
+            ModelState.AddModelError(
+                nameof(model.Token),
+                $"Access denied. Visit status is {visit.Status}.");
+
+            return View("Index", model);
+        }
 
         var host = await _context.Users
             .AsNoTracking()

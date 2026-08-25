@@ -249,6 +249,7 @@ public class GroupController : Controller
 
         group.GroupName = groupName;
         group.Description = model.Description?.Trim();
+        group.IsActive = model.IsActive;
         group.UpdatedDate = DateTime.UtcNow;
 
         var existingPermissions = await _context.GroupPermissions

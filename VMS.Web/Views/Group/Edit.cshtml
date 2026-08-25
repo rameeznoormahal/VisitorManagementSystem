@@ -99,7 +99,37 @@
                     </span>
 
                 </div>
+                <div class="col-md-5">
 
+                    <div class="premium-toggle-box">
+
+                        <div>
+                            <strong>
+                                Group Status
+                            </strong>
+
+                            <span>
+                                Controls whether this group
+                                is available for new requests.
+                            </span>
+                        </div>
+
+                        <div class="form-check form-switch">
+
+                            <input asp-for="IsActive"
+                                   class="form-check-input"
+                                   role="switch" />
+
+                            <label asp-for="IsActive"
+                                   class="form-check-label">
+                                Active
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
 
         </div>

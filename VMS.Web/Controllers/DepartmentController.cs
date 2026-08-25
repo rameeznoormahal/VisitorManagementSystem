@@ -164,6 +164,7 @@ public class DepartmentController : Controller
         department.DepartmentCode = model.DepartmentCode;
         department.DepartmentName = model.DepartmentName;
         department.Description = model.Description;
+        department.IsActive = model.IsActive;
         department.UpdatedDate = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();

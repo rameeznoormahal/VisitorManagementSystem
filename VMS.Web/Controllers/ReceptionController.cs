@@ -37,8 +37,7 @@ public class ReceptionController : Controller
     [RequirePermission("Visitor.ValidateQR")]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ValidateQr(
-        ReceptionLookupViewModel model)
+    public async Task<IActionResult> ValidateQr( ReceptionLookupViewModel model)
     {
         if (!ModelState.IsValid)
             return View("Index", model);
@@ -171,9 +170,7 @@ public class ReceptionController : Controller
     [RequirePermission("Visitor.CheckIn")]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CheckIn(
-    long visitRequestId,
-    long visitVisitorId)
+    public async Task<IActionResult> CheckIn(long visitRequestId, long visitVisitorId)
     {
         var visit = await _context.VisitRequests
             .Include(x => x.VisitVisitors)
@@ -247,9 +244,7 @@ public class ReceptionController : Controller
     [RequirePermission("Visitor.CheckOut")]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CheckOut(
-    long visitRequestId,
-    long visitVisitorId)
+    public async Task<IActionResult> CheckOut(long visitRequestId, long visitVisitorId)
     {
         var visit = await _context.VisitRequests
             .FirstOrDefaultAsync(x =>
@@ -475,16 +470,68 @@ public class ReceptionController : Controller
 
     [RequirePermission("Visitor.ValidateQR")]
     [HttpGet]
-    public async Task<IActionResult> AccessHistory()
+    public async Task<IActionResult> AccessHistory(
+     string? search,
+     DateTime? fromDate,
+     DateTime? toDate,
+     string? status)
     {
-        var logs = await _context.VisitAccessLogs
+        var query = _context.VisitAccessLogs
             .AsNoTracking()
             .Include(x => x.VisitRequest)
             .Include(x => x.VisitVisitor)
                 .ThenInclude(x => x.Visitor)
+            .AsQueryable();
+
+        // Search
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            search = search.Trim();
+
+            query = query.Where(x =>
+                x.VisitVisitor.Visitor.FullName.Contains(search) ||
+                x.VisitVisitor.Visitor.IdNumber.Contains(search) ||
+                x.VisitRequest.VisitReference.Contains(search));
+        }
+
+        // From date
+        if (fromDate.HasValue)
+        {
+            var start = fromDate.Value.Date;
+
+            query = query.Where(x =>
+                x.EntryTime >= start);
+        }
+
+        // To date - include full selected day
+        if (toDate.HasValue)
+        {
+            var end = toDate.Value.Date.AddDays(1);
+
+            query = query.Where(x =>
+                x.EntryTime < end);
+        }
+
+        // Status
+        switch (status?.ToLower())
+        {
+            case "inside":
+                query = query.Where(x =>
+                    x.ExitTime == null);
+                break;
+
+            case "completed":
+                query = query.Where(x =>
+                    x.ExitTime != null);
+                break;
+        }
+
+        // Load filtered logs first
+        var logs = await query
             .OrderByDescending(x => x.EntryTime)
             .ToListAsync();
 
+        // Get all receptionist/security user IDs
         var userIds = logs
             .SelectMany(x => new[]
             {
@@ -495,6 +542,7 @@ public class ReceptionController : Controller
             .Distinct()
             .ToList();
 
+        // Resolve user IDs to full names
         var users = await _context.Users
             .AsNoTracking()
             .Where(x => userIds.Contains(x.Id))
@@ -502,8 +550,9 @@ public class ReceptionController : Controller
                 x => x.Id,
                 x => x.FullName);
 
-        var model = logs.Select(x =>
-            new AccessHistoryViewModel
+        // Build view model
+        var model = logs
+            .Select(x => new AccessHistoryViewModel
             {
                 VisitReference =
                     x.VisitRequest.VisitReference,
@@ -521,6 +570,8 @@ public class ReceptionController : Controller
                     x.ExitTime,
 
                 EntryProcessedBy =
+                    !string.IsNullOrWhiteSpace(
+                        x.EntryProcessedByUserId) &&
                     users.TryGetValue(
                         x.EntryProcessedByUserId,
                         out var entryUser)
@@ -543,6 +594,16 @@ public class ReceptionController : Controller
                     x.ExitGateOrLocation
             })
             .ToList();
+
+        ViewBag.Search = search;
+
+        ViewBag.FromDate =
+            fromDate?.ToString("yyyy-MM-dd");
+
+        ViewBag.ToDate =
+            toDate?.ToString("yyyy-MM-dd");
+
+        ViewBag.Status = status;
 
         return View(model);
     }

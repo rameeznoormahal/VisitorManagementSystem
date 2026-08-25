@@ -12,157 +12,386 @@
     };
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="management-page-header mb-4">
+
     <div>
-        <h2 class="mb-1">@ViewData["Title"]</h2>
-        <div class="text-muted">
-            Today's visitor activity
+        <div class="admin-eyebrow">
+            RECEPTION
         </div>
+
+        <h2>@ViewData["Title"]</h2>
+
+        <p>
+            Monitor today's visitor arrivals, access and departures.
+        </p>
     </div>
 
     <a asp-controller="Home"
        asp-action="Index"
-       class="btn btn-outline-secondary">
+       class="btn premium-secondary-button">
+
+        <i class="bi bi-arrow-left"></i>
         Back to Dashboard
+
     </a>
+
 </div>
 
-<div class="card shadow-sm">
-    <div class="card-body">
 
-        <div class="d-flex gap-2 mb-3">
+<!-- FILTER TABS -->
+<div class="reception-filter-tabs mb-3">
 
-            <a asp-action="Visitors"
-               asp-route-filter="expected"
-               class="btn btn-sm @(filter == "expected" || string.IsNullOrWhiteSpace(filter) ? "btn-primary" : "btn-outline-primary")">
-                Expected Today
-            </a>
+    <a asp-action="Visitors"
+       asp-route-filter="expected"
+       class="reception-filter-tab
+              @(filter == "expected" || string.IsNullOrWhiteSpace(filter)
+                         ? "active"
+                         : "")">
 
-            <a asp-action="Visitors"
-               asp-route-filter="inside"
-               class="btn btn-sm @(filter == "inside" ? "btn-success" : "btn-outline-success")">
-                Currently Inside
-            </a>
+        <span class="reception-filter-icon filter-purple">
+            <i class="bi bi-calendar2-check"></i>
+        </span>
 
-            <a asp-action="Visitors"
-               asp-route-filter="checkedout"
-               class="btn btn-sm @(filter == "checkedout" ? "btn-secondary" : "btn-outline-secondary")">
-                Checked Out
-            </a>
+        Expected Today
 
-            <a asp-action="Visitors"
-               asp-route-filter="notarrived"
-               class="btn btn-sm @(filter == "notarrived" ? "btn-warning" : "btn-outline-warning")">
-                Not Yet Arrived
-            </a>
+    </a>
 
+
+    <a asp-action="Visitors"
+       asp-route-filter="inside"
+       class="reception-filter-tab
+              @(filter == "inside" ? "active inside-active" : "")">
+
+        <span class="reception-filter-icon filter-green">
+            <i class="bi bi-building-check"></i>
+        </span>
+
+        Currently Inside
+
+    </a>
+
+
+    <a asp-action="Visitors"
+       asp-route-filter="checkedout"
+       class="reception-filter-tab
+              @(filter == "checkedout" ? "active checkout-active" : "")">
+
+        <span class="reception-filter-icon filter-gray">
+            <i class="bi bi-box-arrow-right"></i>
+        </span>
+
+        Checked Out
+
+    </a>
+
+
+    <a asp-action="Visitors"
+       asp-route-filter="notarrived"
+       class="reception-filter-tab
+              @(filter == "notarrived" ? "active waiting-active" : "")">
+
+        <span class="reception-filter-icon filter-yellow">
+            <i class="bi bi-clock-history"></i>
+        </span>
+
+        Not Yet Arrived
+
+    </a>
+
+</div>
+
+
+<!-- TABLE -->
+<div class="premium-table-card">
+
+    <div class="premium-table-header">
+
+        <div>
+            <h5>@ViewData["Title"]</h5>
+
+            <span>
+                @Model.Count() visitor(s)
+            </span>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
+        <div class="premium-table-header-icon">
+            <i class="bi bi-people"></i>
+        </div>
 
-                <thead>
-                    <tr>
-                        <th>Visitor</th>
-                        <th>ID Number</th>
-                        <th>Company</th>
-                        <th>Visit Reference</th>
-                        <th>Valid From</th>
-                        <th>Valid To</th>
-                        <th>Last Check-In</th>
-                        <th>Last Check-Out</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
+    </div>
 
-                <tbody>
 
-                    @foreach (var item in Model)
+    <div class="table-responsive">
+
+        <table class="table premium-table reception-visitor-table align-middle mb-0">
+
+            <thead>
+
+                <tr>
+                    <th>Visitor</th>
+                    <th>Identity</th>
+                    <th>Company</th>
+                    <th>Visit</th>
+                    <th>Valid Period</th>
+                    <th>Access Activity</th>
+                    <th>Status</th>
+                    <th class="text-end">Action</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
                     {
                         <tr>
+
+                            <!-- VISITOR -->
                             <td>
+
                                 <a asp-controller="Visitor"
                                    asp-action="Details"
                                    asp-route-id="@item.VisitorId"
-                                   class="text-decoration-none">
-                                    <strong>@item.FullName</strong>
+                                   class="reception-visitor-profile">
+
+                                    <div class="reception-visitor-avatar">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+
+                                    <div>
+                                        <strong>
+                                            @item.FullName
+                                        </strong>
+
+                                        <span>
+                                            View visitor profile
+                                        </span>
+                                    </div>
+
                                 </a>
+
                             </td>
 
-                            <td>@item.IdNumber</td>
 
-                            <td>@item.CompanyName</td>
-
+                            <!-- IDENTITY -->
                             <td>
-                                <strong>@item.VisitReference</strong>
+
+                                <div class="reception-id-number">
+
+                                    <i class="bi bi-person-vcard"></i>
+
+                                    <span>
+                                        @item.IdNumber
+                                    </span>
+
+                                </div>
+
                             </td>
 
-                            <td>
-                                @(item.VisitFromDateTime.ToString(
-                                                            "dd-MMM-yyyy hh:mm tt"))
-                                                                                </td>
 
+                            <!-- COMPANY -->
                             <td>
-                                @(item.VisitToDateTime.ToString(
-                                                            "dd-MMM-yyyy hh:mm tt"))
-                                                                                </td>
 
-                            <td>
-                                @(item.LastCheckInTime?.ToString(
-                                                            "dd-MMM-yyyy hh:mm tt") ?? "-")
-                                                                                       </td>
+                                <div class="reception-company">
 
-                            <td>
-                                @(item.LastCheckOutTime?.ToString(
-                                                            "dd-MMM-yyyy hh:mm tt") ?? "-")
-                        </td>
+                                    <i class="bi bi-building"></i>
 
+                                    <span>
+                                        @(string.IsNullOrWhiteSpace(item.CompanyName)
+                                                                        ? "-"
+                                                                        : item.CompanyName)
+                                                                                       </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- VISIT -->
                             <td>
-                            @if (item.IsCurrentlyInside)
+
+                                <div class="reception-visit-reference">
+
+                                    <span>
+                                        VISIT REFERENCE
+                                    </span>
+
+                                    <strong>
+                                        @item.VisitReference
+                                    </strong>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- VALID PERIOD -->
+                            <td>
+
+                                <div class="reception-validity">
+
+                                    <div>
+
+                                        <i class="bi bi-calendar-check"></i>
+
+                                        <span>
+                                            @item.VisitFromDateTime
+                                            .ToString("dd MMM yyyy")
+                                        </span>
+
+                                    </div>
+
+                                    <small>
+
+                                        @item.VisitFromDateTime
+                                        .ToString("hh:mm tt")
+
+                                        <i class="bi bi-arrow-right"></i>
+
+                                        @item.VisitToDateTime
+                                        .ToString("hh:mm tt")
+
+                                    </small>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- ACCESS -->
+                            <td>
+
+                                <div class="reception-access-times">
+
+                                    <div class="access-record">
+
+                                        <span class="access-record-icon checkin-icon">
+                                            <i class="bi bi-box-arrow-in-right"></i>
+                                        </span>
+
+                                        <div>
+                                            <small>Check-In</small>
+
+                                            <strong>
+                                                @(item.LastCheckInTime?.ToString(
+                                                                                        "hh:mm tt") ?? "-")
+                                                                                                       </strong>
+                                                                                                   </div>
+
+                                    </div>
+
+
+                                    <div class="access-record">
+
+                                        <span class="access-record-icon checkout-icon">
+                                            <i class="bi bi-box-arrow-right"></i>
+                                        </span>
+
+                                        <div>
+                                            <small>Check-Out</small>
+
+                                            <strong>
+                                                @(item.LastCheckOutTime?.ToString(
+                                                                                        "hh:mm tt") ?? "-")
+                                    </strong>
+                                </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- STATUS -->
+                            <td>
+
+                        @if (item.IsCurrentlyInside)
                                 {
-                                    <span class="badge bg-success">
-                                        INSIDE
+                                    <span class="reception-status status-inside">
+
+                                        <i class="bi bi-circle-fill"></i>
+
+                                        Inside
+
                                     </span>
                                 }
                                 else if (item.LastCheckInTime == null)
                                 {
-                                    <span class="badge bg-warning text-dark">
-                                        NOT ARRIVED
+                                    <span class="reception-status status-not-arrived">
+
+                                        <i class="bi bi-clock"></i>
+
+                                        Not Arrived
+
                                     </span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">
-                                        OUTSIDE
+                                    <span class="reception-status status-outside">
+
+                                        <i class="bi bi-check-circle"></i>
+
+                                        Outside
+
                                     </span>
                                 }
+
                             </td>
 
-                            <td>
+
+                            <!-- ACTION -->
+                            <td class="text-end">
+
                                 <a asp-controller="Reception"
                                    asp-action="VisitDetails"
                                    asp-route-id="@item.VisitRequestId"
-                                   class="btn btn-sm btn-outline-primary">
+                                   class="btn reception-open-button"
+                                   title="Open Visit">
+
+                                    <i class="bi bi-arrow-up-right-square"></i>
                                     Open
+
                                 </a>
+
                             </td>
+
                         </tr>
                     }
+                }
+                else
+                {
+                    <tr>
 
-                    @if (!Model.Any())
-                    {
-                        <tr>
-                            <td colspan="10"
-                                class="text-center text-muted py-4">
-                                No visitors found.
-                            </td>
-                        </tr>
-                    }
+                        <td colspan="8"
+                            class="text-center py-5">
 
-                </tbody>
-            </table>
-        </div>
+                            <div class="reception-empty-state">
+
+                                <i class="bi bi-people"></i>
+
+                                <strong>
+                                    No visitors found
+                                </strong>
+
+                                <span>
+                                    There are no visitors in this category.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
 
     </div>
+
 </div>

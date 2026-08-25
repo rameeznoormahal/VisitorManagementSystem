@@ -4,112 +4,463 @@
     ViewData["Title"] = "Access History";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="management-page-header mb-4">
+
     <div>
-        <h2 class="mb-1">Visitor Access History</h2>
-        <div class="text-muted">
-            Complete visitor entry and exit movement history
+        <div class="admin-eyebrow">
+            RECEPTION
         </div>
+
+        <h2>Visitor Access History</h2>
+
+        <p>
+            Complete visitor entry and exit movement history.
+        </p>
     </div>
 
     <a asp-controller="Home"
        asp-action="Index"
-       class="btn btn-outline-secondary">
+       class="btn premium-secondary-button">
+
+        <i class="bi bi-arrow-left"></i>
         Back to Dashboard
+
     </a>
+
 </div>
 
-<div class="card shadow-sm">
-    <div class="card-body">
 
-        <div class="table-responsive">
+<div class="premium-table-card">
 
-            <table class="table table-hover align-middle">
+    <!-- HEADER -->
+    <div class="premium-table-header">
 
-                <thead>
-                    <tr>
-                        <th>Visit Reference</th>
-                        <th>Visitor</th>
-                        <th>ID Number</th>
-                        <th>Check-In</th>
-                        <th>Check-Out</th>
-                        <th>Entry By</th>
-                        <th>Exit By</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
+        <div>
+            <h5>Access Movement Log</h5>
 
-                <tbody>
+            <span>
+                @Model.Count() access record(s)
+            </span>
+        </div>
 
-                    @foreach (var item in Model)
+        <div class="premium-table-header-icon">
+            <i class="bi bi-clock-history"></i>
+        </div>
+
+    </div>
+    <div class="premium-filter-card mb-3">
+
+        <form asp-action="AccessHistory"
+              method="get"
+              class="access-history-filter-form">
+
+            <!-- SEARCH -->
+            <div class="premium-search-box access-history-search">
+
+                <i class="bi bi-search"></i>
+
+                <input type="text"
+                       name="search"
+                       value="@ViewBag.Search"
+                       class="form-control"
+                       placeholder="Search visitor, ID or visit reference..." />
+
+            </div>
+
+
+            <!-- FROM -->
+            <div class="access-filter-field">
+
+                <label>
+                    From
+                </label>
+
+                <input type="date"
+                       name="fromDate"
+                       value="@ViewBag.FromDate"
+                       class="form-control" />
+
+            </div>
+
+
+            <!-- TO -->
+            <div class="access-filter-field">
+
+                <label>
+                    To
+                </label>
+
+                <input type="date"
+                       name="toDate"
+                       value="@ViewBag.ToDate"
+                       class="form-control" />
+
+            </div>
+
+
+            <!-- STATUS -->
+            <div class="premium-filter-select">
+
+                <select name="status"
+                        class="form-select"
+                        onchange="this.form.submit()">
+
+                    <option value="">
+                        All Status
+                    </option>
+
+                    <option value="inside"
+                            selected="@(ViewBag.Status == "inside")">
+                        Currently Inside
+                    </option>
+
+                    <option value="completed"
+                            selected="@(ViewBag.Status == "completed")">
+                        Completed
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- FILTER -->
+            <button type="submit"
+                    class="btn premium-primary-button">
+
+                <i class="bi bi-funnel"></i>
+                Filter
+
+            </button>
+
+
+            <!-- CLEAR -->
+            <a asp-action="AccessHistory"
+               class="btn premium-secondary-button">
+
+                <i class="bi bi-x-lg"></i>
+                Clear
+
+            </a>
+
+        </form>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table premium-table access-history-table align-middle mb-0">
+
+            <thead>
+
+                <tr>
+                    <th>Visit</th>
+                    <th>Visitor</th>
+                    <th>Identity</th>
+                    <th>Check-In</th>
+                    <th>Check-Out</th>
+                    <th>Processed By</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
                     {
-                        <tr>
+                        var duration =
+                        (item.ExitTime ?? DateTime.Now) -
+                        item.EntryTime;
 
-                            <td>
-                                <strong>
-                                    @item.VisitReference
-                                </strong>
+                        <tr class="@(item.ExitTime == null
+                                                                     ? "access-history-active-row"
+                                                                     : "")">
+
+
+                    <!-- VISIT -->
+                    <td>
+
+                                <div class="history-reference">
+
+                                    <span>
+                                        VISIT REFERENCE
+                                    </span>
+
+                                    <strong>
+                                        @item.VisitReference
+                                    </strong>
+
+                                </div>
+
                             </td>
 
+
+                            <!-- VISITOR -->
                             <td>
-                                @item.VisitorName
+
+                                <div class="history-visitor">
+
+                                    <div class="history-visitor-avatar">
+
+                                        <i class="bi bi-person"></i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            @item.VisitorName
+                                        </strong>
+
+                                        <span>
+                                            Visitor
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
                             </td>
 
+
+                            <!-- IDENTITY -->
                             <td>
-                                @item.IdNumber
+
+                                <div class="history-id">
+
+                                    <i class="bi bi-person-vcard"></i>
+
+                                    <span>
+                                        @item.IdNumber
+                                    </span>
+
+                                </div>
+
                             </td>
 
-                            <td>
-                                @(item.EntryTime.ToString(
-                                                            "dd-MMM-yyyy hh:mm tt"))
-                                                                                </td>
 
+                            <!-- CHECK IN -->
                             <td>
-                                @(item.ExitTime?.ToString(
-                                                            "dd-MMM-yyyy hh:mm tt") ?? "-")
-                        </td>
 
-                            <td>
-                                @item.EntryProcessedBy
+                                <div class="history-time">
+
+                                    <span class="history-time-icon history-entry">
+
+                                        <i class="bi bi-box-arrow-in-right"></i>
+
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            @item.EntryTime.ToString("hh:mm tt")
+                                        </strong>
+
+                                        <span>
+                                            @item.EntryTime.ToString("dd MMM yyyy")
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
                             </td>
 
-                            <td>
-                                @(item.ExitProcessedBy ?? "-")
-                            </td>
 
+                            <!-- CHECK OUT -->
                             <td>
-                            @if (item.ExitTime == null)
+
+                        @if (item.ExitTime.HasValue)
                                 {
-                                    <span class="badge bg-success">
-                                        INSIDE
+                                    <div class="history-time">
+
+                                        <span class="history-time-icon history-exit">
+
+                                            <i class="bi bi-box-arrow-right"></i>
+
+                                        </span>
+
+                                        <div>
+
+                                            <strong>
+                                                @item.ExitTime.Value.ToString("hh:mm tt")
+                                            </strong>
+
+                                            <span>
+                                                @item.ExitTime.Value.ToString("dd MMM yyyy")
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="history-not-completed">
+
+                                        <i class="bi bi-dash-circle"></i>
+                                        Not checked out
+
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- PROCESSED BY -->
+                            <td>
+
+                                <div class="history-processed">
+
+                                    <div>
+
+                                        <span>
+                                            <i class="bi bi-box-arrow-in-right"></i>
+                                            Entry
+                                        </span>
+
+                                        <strong>
+                                            @item.EntryProcessedBy
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span>
+                                            <i class="bi bi-box-arrow-right"></i>
+                                            Exit
+                                        </span>
+
+                                        <strong>
+                                            @(item.ExitProcessedBy ?? "-")
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- DURATION -->
+                            <td>
+
+                                @if (item.ExitTime.HasValue)
+                                {
+                                    <span class="history-duration">
+
+                                        <i class="bi bi-stopwatch"></i>
+
+                                        @if (duration.TotalDays >= 1)
+                                        {
+                                            <text>
+                                                @((int)duration.TotalDays)d
+                                                @duration.Hours.ToString("00")h
+                                                @duration.Minutes.ToString("00")m
+                                            </text>
+                                        }
+                                        else
+                                        {
+                                            <text>
+                                                @((int)duration.TotalHours)h
+                                                @duration.Minutes.ToString("00")m
+                                            </text>
+                                        }
+
                                     </span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">
-                                        COMPLETED
+                                    <span class="history-duration history-duration-active">
+
+                                        <i class="bi bi-stopwatch"></i>
+
+                                        @if (duration.TotalDays >= 1)
+                                        {
+                                            <text>
+                                                @((int)duration.TotalDays)d
+                                                @duration.Hours.ToString("00")h
+                                                @duration.Minutes.ToString("00")m
+                                            </text>
+                                        }
+                                        else
+                                        {
+                                            <text>
+                                                @((int)duration.TotalHours)h
+                                                @duration.Minutes.ToString("00")m
+                                            </text>
+                                        }
+
                                     </span>
                                 }
+
+                            </td>
+
+
+                            <!-- STATUS -->
+                            <td>
+
+                                @if (item.ExitTime == null)
+                                {
+                                    <span class="reception-status status-inside">
+
+                                        <i class="bi bi-circle-fill"></i>
+                                        Inside
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="reception-status status-completed">
+
+                                        <i class="bi bi-check-circle"></i>
+                                        Completed
+
+                                    </span>
+                                }
+
                             </td>
 
                         </tr>
                     }
+                }
+                else
+                {
+                    <tr>
 
-                    @if (!Model.Any())
-                    {
-                        <tr>
-                            <td colspan="8"
-                                class="text-center text-muted py-4">
-                                No access history found.
-                            </td>
-                        </tr>
-                    }
+                        <td colspan="8"
+                            class="text-center py-5">
 
-                </tbody>
+                            <div class="reception-empty-state">
 
-            </table>
+                                <i class="bi bi-clock-history"></i>
 
-        </div>
+                                <strong>
+                                    No access history found
+                                </strong>
+
+                                <span>
+                                    Visitor check-in and check-out records will appear here.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
 
     </div>
+
 </div>

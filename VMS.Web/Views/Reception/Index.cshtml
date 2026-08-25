@@ -4,52 +4,229 @@
     ViewData["Title"] = "Reception QR Validation";
 }
 
-<h2 class="mb-4">Reception QR Validation</h2>
+<div class="management-page-header mb-4">
 
-<div class="row">
-    <div class="col-lg-6">
+    <div>
+        <div class="admin-eyebrow">
+            RECEPTION
+        </div>
 
-        <div class="card shadow-sm">
-            <div class="card-header">
-                Scan or Enter QR Token
+        <h2>QR Validation</h2>
+
+        <p>
+            Scan a visitor QR code or enter the access token manually.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="reception-validation-layout">
+
+    <!-- VALIDATION CARD -->
+    <div class="reception-validation-card">
+
+        <div class="reception-validation-header">
+
+            <div class="reception-validation-icon">
+                <i class="bi bi-qr-code-scan"></i>
             </div>
 
-            <div class="card-body">
+            <div>
+                <h5>Visitor QR Validation</h5>
 
-                <form asp-action="ValidateQr" method="post">
+                <span>
+                    Scan or enter the visitor access token
+                </span>
+            </div>
 
-                    <div asp-validation-summary="ModelOnly"
-                         class="text-danger mb-3">
-                    </div>
+        </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Token"
-                               class="form-label">
-                        </label>
+
+        <div class="reception-validation-body">
+
+            <div class="reception-scan-visual">
+
+                <div class="scan-frame">
+
+                    <span class="scan-corner scan-top-left"></span>
+                    <span class="scan-corner scan-top-right"></span>
+                    <span class="scan-corner scan-bottom-left"></span>
+                    <span class="scan-corner scan-bottom-right"></span>
+
+                    <i class="bi bi-qr-code"></i>
+
+                </div>
+
+                <strong>
+                    Ready to Scan
+                </strong>
+
+                <span>
+                    Use the reception QR scanner or enter the token below.
+                </span>
+
+            </div>
+
+
+            <form asp-action="ValidateQr"
+                  method="post"
+                  id="qrValidationForm">
+
+                @Html.AntiForgeryToken()
+
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger mb-3">
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label asp-for="Token"
+                           class="premium-form-label">
+
+                        QR Token
+
+                    </label>
+
+
+                    <div class="reception-token-input">
+
+                        <span>
+                            <i class="bi bi-upc-scan"></i>
+                        </span>
 
                         <input asp-for="Token"
                                class="form-control"
                                autocomplete="off"
-                               autofocus />
+                               autofocus
+                               placeholder="Scan QR code or enter token..." />
 
-                        <span asp-validation-for="Token"
-                              class="text-danger">
-                        </span>
                     </div>
 
-                    <button type="submit"
-                            class="btn btn-primary">
-                        Validate QR
-                    </button>
 
-                </form>
+                    <span asp-validation-for="Token"
+                          class="text-danger small">
+                    </span>
 
-            </div>
+                </div>
+
+
+                <button type="submit"
+                        class="btn reception-validate-button">
+
+                    <i class="bi bi-shield-check"></i>
+
+                    Validate Visitor
+
+                </button>
+
+            </form>
+
         </div>
 
     </div>
+
+
+    <!-- HELP PANEL -->
+    <div class="reception-help-card">
+
+        <div class="reception-help-icon">
+            <i class="bi bi-shield-lock"></i>
+        </div>
+
+        <h5>Secure Access Validation</h5>
+
+        <p>
+            Visitor QR codes are checked against the approved visit
+            information before reception access is allowed.
+        </p>
+
+
+        <div class="reception-help-item">
+
+            <i class="bi bi-1-circle"></i>
+
+            <div>
+                <strong>Scan QR Code</strong>
+                <span>
+                    Scan the QR code presented by the visitor.
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="reception-help-item">
+
+            <i class="bi bi-2-circle"></i>
+
+            <div>
+                <strong>Verify Visitor</strong>
+                <span>
+                    Confirm the visitor identity and visit details.
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="reception-help-item">
+
+            <i class="bi bi-3-circle"></i>
+
+            <div>
+                <strong>Check In</strong>
+                <span>
+                    Record entry after successful validation.
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
+
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        /*
+         * Most USB/Bluetooth QR scanners behave like keyboards.
+         * They enter the QR token and normally send Enter.
+         *
+         * Therefore we keep focus on the Token input.
+         */
+
+        const tokenInput =
+            document.getElementById("Token");
+
+        if (tokenInput) {
+
+            tokenInput.focus();
+
+            /*
+             * Return focus after clicking elsewhere.
+             * Small delay prevents interfering with buttons.
+             */
+            document.addEventListener("click", function (event) {
+
+                if (event.target.closest("button, a, input")) {
+                    return;
+                }
+
+                setTimeout(function () {
+                    tokenInput.focus();
+                }, 100);
+
+            });
+        }
+
+    </script>
+
 }

@@ -4,207 +4,518 @@
     ViewData["Title"] = "Visitor Access";
 }
 
-<h2 class="mb-4">Visitor Access</h2>
+<div class="management-page-header mb-4">
 
-<div class="card mb-4 shadow-sm">
-    <div class="card-header">
-        Visit Request
+    <div>
+        <div class="admin-eyebrow">
+            RECEPTION
+        </div>
+
+        <h2>Visitor Access</h2>
+
+        <p>
+            Verify visit authorization and manage visitor check-in and check-out.
+        </p>
     </div>
 
-    <div class="card-body">
-        <div class="row">
+    <a asp-action="Index"
+       class="btn premium-secondary-button">
 
-            <div class="col-md-4 mb-3">
-                <strong>Reference</strong>
-                <div>@Model.VisitReference</div>
+        <i class="bi bi-qr-code-scan"></i>
+        Scan Another QR
+
+    </a>
+
+</div>
+
+
+<!-- ACCESS STATUS -->
+<div class="@(Model.IsWithinValidPeriod
+                     ? "reception-access-banner access-valid"
+                     : "reception-access-banner access-invalid") mb-3">
+
+    <div class="reception-access-banner-left">
+
+        <div class="reception-access-banner-icon">
+
+            @if (Model.IsWithinValidPeriod)
+            {
+                <i class="bi bi-shield-check"></i>
+            }
+            else
+            {
+                <i class="bi bi-shield-x"></i>
+            }
+
+        </div>
+
+        <div>
+
+            @if (Model.IsWithinValidPeriod)
+            {
+                <span>ACCESS AUTHORIZED</span>
+
+                <strong>
+                    Visit is within the approved access period
+                </strong>
+            }
+            else
+            {
+                <span>ACCESS CLOSED</span>
+
+                <strong>
+                    Visit is outside the approved access period
+                </strong>
+            }
+
+        </div>
+
+    </div>
+
+
+    <div class="reception-access-reference">
+
+        <span>VISIT REFERENCE</span>
+
+        <strong>
+            @Model.VisitReference
+        </strong>
+
+    </div>
+
+</div>
+
+
+<!-- VISIT INFORMATION -->
+<div class="premium-profile-card mb-3">
+
+    <div class="premium-profile-header">
+
+        <div>
+            <h5>Visit Information</h5>
+
+            <span>
+                Approved visit request and access details
+            </span>
+        </div>
+
+        <div class="premium-form-header-icon stat-purple">
+            <i class="bi bi-calendar2-check"></i>
+        </div>
+
+    </div>
+
+
+    <div class="reception-visit-grid">
+
+        <div class="reception-visit-info">
+
+            <div class="reception-visit-info-icon">
+                <i class="bi bi-person-badge"></i>
             </div>
 
-            <div class="col-md-4 mb-3">
-                <strong>Host</strong>
-                <div>@Model.HostName</div>
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <strong>Department</strong>
-                <div>@Model.DepartmentName</div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <strong>Valid From</strong>
-                <div>
-                    @Model.VisitFromDateTime.ToString("dd-MMM-yyyy hh:mm tt")
-                </div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <strong>Valid To</strong>
-                <div>
-                    @Model.VisitToDateTime.ToString("dd-MMM-yyyy hh:mm tt")
-                </div>
-            </div>
-
-            <div class="col-md-12 mb-3">
-                <strong>Purpose</strong>
-                <div>@Model.Purpose</div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <strong>Location</strong>
-                <div>@Model.MeetingLocation</div>
+            <div>
+                <span>Host</span>
+                <strong>@Model.HostName</strong>
             </div>
 
         </div>
 
-        @if (Model.IsWithinValidPeriod)
-        {
-            <div class="alert alert-success mb-0">
-                This request is currently within the approved access period.
+
+        <div class="reception-visit-info">
+
+            <div class="reception-visit-info-icon">
+                <i class="bi bi-building"></i>
             </div>
-        }
-        else
-        {
-            <div class="alert alert-danger mb-0">
-                This request is outside the approved access period.
+
+            <div>
+                <span>Department</span>
+                <strong>@Model.DepartmentName</strong>
             </div>
-        }
+
+        </div>
+
+
+        <div class="reception-visit-info">
+
+            <div class="reception-visit-info-icon">
+                <i class="bi bi-geo-alt"></i>
+            </div>
+
+            <div>
+                <span>Meeting Location</span>
+                <strong>
+                    @(string.IsNullOrWhiteSpace(Model.MeetingLocation)
+                                        ? "-"
+                                        : Model.MeetingLocation)
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="reception-visit-info">
+
+            <div class="reception-visit-info-icon reception-valid-icon">
+                <i class="bi bi-calendar-check"></i>
+            </div>
+
+            <div>
+                <span>Valid From</span>
+
+                <strong>
+                    @Model.VisitFromDateTime.ToString(
+                                        "dd MMM yyyy, hh:mm tt")
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="reception-visit-info">
+
+            <div class="reception-visit-info-icon reception-expiry-icon">
+                <i class="bi bi-calendar-x"></i>
+            </div>
+
+            <div>
+                <span>Valid To</span>
+
+                <strong>
+                    @Model.VisitToDateTime.ToString(
+                                        "dd MMM yyyy, hh:mm tt")
+                </strong>
+            </div>
+
+        </div>
+
     </div>
+
+
+    <!-- PURPOSE -->
+    <div class="reception-purpose-box">
+
+        <div class="reception-purpose-icon">
+            <i class="bi bi-card-text"></i>
+        </div>
+
+        <div>
+            <span>PURPOSE OF VISIT</span>
+
+            <strong>
+                @Model.Purpose
+            </strong>
+        </div>
+
+    </div>
+
 </div>
 
-<div class="card shadow-sm">
-    <div class="card-header">
-        Visitors (@Model.Visitors.Count)
+
+<!-- VISITOR ACCESS LIST -->
+<div class="premium-table-card">
+
+    <div class="premium-table-header">
+
+        <div>
+            <h5>Visitors</h5>
+
+            <span>
+                @Model.Visitors.Count visitor(s) registered for this visit
+            </span>
+        </div>
+
+        <div class="premium-table-header-icon">
+            <i class="bi bi-people"></i>
+        </div>
+
     </div>
 
-    <div class="card-body">
-        <div class="table-responsive">
 
-            <table class="table table-hover align-middle">
+    <div class="table-responsive">
 
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>ID</th>
-                        <th>Company</th>
-                        <th>Designation</th>
-                        <th>Status</th>
-                        <th>Last Check-In</th>
-                        <th>Last Check-Out</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
+        <table class="table premium-table reception-access-table align-middle mb-0">
 
-                <tbody>
+            <thead>
+                <tr>
+                    <th>Visitor</th>
+                    <th>Identity</th>
+                    <th>Company</th>
+                    <th>Designation</th>
+                    <th>Last Check-In</th>
+                    <th>Last Check-Out</th>
+                    <th>Status</th>
+                    <th class="text-end">Access Action</th>
+                </tr>
+            </thead>
 
-                    @foreach (var visitor in Model.Visitors)
-                    {
-                        <tr>
-                            <td>
-                                <strong>@visitor.FullName</strong>
-                            </td>
 
-                            <td>@visitor.IdNumber</td>
+            <tbody>
 
-                            <td>@visitor.CompanyName</td>
+                @foreach (var visitor in Model.Visitors)
+                {
+                    <tr class="@(visitor.IsCurrentlyInside
+                                                             ? "visitor-currently-inside"
+                                                             : "")">
 
-                            <td>@visitor.Designation</td>
+                        <!-- VISITOR -->
+                        <td>
 
-                            <td>
-                                @if (visitor.IsCurrentlyInside)
-                                {
-                                    <span class="badge bg-success">
-                                        INSIDE
+                            <div class="reception-access-profile">
+
+                                <div class="reception-access-avatar">
+                                    <i class="bi bi-person"></i>
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        @visitor.FullName
+                                    </strong>
+
+                                    <span>
+                                        Registered Visitor
                                     </span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">
-                                        OUTSIDE
-                                    </span>
-                                }
+                                </div>
+
+                            </div>
+
                         </td>
 
-                        <td>
-                            @(visitor.LastCheckInTime?.ToString(
-                                                        "dd-MMM-yyyy hh:mm tt") ?? "-")
-                                                                                   </td>
 
+                        <!-- ID -->
                         <td>
-                            @(visitor.LastCheckOutTime?.ToString(
-                                                        "dd-MMM-yyyy hh:mm tt") ?? "-")
+
+                            <div class="reception-access-id">
+
+                                <i class="bi bi-person-vcard"></i>
+
+                                <span>
+                                    @visitor.IdNumber
+                                </span>
+
+                            </div>
+
                         </td>
 
-                            <td>
+
+                        <!-- COMPANY -->
+                        <td>
+
+                            <div class="reception-access-company">
+
+                                <i class="bi bi-building"></i>
+
+                                <span>
+                                    @(string.IsNullOrWhiteSpace(visitor.CompanyName)
+                                                                    ? "-"
+                                                                    : visitor.CompanyName)
+                                                                                      </span>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- DESIGNATION -->
+                        <td>
+
+                            @(string.IsNullOrWhiteSpace(visitor.Designation)
+                                                    ? "-"
+                                                    : visitor.Designation)
+
+                    </td>
+
+
+                        <!-- CHECK IN -->
+                        <td>
+
+                        @if (visitor.LastCheckInTime.HasValue)
+                            {
+                                <div class="reception-time-display">
+
+                                    <span class="time-icon time-checkin">
+                                        <i class="bi bi-box-arrow-in-right"></i>
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            @visitor.LastCheckInTime.Value
+                                            .ToString("hh:mm tt")
+                                        </strong>
+
+                                        <span>
+                                            @visitor.LastCheckInTime.Value
+                                            .ToString("dd MMM yyyy")
+                                        </span>
+
+                                    </div>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="reception-no-time">
+                                    Not checked in
+                                </span>
+                            }
+
+                        </td>
+
+
+                        <!-- CHECK OUT -->
+                        <td>
+
+                            @if (visitor.LastCheckOutTime.HasValue)
+                            {
+                                <div class="reception-time-display">
+
+                                    <span class="time-icon time-checkout">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            @visitor.LastCheckOutTime.Value
+                                            .ToString("hh:mm tt")
+                                        </strong>
+
+                                        <span>
+                                            @visitor.LastCheckOutTime.Value
+                                            .ToString("dd MMM yyyy")
+                                        </span>
+
+                                    </div>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="reception-no-time">
+                                    -
+                                </span>
+                            }
+
+                        </td>
+
+
+                        <!-- STATUS -->
+                        <td>
+
+                            @if (visitor.IsCurrentlyInside)
+                            {
+                                <span class="reception-status status-inside">
+
+                                    <i class="bi bi-circle-fill"></i>
+                                    Inside
+
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="reception-status status-outside">
+
+                                    <i class="bi bi-circle"></i>
+                                    Outside
+
+                                </span>
+                            }
+
+                        </td>
+
+
+                        <!-- ACTION -->
+                        <td class="text-end">
+
                             @if (!Model.IsWithinValidPeriod)
-                                {
-                                    <button class="btn btn-sm btn-secondary"
-                                            disabled>
-                                        Access Closed
+                            {
+                                <button type="button"
+                                        class="btn reception-access-closed-button"
+                                        disabled>
+
+                                    <i class="bi bi-lock"></i>
+                                    Access Closed
+
+                                </button>
+                            }
+                            else if (visitor.IsCurrentlyInside)
+                            {
+                                <form asp-controller="Reception"
+                                      asp-action="CheckOut"
+                                      method="post"
+                                      class="d-inline reception-access-form">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="visitRequestId"
+                                           value="@Model.VisitRequestId" />
+
+                                    <input type="hidden"
+                                           name="visitVisitorId"
+                                           value="@visitor.VisitVisitorId" />
+
+                                    <button type="submit"
+                                            class="btn reception-checkout-button">
+
+                                        <i class="bi bi-box-arrow-right"></i>
+                                        Check Out
+
                                     </button>
-                                }
-                                else if (visitor.IsCurrentlyInside)
-                                {
-                                    <form asp-controller="Reception"
-                                          asp-action="CheckOut"
-                                          method="post"
-                                          class="d-inline">
 
-                                        @Html.AntiForgeryToken()
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-controller="Reception"
+                                      asp-action="CheckIn"
+                                      method="post"
+                                      class="d-inline reception-access-form">
 
-                                        <input type="hidden"
-                                               name="visitRequestId"
-                                               value="@Model.VisitRequestId" />
+                                    @Html.AntiForgeryToken()
 
-                                        <input type="hidden"
-                                               name="visitVisitorId"
-                                               value="@visitor.VisitVisitorId" />
+                                    <input type="hidden"
+                                           name="visitRequestId"
+                                           value="@Model.VisitRequestId" />
 
-                                        <button type="submit"
-                                                class="btn btn-sm btn-danger">
-                                            Check Out
-                                        </button>
+                                    <input type="hidden"
+                                           name="visitVisitorId"
+                                           value="@visitor.VisitVisitorId" />
 
-                                    </form>
-                                }
-                                else
-                                {
-                                    <form asp-controller="Reception"
-                                          asp-action="CheckIn"
-                                          method="post"
-                                          class="d-inline">
+                                    <button type="submit"
+                                            class="btn reception-checkin-button">
 
-                                        @Html.AntiForgeryToken()
+                                        <i class="bi bi-box-arrow-in-right"></i>
+                                        Check In
 
-                                        <input type="hidden"
-                                               name="visitRequestId"
-                                               value="@Model.VisitRequestId" />
+                                    </button>
 
-                                        <input type="hidden"
-                                               name="visitVisitorId"
-                                               value="@visitor.VisitVisitorId" />
+                                </form>
+                            }
 
-                                        <button type="submit"
-                                                class="btn btn-sm btn-success">
-                                            Check In
-                                        </button>
+                        </td>
 
-                                    </form>
-                                }
-                            </td>
+                    </tr>
+                }
 
-                        </tr>
-                    }
+            </tbody>
 
-                </tbody>
+        </table>
 
-            </table>
-
-        </div>
     </div>
+
 </div>
+
 
 <div class="mt-3">
+
     <a asp-action="Index"
-       class="btn btn-secondary">
+       class="btn premium-secondary-button">
+
+        <i class="bi bi-qr-code-scan"></i>
         Scan Another QR
+
     </a>
+
 </div>

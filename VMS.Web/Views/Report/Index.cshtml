@@ -2,220 +2,241 @@
     ViewData["Title"] = "Reports";
 }
 
-<div class="mb-4">
-    <h2 class="mb-1">Reports</h2>
-    <div class="text-muted">
-        Visitor management reports and operational analysis
+<div class="management-page-header mb-4">
+
+    <div>
+        <div class="admin-eyebrow">
+            REPORTING & ANALYTICS
+        </div>
+
+        <h2>Reports</h2>
+
+        <p>
+            Visitor management reports, audit views and operational analysis.
+        </p>
     </div>
+
 </div>
 
-<div class="row g-3">
 
-    <div class="col-md-6 col-xl-4">
-        <a asp-controller="Report"
-           asp-action="Visits"
-           class="text-decoration-none">
+<div class="reports-grid">
 
-            <div class="card dashboard-card h-100">
-                <div class="card-body">
-
-                    <div class="kpi-header">
-                        <div>
-                            <div class="dashboard-label">
-                                Visit Report
-                            </div>
-
-                            <div class="text-muted small mt-2">
-                                Review visit requests by date, department and status
-                            </div>
-                        </div>
-
-                        <div class="kpi-icon kpi-blue">
-                            <i class="bi bi-calendar2-check"></i>
-                        </div>
-                    </div>
-
-                    <div class="kpi-action">
-                        Open Visit Report →
-                    </div>
-
-                </div>
-            </div>
-
-        </a>
-    </div>
-
-
-    <div class="col-md-6 col-xl-4">
-        <a asp-controller="Report"
-           asp-action="Visitors"
-           class="text-decoration-none">
-
-            <div class="card dashboard-card h-100">
-                <div class="card-body">
-
-                    <div class="kpi-header">
-
-                        <div>
-                            <div class="dashboard-label">
-                                Visitor Report
-                            </div>
-
-                            <div class="text-muted small mt-2">
-                                Visitor history, company and visit statistics
-                            </div>
-                        </div>
-
-                        <div class="kpi-icon kpi-green">
-                            <i class="bi bi-people"></i>
-                        </div>
-
-                    </div>
-
-                    <div class="kpi-action">
-                        Open Visitor Report →
-                    </div>
-
-                </div>
-            </div>
-
-        </a>
-    </div>
-
-
-    <div class="col-md-6 col-xl-4">
+    <!-- VISIT REPORT -->
     <a asp-controller="Report"
-       asp-action="Access"
-       class="text-decoration-none">
+       asp-action="Visits"
+       class="premium-report-card">
 
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
-
-                <div class="kpi-header">
-
-                    <div>
-                        <div class="dashboard-label">
-                            Access Report
-                        </div>
-
-                        <div class="text-muted small mt-2">
-                            Check-in, check-out and duration history
-                        </div>
-                    </div>
-
-                    <div class="kpi-icon kpi-purple">
-                        <i class="bi bi-clock-history"></i>
-                    </div>
-
-                </div>
-
-                <div class="kpi-action">
-                    Open Access Report →
-                </div>
-
-            </div>
+        <div class="premium-report-icon stat-purple">
+            <i class="bi bi-calendar2-check"></i>
         </div>
+
+        <div class="premium-report-content">
+
+            <span class="premium-report-category">
+                VISITS
+            </span>
+
+            <h5>
+                Visit Report
+            </h5>
+
+            <p>
+                Review visit requests by date,
+                department, status and schedule.
+            </p>
+
+            <div class="premium-report-action">
+                Open Report
+                <i class="bi bi-arrow-right"></i>
+            </div>
+
+        </div>
+
+        <i class="bi bi-arrow-up-right premium-report-corner"></i>
 
     </a>
-</div>
 
 
-    <div class="col-md-6 col-xl-4">
-        <a asp-controller="Report"
-   asp-action="CurrentlyInside"
-   class="text-decoration-none">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
+    <!-- VISITOR REPORT -->
+    <a asp-controller="Report"
+       asp-action="Visitors"
+       class="premium-report-card">
 
-                <div class="kpi-header">
-                    <div>
-                        <div class="dashboard-label">
-                            Currently Inside
-                        </div>
-
-                        <div class="text-muted small mt-2">
-                            Visitors currently present on site
-                        </div>
-                    </div>
-
-                    <div class="kpi-icon kpi-green">
-                        <i class="bi bi-building-check"></i>
-                    </div>
-                </div>
-
-                    <div class="kpi-action">
-                        Open Currently Inside →
-                    </div>
-
-            </div>
+        <div class="premium-report-icon stat-green">
+            <i class="bi bi-people"></i>
         </div>
-        </a>
-    </div>
 
+        <div class="premium-report-content">
 
-    <div class="col-md-6 col-xl-4">
-        <a asp-controller="Report"
-   asp-action="Approvals"
-   class="text-decoration-none">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
+            <span class="premium-report-category">
+                VISITORS
+            </span>
 
-                <div class="kpi-header">
-                    <div>
-                        <div class="dashboard-label">
-                            Approval Report
-                        </div>
+            <h5>
+                Visitor Report
+            </h5>
 
-                        <div class="text-muted small mt-2">
-                            Approved, rejected and pending request decisions
-                        </div>
-                    </div>
+            <p>
+                Review registered visitors, companies
+                and visitor activity history.
+            </p>
 
-                    <div class="kpi-icon kpi-yellow">
-                        <i class="bi bi-shield-check"></i>
-                    </div>
-                </div>
-
-                    <div class="kpi-action">
-                        Open Approval Report →
-                    </div>
-
+            <div class="premium-report-action">
+                Open Report
+                <i class="bi bi-arrow-right"></i>
             </div>
+
         </div>
-        </a>
-    </div>
+
+        <i class="bi bi-arrow-up-right premium-report-corner"></i>
+
+    </a>
 
 
-    <div class="col-md-6 col-xl-4">
-        <a asp-controller="Report"
-   asp-action="Departments"
-   class="text-decoration-none">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
+    <!-- ACCESS REPORT -->
+    <a asp-controller="Report"
+       asp-action="Access"
+       class="premium-report-card">
 
-                <div class="kpi-header">
-                    <div>
-                        <div class="dashboard-label">
-                            Department Summary
-                        </div>
+        <div class="premium-report-icon stat-blue">
+            <i class="bi bi-clock-history"></i>
+        </div>
 
-                        <div class="text-muted small mt-2">
-                            Visitor and visit statistics by department
-                        </div>
-                    </div>
+        <div class="premium-report-content">
 
-                    <div class="kpi-icon kpi-orange">
-                        <i class="bi bi-building"></i>
-                    </div>
-                </div>
+            <span class="premium-report-category">
+                ACCESS
+            </span>
 
-                    <div class="kpi-action">
-                        Open Department Summary →
-                    </div>
+            <h5>
+                Access Report
+            </h5>
 
+            <p>
+                Analyze check-in, check-out and
+                visitor access duration history.
+            </p>
+
+            <div class="premium-report-action">
+                Open Report
+                <i class="bi bi-arrow-right"></i>
             </div>
+
         </div>
-        </a>
-    </div>
+
+        <i class="bi bi-arrow-up-right premium-report-corner"></i>
+
+    </a>
+
+
+    <!-- CURRENTLY INSIDE -->
+    <a asp-controller="Report"
+       asp-action="CurrentlyInside"
+       class="premium-report-card">
+
+        <div class="premium-report-icon stat-green">
+            <i class="bi bi-building-check"></i>
+        </div>
+
+        <div class="premium-report-content">
+
+            <span class="premium-report-category">
+                LIVE STATUS
+            </span>
+
+            <h5>
+                Currently Inside
+            </h5>
+
+            <p>
+                View visitors currently present
+                within the facility.
+            </p>
+
+            <div class="premium-report-action">
+                Open Report
+                <i class="bi bi-arrow-right"></i>
+            </div>
+
+        </div>
+
+        <span class="premium-report-live">
+            <span></span>
+            LIVE
+        </span>
+
+    </a>
+
+
+    <!-- APPROVAL REPORT -->
+    <a asp-controller="Report"
+       asp-action="Approvals"
+       class="premium-report-card">
+
+        <div class="premium-report-icon stat-yellow">
+            <i class="bi bi-shield-check"></i>
+        </div>
+
+        <div class="premium-report-content">
+
+            <span class="premium-report-category">
+                APPROVALS
+            </span>
+
+            <h5>
+                Approval Report
+            </h5>
+
+            <p>
+                Analyze approved, rejected and
+                pending visit decisions.
+            </p>
+
+            <div class="premium-report-action">
+                Open Report
+                <i class="bi bi-arrow-right"></i>
+            </div>
+
+        </div>
+
+        <i class="bi bi-arrow-up-right premium-report-corner"></i>
+
+    </a>
+
+
+    <!-- DEPARTMENT SUMMARY -->
+    <a asp-controller="Report"
+       asp-action="Departments"
+       class="premium-report-card">
+
+        <div class="premium-report-icon stat-coral">
+            <i class="bi bi-building"></i>
+        </div>
+
+        <div class="premium-report-content">
+
+            <span class="premium-report-category">
+                ORGANIZATION
+            </span>
+
+            <h5>
+                Department Summary
+            </h5>
+
+            <p>
+                Compare visitor and visit activity
+                across departments.
+            </p>
+
+            <div class="premium-report-action">
+                Open Report
+                <i class="bi bi-arrow-right"></i>
+            </div>
+
+        </div>
+
+        <i class="bi bi-arrow-up-right premium-report-corner"></i>
+
+    </a>
 
 </div>

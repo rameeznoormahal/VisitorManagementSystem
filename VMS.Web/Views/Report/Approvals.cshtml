@@ -4,344 +4,539 @@
     ViewData["Title"] = "Approval Report";
 }
 
-<div class="d-flex justify-content-between align-items-start mb-4">
+<div class="management-page-header mb-4">
+
     <div>
-        <h2 class="mb-1">Approval Report</h2>
-        <div class="text-muted">
-            Review pending, approved and rejected visit decisions
+        <div class="admin-eyebrow">
+            REPORTING & ANALYTICS
         </div>
+
+        <h2>Approval Report</h2>
+
+        <p>
+            Review pending, approved and rejected visit decisions.
+        </p>
     </div>
 
     <a asp-action="Index"
-       class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>
-        Reports
+       class="btn premium-secondary-button">
+
+        <i class="bi bi-arrow-left"></i>
+        Back to Reports
+
     </a>
-</div>
-
-<div class="card shadow-sm mb-4">
-    <div class="card-header">
-        <strong>Report Filters</strong>
-    </div>
-
-    <div class="card-body">
-
-        <form method="get"
-              asp-action="Approvals">
-
-            <div class="row g-3">
-
-                <div class="col-lg-2 col-md-4">
-                    <label class="form-label">From Date</label>
-
-                    <input type="date"
-                           name="fromDate"
-                           value="@Model.FromDate?.ToString("yyyy-MM-dd")"
-                           class="form-control" />
-                </div>
-
-                <div class="col-lg-2 col-md-4">
-                    <label class="form-label">To Date</label>
-
-                    <input type="date"
-                           name="toDate"
-                           value="@Model.ToDate?.ToString("yyyy-MM-dd")"
-                           class="form-control" />
-                </div>
-
-                <div class="col-lg-2 col-md-4">
-                    <label class="form-label">Status</label>
-
-                    <select name="status"
-                            class="form-select">
-
-                        <option value="">All</option>
-
-                        <option value="pending"
-                                selected="@(Model.Status == "pending")">
-                            Pending
-                        </option>
-
-                        <option value="approved"
-                                selected="@(Model.Status == "approved")">
-                            Approved
-                        </option>
-
-                        <option value="rejected"
-                                selected="@(Model.Status == "rejected")">
-                            Rejected
-                        </option>
-
-                    </select>
-                </div>
-
-                <div class="col-lg-6 col-md-12">
-                    <label class="form-label">Search</label>
-
-                    <input type="text"
-                           name="search"
-                           value="@Model.Search"
-                           class="form-control"
-                           placeholder="Visit reference or purpose..." />
-                </div>
-
-            </div>
-
-            <div class="d-flex gap-2 mt-3">
-
-                <button type="submit"
-                        class="btn btn-primary">
-                    <i class="bi bi-search me-1"></i>
-                    Apply Filters
-                </button>
-
-                <a asp-action="Approvals"
-                   class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-counterclockwise me-1"></i>
-                    Reset
-                </a>
-
-            </div>
-
-        </form>
-
-    </div>
-</div>
-
-<div class="row g-3 mb-4">
-
-    <div class="col-md-4">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
-
-                <div class="kpi-header">
-
-                    <div>
-                        <div class="dashboard-label">
-                            Pending
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Count(x =>
-                            x.Status == "PendingApproval")
-                        </div>
-                    </div>
-
-                    <div class="kpi-icon kpi-yellow">
-                        <i class="bi bi-hourglass-split"></i>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
-
-                <div class="kpi-header">
-
-                    <div>
-                        <div class="dashboard-label">
-                            Approved
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Count(x =>
-                                                        x.Status == "Approved" ||
-                                                        x.Status == "ReadyForVisit")
-                        </div>
-                    </div>
-
-                    <div class="kpi-icon kpi-green">
-                        <i class="bi bi-check-circle"></i>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
-
-                <div class="kpi-header">
-
-                    <div>
-                        <div class="dashboard-label">
-                            Rejected
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Count(x =>
-                                                        x.Status == "Rejected")
-                        </div>
-                    </div>
-
-                    <div class="kpi-icon kpi-red">
-                        <i class="bi bi-x-circle"></i>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
 
 </div>
 
-<div class="card shadow-sm">
 
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <strong>Approval Results</strong>
+<!-- FILTERS -->
+<div class="premium-filter-card mb-3">
 
-        <span class="text-muted small">
-            @Model.Items.Count record(s)
-        </span>
+    <form method="get"
+          asp-action="Approvals"
+          class="approval-report-filter-form">
+
+        <div class="access-filter-field">
+
+            <label>From Date</label>
+
+            <input type="date"
+                   name="fromDate"
+                   value="@Model.FromDate?.ToString("yyyy-MM-dd")"
+                   class="form-control" />
+
+        </div>
+
+
+        <div class="access-filter-field">
+
+            <label>To Date</label>
+
+            <input type="date"
+                   name="toDate"
+                   value="@Model.ToDate?.ToString("yyyy-MM-dd")"
+                   class="form-control" />
+
+        </div>
+
+
+        <div class="premium-filter-select">
+
+            <label class="report-filter-label">
+                Status
+            </label>
+
+            <select name="status"
+                    class="form-select"
+                    onchange="this.form.submit()">
+
+                <option value="">
+                    All Status
+                </option>
+
+                <option value="pending"
+                        selected="@(Model.Status == "pending")">
+                    Pending
+                </option>
+
+                <option value="approved"
+                        selected="@(Model.Status == "approved")">
+                    Approved
+                </option>
+
+                <option value="rejected"
+                        selected="@(Model.Status == "rejected")">
+                    Rejected
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="premium-search-box approval-report-search">
+
+            <i class="bi bi-search"></i>
+
+            <input type="text"
+                   name="search"
+                   value="@Model.Search"
+                   class="form-control"
+                   placeholder="Search visit reference or purpose..." />
+
+        </div>
+
+
+        <button type="submit"
+                class="btn premium-primary-button">
+
+            <i class="bi bi-funnel"></i>
+            Apply
+
+        </button>
+
+
+        <a asp-action="Approvals"
+           class="btn premium-secondary-button">
+
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Reset
+
+        </a>
+
+    </form>
+
+</div>
+
+
+<!-- KPI -->
+<div class="row g-3 mb-3">
+
+    <div class="col-md-4">
+
+        <div class="mini-summary-card">
+
+            <div class="mini-summary-icon stat-yellow">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+
+            <div>
+                <span>Pending</span>
+
+                <strong>
+                    @Model.Items.Count(x =>
+                    x.Status == "PendingApproval")
+                </strong>
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="card-body">
 
-        <div class="table-responsive">
+    <div class="col-md-4">
 
-            <table class="table table-hover align-middle">
+        <div class="mini-summary-card">
 
-                <thead>
-                    <tr>
-                        <th>Reference</th>
-                        <th>Host</th>
-                        <th>Department</th>
-                        <th>Visitors</th>
-                        <th>Visit Period</th>
-                        <th>Status</th>
-                        <th>Decision By</th>
-                        <th>Decision Date</th>
-                        <th>Comments</th>
-                    </tr>
-                </thead>
+            <div class="mini-summary-icon stat-green">
+                <i class="bi bi-check-circle"></i>
+            </div>
 
-                <tbody>
+            <div>
+                <span>Approved</span>
 
-                    @if (Model.Items.Any())
+                <strong>
+                    @Model.Items.Count(x =>
+                                        x.Status == "Approved" ||
+                                        x.Status == "ReadyForVisit")
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="mini-summary-card">
+
+            <div class="mini-summary-icon stat-red">
+                <i class="bi bi-x-circle"></i>
+            </div>
+
+            <div>
+                <span>Rejected</span>
+
+                <strong>
+                    @Model.Items.Count(x =>
+                                        x.Status == "Rejected")
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- RESULTS -->
+<div class="premium-table-card">
+
+    <div class="premium-table-header">
+
+        <div>
+            <h5>Approval Decisions</h5>
+
+            <span>
+                @Model.Items.Count record(s)
+            </span>
+        </div>
+
+        <div class="premium-table-header-icon">
+            <i class="bi bi-shield-check"></i>
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table class="table premium-table approval-report-table align-middle mb-0">
+
+            <thead>
+                <tr>
+                    <th>Visit</th>
+                    <th>Host</th>
+                    <th>Visitors</th>
+                    <th>Visit Period</th>
+                    <th>Status</th>
+                    <th>Decision</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+                @if (Model.Items.Any())
+                {
+                    foreach (var item in Model.Items)
                     {
-                        foreach (var item in Model.Items)
-                        {
-                            <tr>
+                        <tr>
 
-                                <td>
+                            <!-- VISIT -->
+                            <td>
+
+                                <div class="report-reference">
+
+                                    <span>
+                                        VISIT REFERENCE
+                                    </span>
+
                                     <strong>
                                         @item.VisitReference
                                     </strong>
-                                </td>
 
-                                <td>@item.HostName</td>
+                                    <div class="approval-report-department">
 
-                                <td>@item.DepartmentName</td>
+                                        <i class="bi bi-building"></i>
 
-                                <td>
-                                    <span class="badge bg-secondary">
-                                        @item.VisitorCount
-                                    </span>
-                                </td>
+                                        @(string.IsNullOrWhiteSpace(
+                                                                        item.DepartmentName)
+                                                                        ? "-"
+                                                                        : item.DepartmentName)
 
-                                <td>
-                                    <div>
-                                        @(item.VisitFromDateTime.ToString(
-                                                                        "dd-MMM-yyyy hh:mm tt"))
-                                                                                            </div>
-
-                                    <div class="text-muted small">
-                                        to
-                                        @(item.VisitToDateTime.ToString(
-                                                                        "dd-MMM-yyyy hh:mm tt"))
                             </div>
-                        </td>
 
-                                <td>
-                            @switch (item.Status)
-                                    {
-                                        case "PendingApproval":
-                                            <span class="badge bg-warning text-dark">
-                                                Pending Approval
+                                </div>
+
+                            </td>
+
+
+                            <!-- HOST -->
+                            <td>
+
+                                <div class="approval-report-host">
+
+                                    <div class="approval-report-avatar">
+                                        <i class="bi bi-person-badge"></i>
+                                    </div>
+
+                                    <div>
+                                        <strong>
+                                            @item.HostName
+                                        </strong>
+
+                                        <span>
+                                            Host
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- VISITORS -->
+                            <td>
+
+                                <div class="approval-report-count">
+
+                                    <i class="bi bi-people"></i>
+
+                                    <strong>
+                                        @item.VisitorCount
+                                    </strong>
+
+                                    <span>
+                                        visitor@(item.VisitorCount == 1 ? "" : "s")
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- PERIOD -->
+                            <td>
+
+                                <div class="approval-report-period">
+
+                                    <div>
+
+                                        <span class="period-dot period-start"></span>
+
+                                        <div>
+                                            <strong>
+                                                @item.VisitFromDateTime.ToString("dd MMM yyyy")
+                                            </strong>
+
+                                            <span>
+                                                @item.VisitFromDateTime.ToString("hh:mm tt")
                                             </span>
-                                            break;
+                                        </div>
 
-                                        case "Approved":
-                                            <span class="badge bg-success">
-                                                Approved
+                                    </div>
+
+
+                                    <div>
+
+                                        <span class="period-dot period-end"></span>
+
+                                        <div>
+                                            <strong>
+                                                @item.VisitToDateTime.ToString("dd MMM yyyy")
+                                            </strong>
+
+                                            <span>
+                                                @item.VisitToDateTime.ToString("hh:mm tt")
                                             </span>
-                                            break;
+                                        </div>
 
-                                        case "ReadyForVisit":
-                                            <span class="badge bg-success">
-                                                Ready For Visit
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- STATUS -->
+                            <td>
+
+                        @switch (item.Status)
+                                {
+                                    case "PendingApproval":
+
+                                        <span class="approval-report-status status-pending">
+
+                                            <i class="bi bi-hourglass-split"></i>
+
+                                            Pending
+
+                                        </span>
+
+                                        break;
+
+
+                                    case "Approved":
+
+                                        <span class="approval-report-status status-approved">
+
+                                            <i class="bi bi-check-circle"></i>
+
+                                            Approved
+
+                                        </span>
+
+                                        break;
+
+
+                                    case "ReadyForVisit":
+
+                                        <span class="approval-report-status status-approved">
+
+                                            <i class="bi bi-check-circle"></i>
+
+                                            Ready
+
+                                        </span>
+
+                                        break;
+
+
+                                    case "Rejected":
+
+                                        <span class="approval-report-status status-rejected">
+
+                                            <i class="bi bi-x-circle"></i>
+
+                                            Rejected
+
+                                        </span>
+
+                                        break;
+
+
+                                    default:
+
+                                        <span class="approval-report-status status-neutral">
+
+                                            @item.Status
+
+                                        </span>
+
+                                        break;
+                                }
+
+                            </td>
+
+
+                            <!-- DECISION -->
+                            <td>
+
+                                @if (!string.IsNullOrWhiteSpace(item.DecisionBy))
+                                {
+                                    <div class="approval-report-decision">
+
+                                        <div class="approval-decision-user">
+
+                                            <i class="bi bi-person-check"></i>
+
+                                            <strong>
+                                                @item.DecisionBy
+                                            </strong>
+
+                                        </div>
+
+
+                                        @if (item.DecisionDate.HasValue)
+                                        {
+                                            <span>
+
+                                                <i class="bi bi-clock"></i>
+
+                                                @item.DecisionDate.Value.ToString("dd MMM yyyy, hh:mm tt")
+
                                             </span>
-                                            break;
+                                        }
 
-                                        case "Rejected":
-                                            <span class="badge bg-danger">
-                                                Rejected
-                                            </span>
-                                            break;
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="approval-awaiting">
 
-                                        default:
-                                            <span class="badge bg-light text-dark">
-                                                @item.Status
-                                            </span>
-                                            break;
-                                    }
-                        </td>
+                                        <i class="bi bi-clock-history"></i>
 
-                        <td>
-                            @(item.DecisionBy ?? "-")
-                        </td>
+                                        Awaiting decision
 
-                        <td>
-                            @(item.DecisionDate?.ToString(
-                                                        "dd-MMM-yyyy hh:mm tt") ?? "-")
-                        </td>
+                                    </span>
+                                }
 
-                                <td>
-                            @if (!string.IsNullOrWhiteSpace(
+                            </td>
+
+
+                            <!-- COMMENTS -->
+                            <td>
+
+                                @if (!string.IsNullOrWhiteSpace(
                                                         item.DecisionComments))
-                                    {
+                                {
+                                    <div class="approval-report-comments"
+                                         title="@item.DecisionComments">
+
+                                        <i class="bi bi-chat-left-text"></i>
+
                                         <span>
                                             @item.DecisionComments
                                         </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">
-                                            -
-                                        </span>
-                                    }
-                                </td>
 
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="9"
-                                class="text-center text-muted py-4">
-
-                                <i class="bi bi-inbox fs-4 d-block mb-2"></i>
-                                No approval records found.
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">
+                                        -
+                                    </span>
+                                }
 
                             </td>
+
                         </tr>
                     }
+                }
+                else
+                {
+                    <tr>
 
-                </tbody>
+                        <td colspan="7"
+                            class="text-center py-5">
 
-            </table>
+                            <div class="reception-empty-state">
 
-        </div>
+                                <i class="bi bi-shield-check"></i>
+
+                                <strong>
+                                    No approval records found
+                                </strong>
+
+                                <span>
+                                    Try adjusting the report filters.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
 
     </div>
+
 </div>

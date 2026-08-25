@@ -2,330 +2,554 @@
 
 @{
     ViewData["Title"] = "Visitor Report";
+
     var today = DateOnly.FromDateTime(DateTime.Today);
 }
 
-<div class="d-flex justify-content-between align-items-start mb-4">
+<div class="management-page-header mb-4">
+
     <div>
-        <h2 class="mb-1">Visitor Report</h2>
-        <div class="text-muted">
-            Visitor activity and master-data summary
+        <div class="admin-eyebrow">
+            REPORTING & ANALYTICS
         </div>
+
+        <h2>Visitor Report</h2>
+
+        <p>
+            Visitor activity, identity status and visit history analysis.
+        </p>
     </div>
 
     <a asp-action="Index"
-       class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>
-        Reports
+       class="btn premium-secondary-button">
+
+        <i class="bi bi-arrow-left"></i>
+        Back to Reports
+
     </a>
-</div>
-
-<div class="card shadow-sm mb-4">
-    <div class="card-header">
-        <strong>Report Filters</strong>
-    </div>
-
-    <div class="card-body">
-        <form method="get"
-              asp-action="Visitors">
-
-            <div class="row g-3">
-
-                <div class="col-lg-4 col-md-6">
-                    <label class="form-label">
-                        Search
-                    </label>
-
-                    <input type="text"
-                           name="search"
-                           value="@Model.Search"
-                           class="form-control"
-                           placeholder="Name, ID, company or mobile..." />
-                </div>
-
-                <div class="col-lg-2 col-md-6">
-                    <label class="form-label">
-                        Status
-                    </label>
-
-                    <select name="status"
-                            class="form-select">
-
-                        <option value="">All Visitors</option>
-
-                        <option value="active"
-                                selected="@(Model.Status == "active")">
-                            Active
-                        </option>
-
-                        <option value="inactive"
-                                selected="@(Model.Status == "inactive")">
-                            Inactive
-                        </option>
-
-                        <option value="expired"
-                                selected="@(Model.Status == "expired")">
-                            Expired ID
-                        </option>
-
-                    </select>
-                </div>
-
-                <div class="col-lg-2 col-md-6">
-                    <label class="form-label">
-                        From Date
-                    </label>
-
-                    <input type="date"
-                           name="fromDate"
-                           value="@Model.FromDate?.ToString("yyyy-MM-dd")"
-                           class="form-control" />
-                </div>
-
-                <div class="col-lg-2 col-md-6">
-                    <label class="form-label">
-                        To Date
-                    </label>
-
-                    <input type="date"
-                           name="toDate"
-                           value="@Model.ToDate?.ToString("yyyy-MM-dd")"
-                           class="form-control" />
-                </div>
-
-            </div>
-
-            <div class="d-flex gap-2 mt-3">
-
-                <button type="submit"
-                        class="btn btn-primary">
-                    <i class="bi bi-search me-1"></i>
-                    Apply Filters
-                </button>
-
-                <a asp-action="Visitors"
-                   class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-counterclockwise me-1"></i>
-                    Reset
-                </a>
-
-            </div>
-
-        </form>
-    </div>
-</div>
-
-
-<div class="row g-3 mb-4">
-
-    <div class="col-md-4">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
-
-                <div class="kpi-header">
-
-                    <div>
-                        <div class="dashboard-label">
-                            Visitors
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Count
-                        </div>
-                    </div>
-
-                    <div class="kpi-icon kpi-blue">
-                        <i class="bi bi-people"></i>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
-
-                <div class="kpi-header">
-
-                    <div>
-                        <div class="dashboard-label">
-                            Total Visits
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Sum(x => x.TotalVisits)
-                        </div>
-                    </div>
-
-                    <div class="kpi-icon kpi-green">
-                        <i class="bi bi-calendar2-check"></i>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
-
-                <div class="kpi-header">
-
-                    <div>
-                        <div class="dashboard-label">
-                            Expired IDs
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Count(x =>
-                            x.IdExpiryDate < today)
-                        </div>
-                    </div>
-
-                    <div class="kpi-icon kpi-red">
-                        <i class="bi bi-person-x"></i>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
 
 </div>
 
 
-<div class="card shadow-sm">
-    <div class="card-header d-flex justify-content-between align-items-center">
+<!-- FILTERS -->
+<div class="premium-filter-card mb-3">
 
-        <strong>Visitor Results</strong>
+    <form method="get"
+          asp-action="Visitors"
+          class="visitor-report-filter-form">
 
-        <span class="text-muted small">
-            @Model.Items.Count record(s)
-        </span>
+        <!-- SEARCH -->
+        <div class="premium-search-box visitor-report-search">
+
+            <i class="bi bi-search"></i>
+
+            <input type="text"
+                   name="search"
+                   value="@Model.Search"
+                   class="form-control"
+                   placeholder="Search name, ID, company or mobile..." />
+
+        </div>
+
+
+        <!-- STATUS -->
+        <div class="premium-filter-select">
+
+            <label class="report-filter-label">
+                Status
+            </label>
+
+            <select name="status"
+                    class="form-select"
+                    onchange="this.form.submit()">
+
+                <option value="">
+                    All Visitors
+                </option>
+
+                <option value="active"
+                        selected="@(Model.Status == "active")">
+                    Active
+                </option>
+
+                <option value="inactive"
+                        selected="@(Model.Status == "inactive")">
+                    Inactive
+                </option>
+
+                <option value="expired"
+                        selected="@(Model.Status == "expired")">
+                    Expired ID
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- FROM -->
+        <div class="access-filter-field">
+
+            <label>
+                From Date
+            </label>
+
+            <input type="date"
+                   name="fromDate"
+                   value="@Model.FromDate?.ToString("yyyy-MM-dd")"
+                   class="form-control" />
+
+        </div>
+
+
+        <!-- TO -->
+        <div class="access-filter-field">
+
+            <label>
+                To Date
+            </label>
+
+            <input type="date"
+                   name="toDate"
+                   value="@Model.ToDate?.ToString("yyyy-MM-dd")"
+                   class="form-control" />
+
+        </div>
+
+
+        <button type="submit"
+                class="btn premium-primary-button">
+
+            <i class="bi bi-funnel"></i>
+            Apply
+
+        </button>
+
+
+        <a asp-action="Visitors"
+           class="btn premium-secondary-button">
+
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Reset
+
+        </a>
+
+    </form>
+
+</div>
+
+
+<!-- SUMMARY -->
+<div class="row g-3 mb-3">
+
+    <div class="col-md-4">
+
+        <div class="mini-summary-card">
+
+            <div class="mini-summary-icon stat-blue">
+                <i class="bi bi-people"></i>
+            </div>
+
+            <div>
+                <span>Visitors</span>
+
+                <strong>
+                    @Model.Items.Count
+                </strong>
+            </div>
+
+        </div>
 
     </div>
 
-    <div class="card-body">
 
-        <div class="table-responsive">
+    <div class="col-md-4">
 
-            <table class="table table-hover align-middle">
+        <div class="mini-summary-card">
 
-                <thead>
-                    <tr>
-                        <th>Visitor</th>
-                        <th>ID Type</th>
-                        <th>ID Number</th>
-                        <th>ID Expiry</th>
-                        <th>Nationality</th>
-                        <th>Company</th>
-                        <th>Mobile</th>
-                        <th>Total Visits</th>
-                        <th>Last Visit</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
+            <div class="mini-summary-icon stat-green">
+                <i class="bi bi-calendar2-check"></i>
+            </div>
 
-                <tbody>
+            <div>
+                <span>Total Visits</span>
 
-                    @if (Model.Items.Any())
+                <strong>
+                    @Model.Items.Sum(x => x.TotalVisits)
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="mini-summary-card">
+
+            <div class="mini-summary-icon stat-red">
+                <i class="bi bi-person-x"></i>
+            </div>
+
+            <div>
+                <span>Expired IDs</span>
+
+                <strong>
+                    @Model.Items.Count(x =>
+                    x.IdExpiryDate < today)
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- RESULTS -->
+<div class="premium-table-card">
+
+    <div class="premium-table-header">
+
+        <div>
+            <h5>Visitor Activity</h5>
+
+            <span>
+                @Model.Items.Count record(s)
+            </span>
+        </div>
+
+        <div class="premium-table-header-icon">
+            <i class="bi bi-person-vcard"></i>
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table class="table premium-table visitor-report-table align-middle mb-0">
+
+            <thead>
+
+                <tr>
+                    <th>Visitor</th>
+                    <th>Identity</th>
+                    <th>ID Expiry</th>
+                    <th>Nationality</th>
+                    <th>Company</th>
+                    <th>Contact</th>
+                    <th>Activity</th>
+                    <th>Last Visit</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @if (Model.Items.Any())
+                {
+                    foreach (var item in Model.Items)
                     {
-                        foreach (var item in Model.Items)
-                        {
-                            var expired =
-                            item.IdExpiryDate < today;
+                        var expired =
+                        item.IdExpiryDate < today;
 
-                            <tr>
+                        <tr class="@(expired
+                                                        ? "visitor-expired-row"
+                                                        : "")">
 
-                                <td>
-                                    <a asp-controller="Visitor"
-                                       asp-action="Details"
-                                       asp-route-id="@item.VisitorId"
-                                       class="text-decoration-none">
+                    <!-- VISITOR -->
+                    <td>
+
+                                <a asp-controller="Visitor"
+                                   asp-action="Details"
+                                   asp-route-id="@item.VisitorId"
+                                   class="report-visitor-profile">
+
+                                    <div class="report-visitor-avatar">
+
+                                        <i class="bi bi-person"></i>
+
+                                    </div>
+
+                                    <div>
 
                                         <strong>
                                             @item.FullName
                                         </strong>
 
-                                    </a>
-                                </td>
-
-                                <td>@item.IdType</td>
-
-                                <td>@item.IdNumber</td>
-
-                                <td>
-                                    @(item.IdExpiryDate.ToString(
-                                                                "dd-MMM-yyyy"))
-                                                                           </td>
-
-                                <td>@item.Nationality</td>
-
-                                <td>@item.CompanyName</td>
-
-                                <td>@item.PhoneNumber</td>
-
-                                <td>
-                                    <span class="badge bg-secondary">
-                                        @item.TotalVisits
-                                    </span>
-                                </td>
-
-                                <td>
-                                    @(item.LastVisitDate?.ToString(
-                                                                "dd-MMM-yyyy hh:mm tt") ?? "-")
-                        </td>
-
-                                <td>
-
-                            @if (expired)
-                                    {
-                                        <span class="badge bg-danger">
-                                            ID Expired
+                                        <span>
+                                            Visitor Profile
                                         </span>
-                                    }
-                                    else if (item.IsActive)
-                                    {
-                                        <span class="badge bg-success">
-                                            Active
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-secondary">
-                                            Inactive
-                                        </span>
-                                    }
 
-                                </td>
+                                    </div>
 
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="10"
-                                class="text-center text-muted py-4">
-
-                                <i class="bi bi-inbox fs-4 d-block mb-2"></i>
-                                No visitor records found.
+                                </a>
 
                             </td>
+
+
+                            <!-- IDENTITY -->
+                            <td>
+
+                                <div class="visitor-report-identity">
+
+                                    <div class="visitor-report-id-icon">
+
+                                        <i class="bi bi-person-vcard"></i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            @item.IdNumber
+                                        </strong>
+
+                                        <span>
+                                            @item.IdType
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- EXPIRY -->
+                            <td>
+
+                        @if (expired)
+                                {
+                                    <div class="visitor-expiry visitor-expiry-danger">
+
+                                        <i class="bi bi-exclamation-circle"></i>
+
+                                        <div>
+
+                                            <strong>
+                                                @item.IdExpiryDate.ToString("dd MMM yyyy")
+                                            </strong>
+
+                                            <span>
+                                                Expired
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="visitor-expiry">
+
+                                        <i class="bi bi-calendar-check"></i>
+
+                                        <div>
+
+                                            <strong>
+                                                @item.IdExpiryDate.ToString("dd MMM yyyy")
+                                            </strong>
+
+                                            <span>
+                                                Valid
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+                                }
+
+                    </td>
+
+
+                    <!-- NATIONALITY -->
+                    <td>
+
+                        <div class="visitor-report-info">
+
+                            <i class="bi bi-globe2"></i>
+
+                            <span>
+                                @(string.IsNullOrWhiteSpace(item.Nationality)
+                                                                ? "-"
+                                                                : item.Nationality)
+                                                                               </span>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- COMPANY -->
+                    <td>
+
+                        <div class="visitor-report-company">
+
+                            <i class="bi bi-building"></i>
+
+                            <span>
+                                @(string.IsNullOrWhiteSpace(item.CompanyName)
+                                                                ? "-"
+                                                                : item.CompanyName)
+                                                                               </span>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- CONTACT -->
+                    <td>
+
+                        <div class="visitor-report-contact">
+
+                            <i class="bi bi-telephone"></i>
+
+                            <span>
+                                @(string.IsNullOrWhiteSpace(item.PhoneNumber)
+                                                                ? "-"
+                                                                : item.PhoneNumber)
+                            </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- VISIT ACTIVITY -->
+                            <td>
+
+                                <div class="visitor-activity-count">
+
+                                    <div class="visitor-activity-number">
+                                        @item.TotalVisits
+                                    </div>
+
+                                    <div>
+                                        <strong>
+                                            Total Visits
+                                        </strong>
+
+                                        <span>
+                                            Recorded activity
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- LAST VISIT -->
+                            <td>
+
+                        @if (item.LastVisitDate.HasValue)
+                                {
+                                    <div class="visitor-last-visit">
+
+                                        <i class="bi bi-clock-history"></i>
+
+                                        <div>
+
+                                            <strong>
+                                                @item.LastVisitDate.Value
+                                                .ToString("dd MMM yyyy")
+                                            </strong>
+
+                                            <span>
+                                                @item.LastVisitDate.Value
+                                                .ToString("hh:mm tt")
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="visitor-no-visit">
+
+                                        <i class="bi bi-dash-circle"></i>
+                                        No visits
+
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- STATUS -->
+                            <td>
+
+                                @if (expired)
+                                {
+                                    <span class="visitor-report-status visitor-status-expired">
+
+                                        <i class="bi bi-exclamation-circle"></i>
+                                        ID Expired
+
+                                    </span>
+                                }
+                                else if (item.IsActive)
+                                {
+                                    <span class="visitor-report-status visitor-status-active">
+
+                                        <i class="bi bi-check-circle"></i>
+                                        Active
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="visitor-report-status visitor-status-inactive">
+
+                                        <i class="bi bi-circle"></i>
+                                        Inactive
+
+                                    </span>
+                                }
+
+                            </td>
+
                         </tr>
                     }
+                }
+                else
+                {
+                    <tr>
 
-                </tbody>
+                        <td colspan="9"
+                            class="text-center py-5">
 
-            </table>
+                            <div class="reception-empty-state">
 
-        </div>
+                                <i class="bi bi-people"></i>
+
+                                <strong>
+                                    No visitor records found
+                                </strong>
+
+                                <span>
+                                    Try adjusting the report filters.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
 
     </div>
+
 </div>

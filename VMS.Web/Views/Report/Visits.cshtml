@@ -10,272 +10,238 @@
         ViewBag.Departments as IEnumerable<Department>;
 }
 
-<div class="d-flex justify-content-between align-items-start mb-4">
+<div class="management-page-header mb-4">
 
     <div>
-        <h2 class="mb-1">Visit Report</h2>
-
-        <div class="text-muted">
-            Search and review visit requests
+        <div class="admin-eyebrow">
+            REPORTING & ANALYTICS
         </div>
+
+        <h2>Visit Report</h2>
+
+        <p>
+            Analyze visit requests, visitor volumes and approval activity.
+        </p>
     </div>
 
     <a asp-action="Index"
-       class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>
-        Reports
+       class="btn premium-secondary-button">
+
+        <i class="bi bi-arrow-left"></i>
+        Back to Reports
+
     </a>
 
 </div>
 
 
 <!-- FILTERS -->
-<div class="card shadow-sm mb-4">
+<div class="premium-filter-card mb-3">
 
-    <div class="card-header">
-        <strong>Report Filters</strong>
-    </div>
+    <form method="get"
+          asp-action="Visits"
+          class="visit-report-filter-form">
 
-    <div class="card-body">
+        <!-- SEARCH -->
+        <div class="premium-search-box visit-report-search">
 
-        <form method="get"
-              asp-action="Visits">
+            <i class="bi bi-search"></i>
 
-            <div class="row g-3">
+            <input type="text"
+                   name="search"
+                   value="@Model.Search"
+                   class="form-control"
+                   placeholder="Reference or purpose..." />
 
-                <div class="col-lg-2 col-md-4">
-                    <label class="form-label">
-                        From Date
-                    </label>
-
-                    <input type="date"
-                           name="fromDate"
-                           value="@Model.FromDate?.ToString("yyyy-MM-dd")"
-                           class="form-control" />
-                </div>
+        </div>
 
 
-                <div class="col-lg-2 col-md-4">
-                    <label class="form-label">
-                        To Date
-                    </label>
+        <!-- DEPARTMENT -->
+        <div class="visit-filter-field">
 
-                    <input type="date"
-                           name="toDate"
-                           value="@Model.ToDate?.ToString("yyyy-MM-dd")"
-                           class="form-control" />
-                </div>
+            <label>Department</label>
 
+            <select name="departmentId"
+                    class="form-select">
 
-                <div class="col-lg-2 col-md-4">
-                    <label class="form-label">
-                        Department
-                    </label>
+                <option value="">
+                    All Departments
+                </option>
 
-                    <select name="departmentId"
-                            class="form-select">
-
-                        <option value="">
-                            All Departments
+                @if (departments != null)
+                {
+                    foreach (var department in departments)
+                    {
+                        <option value="@department.DepartmentId"
+                                selected="@(Model.DepartmentId == department.DepartmentId)">
+                            @department.DepartmentName
                         </option>
+                    }
+                }
 
-                        @if (departments != null)
-                        {
-                            foreach (var department in departments)
-                            {
-                                <option value="@department.DepartmentId"
-                                        selected="@(Model.DepartmentId == department.DepartmentId)">
-                                    @department.DepartmentName
-                                </option>
-                            }
-                        }
+            </select>
 
-                    </select>
-                </div>
+        </div>
 
 
-                <div class="col-lg-2 col-md-4">
-                    <label class="form-label">
-                        Status
-                    </label>
+        <!-- STATUS -->
+        <div class="visit-filter-field">
 
-                    <select name="status"
-                            class="form-select">
+            <label>Status</label>
 
-                        <option value="">
-                            All Statuses
-                        </option>
+            <select name="status"
+                    class="form-select">
 
-                        @foreach (var status in Enum.GetValues<VisitStatus>())
-                        {
-                            <option value="@status"
-                                    selected="@(Model.Status == status.ToString())">
-                                @status
-                            </option>
-                        }
+                <option value="">
+                    All Statuses
+                </option>
 
-                    </select>
-                </div>
+                @foreach (var status in Enum.GetValues<VisitStatus>())
+                {
+                    <option value="@status"
+                            selected="@(Model.Status == status.ToString())">
+                        @status
+                    </option>
+                }
 
+            </select>
 
-                <div class="col-lg-4 col-md-8">
-                    <label class="form-label">
-                        Search
-                    </label>
-
-                    <input type="text"
-                           name="search"
-                           value="@Model.Search"
-                           class="form-control"
-                           placeholder="Reference or purpose..." />
-                </div>
-
-            </div>
+        </div>
 
 
-            <div class="d-flex gap-2 mt-3">
+        <!-- FROM -->
+        <div class="visit-filter-field">
 
-                <button type="submit"
-                        class="btn btn-primary">
+            <label>From</label>
 
-                    <i class="bi bi-search me-1"></i>
-                    Apply Filters
+            <input type="date"
+                   name="fromDate"
+                   value="@Model.FromDate?.ToString("yyyy-MM-dd")"
+                   class="form-control" />
 
-                </button>
+        </div>
 
-                <a asp-action="Visits"
-                   class="btn btn-outline-secondary">
 
-                    <i class="bi bi-arrow-counterclockwise me-1"></i>
-                    Reset
+        <!-- TO -->
+        <div class="visit-filter-field">
 
-                </a>
+            <label>To</label>
 
-            </div>
+            <input type="date"
+                   name="toDate"
+                   value="@Model.ToDate?.ToString("yyyy-MM-dd")"
+                   class="form-control" />
 
-        </form>
+        </div>
 
-    </div>
+
+        <button type="submit"
+                class="btn premium-primary-button">
+
+            <i class="bi bi-funnel"></i>
+            Apply
+
+        </button>
+
+
+        <a asp-action="Visits"
+           class="btn premium-secondary-button">
+
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Reset
+
+        </a>
+
+    </form>
+
 </div>
 
 
 <!-- KPI SUMMARY -->
-<div class="row g-3 mb-4">
+<div class="row g-3 mb-3">
 
-    <div class="col-md-3">
+    <div class="col-md-6 col-xl-3">
 
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
+        <div class="mini-summary-card">
 
-                <div class="kpi-header">
-
-                    <div>
-                        <div class="dashboard-label">
-                            Total Visits
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Count
-                        </div>
-                    </div>
-
-                    <div class="kpi-icon kpi-blue">
-                        <i class="bi bi-calendar2-check"></i>
-                    </div>
-
-                </div>
-
+            <div class="mini-summary-icon stat-blue">
+                <i class="bi bi-calendar2-check"></i>
             </div>
+
+            <div>
+                <span>Total Visits</span>
+
+                <strong>
+                    @Model.Items.Count
+                </strong>
+            </div>
+
         </div>
 
     </div>
 
 
-    <div class="col-md-3">
+    <div class="col-md-6 col-xl-3">
 
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
+        <div class="mini-summary-card">
 
-                <div class="kpi-header">
-
-                    <div>
-                        <div class="dashboard-label">
-                            Total Visitors
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Sum(x => x.VisitorCount)
-                        </div>
-                    </div>
-
-                    <div class="kpi-icon kpi-green">
-                        <i class="bi bi-people"></i>
-                    </div>
-
-                </div>
-
+            <div class="mini-summary-icon stat-purple">
+                <i class="bi bi-people"></i>
             </div>
+
+            <div>
+                <span>Total Visitors</span>
+
+                <strong>
+                    @Model.Items.Sum(x => x.VisitorCount)
+                </strong>
+            </div>
+
         </div>
 
     </div>
 
 
-    <div class="col-md-3">
+    <div class="col-md-6 col-xl-3">
 
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
+        <div class="mini-summary-card">
 
-                <div class="kpi-header">
-
-                    <div>
-                        <div class="dashboard-label">
-                            Approved / Ready
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Count(x =>
-                            x.Status == VisitStatus.Approved.ToString() ||
-                            x.Status == VisitStatus.ReadyForVisit.ToString())
-                        </div>
-                    </div>
-
-                    <div class="kpi-icon kpi-green">
-                        <i class="bi bi-check-circle"></i>
-                    </div>
-
-                </div>
-
+            <div class="mini-summary-icon stat-green">
+                <i class="bi bi-check-circle"></i>
             </div>
+
+            <div>
+                <span>Approved / Ready</span>
+
+                <strong>
+                    @Model.Items.Count(x =>
+                    x.Status == VisitStatus.Approved.ToString() ||
+                    x.Status == VisitStatus.ReadyForVisit.ToString())
+                </strong>
+            </div>
+
         </div>
 
     </div>
 
 
-    <div class="col-md-3">
+    <div class="col-md-6 col-xl-3">
 
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
+        <div class="mini-summary-card">
 
-                <div class="kpi-header">
-
-                    <div>
-                        <div class="dashboard-label">
-                            Rejected
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Count(x =>
-                                                        x.Status == VisitStatus.Rejected.ToString())
-                        </div>
-                    </div>
-
-                    <div class="kpi-icon kpi-red">
-                        <i class="bi bi-x-circle"></i>
-                    </div>
-
-                </div>
-
+            <div class="mini-summary-icon stat-red">
+                <i class="bi bi-x-circle"></i>
             </div>
+
+            <div>
+                <span>Rejected</span>
+
+                <strong>
+                    @Model.Items.Count(x =>
+                                        x.Status == VisitStatus.Rejected.ToString())
+                </strong>
+            </div>
+
         </div>
 
     </div>
@@ -283,149 +249,284 @@
 </div>
 
 
-<!-- REPORT RESULTS -->
-<div class="card shadow-sm">
+<!-- RESULTS -->
+<div class="premium-table-card">
 
-    <div class="card-header d-flex justify-content-between align-items-center">
+    <div class="premium-table-header">
 
-        <strong>Visit Results</strong>
+        <div>
+            <h5>Visit Activity</h5>
 
-        <span class="text-muted small">
-            @Model.Items.Count record(s)
-        </span>
+            <span>
+                @Model.Items.Count record(s)
+            </span>
+        </div>
+
+        <div class="premium-table-header-icon">
+            <i class="bi bi-calendar2-week"></i>
+        </div>
 
     </div>
 
-    <div class="card-body">
 
-        <div class="table-responsive">
+    <div class="table-responsive">
 
-            <table class="table table-hover align-middle">
+        <table class="table premium-table visit-report-table align-middle mb-0">
 
-                <thead>
-                    <tr>
-                        <th>Reference</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Host</th>
-                        <th>Department</th>
-                        <th>Purpose</th>
-                        <th>Visitors</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
+            <thead>
+                <tr>
+                    <th>Visit</th>
+                    <th>Schedule</th>
+                    <th>Host</th>
+                    <th>Department</th>
+                    <th>Purpose</th>
+                    <th>Visitors</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
 
-                <tbody>
 
-                    @if (Model.Items.Any())
-                    {
-                        foreach (var item in Model.Items)
-                        {
-                            <tr>
+            <tbody>
 
-                                <td>
-                                    <strong>
-                                        @item.VisitReference
-                                    </strong>
-                                </td>
-
-                                <td>
-                                    @item.VisitFromDateTime.ToString(
-                                    "dd-MMM-yyyy hh:mm tt")
-                        </td>
-
-                        <td>
-                            @item.VisitToDateTime.ToString(
-                                                        "dd-MMM-yyyy hh:mm tt")
-                        </td>
-
-                        <td>
-                            @item.HostName
-                        </td>
-
-                        <td>
-                            @item.DepartmentName
-                        </td>
-
-                        <td>
-                            @item.Purpose
-                        </td>
-
-                        <td>
-                            <span class="badge bg-secondary">
-                                @item.VisitorCount
-                            </span>
-                        </td>
-
-                        <td>
-                            @switch (item.Status)
-                                    {
-                                        case "PendingApproval":
-                                            <span class="badge bg-warning text-dark">
-                                                Pending Approval
-                                            </span>
-                                            break;
-
-                                        case "Approved":
-                                            <span class="badge bg-success">
-                                                Approved
-                                            </span>
-                                            break;
-
-                                        case "ReadyForVisit":
-                                            <span class="badge bg-success">
-                                                Ready For Visit
-                                            </span>
-                                            break;
-
-                                        case "Rejected":
-                                            <span class="badge bg-danger">
-                                                Rejected
-                                            </span>
-                                            break;
-
-                                        case "CheckedIn":
-                                            <span class="badge bg-primary">
-                                                Checked In
-                                            </span>
-                                            break;
-
-                                        case "CheckedOut":
-                                            <span class="badge bg-secondary">
-                                                Checked Out
-                                            </span>
-                                            break;
-
-                                        default:
-                                            <span class="badge bg-light text-dark">
-                                                @item.Status
-                                            </span>
-                                            break;
-                                    }
-                                </td>
-
-                            </tr>
-                        }
-                    }
-                    else
+                @if (Model.Items.Any())
+                {
+                    foreach (var item in Model.Items)
                     {
                         <tr>
-                            <td colspan="8"
-                                class="text-center text-muted py-4">
 
-                                <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                            <!-- VISIT -->
+                            <td>
 
-                                No visit records found for the selected filters.
+                                <div class="visit-report-reference">
+
+                                    <div class="visit-report-reference-icon">
+                                        <i class="bi bi-calendar2-check"></i>
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            @item.VisitReference
+                                        </strong>
+
+                                        <span>
+                                            Visit Request
+                                        </span>
+
+                                    </div>
+
+                                </div>
 
                             </td>
+
+
+                            <!-- SCHEDULE -->
+                            <td>
+
+                                <div class="visit-report-schedule">
+
+                                    <div>
+                                        <i class="bi bi-box-arrow-in-right"></i>
+
+                                        <span>From</span>
+
+                                        <strong>
+                                            @item.VisitFromDateTime.ToString(
+                                            "dd MMM yyyy, hh:mm tt")
+                                </strong>
+                            </div>
+
+                            <div>
+                                <i class="bi bi-box-arrow-right"></i>
+
+                                <span>To</span>
+
+                                <strong>
+                                    @item.VisitToDateTime.ToString(
+                                                                        "dd MMM yyyy, hh:mm tt")
+                                </strong>
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- HOST -->
+                    <td>
+
+                        <div class="visit-report-host">
+
+                            <i class="bi bi-person"></i>
+
+                            <span>
+                                @item.HostName
+                            </span>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- DEPARTMENT -->
+                    <td>
+
+                        <div class="visit-report-department">
+
+                            <i class="bi bi-building"></i>
+
+                            <span>
+                                @item.DepartmentName
+                            </span>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- PURPOSE -->
+                    <td>
+
+                        <div class="visit-report-purpose"
+                             title="@item.Purpose">
+
+                            @(string.IsNullOrWhiteSpace(item.Purpose)
+                                                        ? "-"
+                                                        : item.Purpose)
+
+                        </div>
+
+                            </td>
+
+
+                            <!-- VISITORS -->
+                            <td>
+
+                                <div class="visit-report-visitors">
+
+                                    <i class="bi bi-people"></i>
+
+                                    <strong>
+                                        @item.VisitorCount
+                                    </strong>
+
+                                    <span>
+                                        visitor@(item.VisitorCount == 1 ? "" : "s")
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- STATUS -->
+                            <td>
+
+                        @switch (item.Status)
+                                {
+                                    case "PendingApproval":
+
+                                        <span class="visit-report-status visit-status-pending">
+                                            <i class="bi bi-hourglass-split"></i>
+                                            Pending
+                                        </span>
+
+                                        break;
+
+
+                                    case "Approved":
+
+                                        <span class="visit-report-status visit-status-approved">
+                                            <i class="bi bi-check-circle"></i>
+                                            Approved
+                                        </span>
+
+                                        break;
+
+
+                                    case "ReadyForVisit":
+
+                                        <span class="visit-report-status visit-status-ready">
+                                            <i class="bi bi-shield-check"></i>
+                                            Ready
+                                        </span>
+
+                                        break;
+
+
+                                    case "Rejected":
+
+                                        <span class="visit-report-status visit-status-rejected">
+                                            <i class="bi bi-x-circle"></i>
+                                            Rejected
+                                        </span>
+
+                                        break;
+
+
+                                    case "CheckedIn":
+
+                                        <span class="visit-report-status visit-status-inside">
+                                            <i class="bi bi-box-arrow-in-right"></i>
+                                            Checked In
+                                        </span>
+
+                                        break;
+
+
+                                    case "CheckedOut":
+
+                                        <span class="visit-report-status visit-status-completed">
+                                            <i class="bi bi-check2-all"></i>
+                                            Checked Out
+                                        </span>
+
+                                        break;
+
+
+                                    default:
+
+                                        <span class="visit-report-status visit-status-default">
+                                            @item.Status
+                                        </span>
+
+                                        break;
+                                }
+
+                            </td>
+
                         </tr>
                     }
+                }
+                else
+                {
+                    <tr>
 
-                </tbody>
+                        <td colspan="7"
+                            class="text-center py-5">
 
-            </table>
+                            <div class="reception-empty-state">
 
-        </div>
+                                <i class="bi bi-calendar-x"></i>
+
+                                <strong>
+                                    No visit records found
+                                </strong>
+
+                                <span>
+                                    Try changing the selected report filters.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
 
     </div>
 

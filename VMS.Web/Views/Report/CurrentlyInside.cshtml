@@ -9,140 +9,147 @@
         ViewBag.Departments as IEnumerable<Department>;
 }
 
-<div class="d-flex justify-content-between align-items-start mb-4">
+<div class="management-page-header mb-4">
 
     <div>
-        <h2 class="mb-1">Currently Inside</h2>
-
-        <div class="text-muted">
-            Live list of visitors currently checked in
+        <div class="admin-eyebrow">
+            REPORTING & ANALYTICS
         </div>
+
+        <h2>Currently Inside</h2>
+
+        <p>
+            Live view of visitors currently checked in to the facility.
+        </p>
     </div>
 
     <a asp-action="Index"
-       class="btn btn-outline-secondary">
+       class="btn premium-secondary-button">
 
-        <i class="bi bi-arrow-left me-1"></i>
-        Reports
+        <i class="bi bi-arrow-left"></i>
+        Back to Reports
 
     </a>
 
 </div>
 
 
-<div class="card shadow-sm mb-4">
+<!-- LIVE STATUS -->
+<div class="live-report-banner mb-3">
 
-    <div class="card-header">
-        <strong>Filters</strong>
-    </div>
+    <div class="live-report-left">
 
-    <div class="card-body">
+        <div class="live-report-icon">
+            <i class="bi bi-building-check"></i>
+        </div>
 
-        <form method="get"
-              asp-action="CurrentlyInside">
+        <div>
+            <span>LIVE FACILITY STATUS</span>
 
-            <div class="row g-3">
-
-                <div class="col-md-6">
-
-                    <label class="form-label">
-                        Search
-                    </label>
-
-                    <input type="text"
-                           name="search"
-                           value="@Model.Search"
-                           class="form-control"
-                           placeholder="Visitor, ID, company or visit reference..." />
-
-                </div>
-
-
-                <div class="col-md-4">
-
-                    <label class="form-label">
-                        Department
-                    </label>
-
-                    <select name="departmentId"
-                            class="form-select">
-
-                        <option value="">
-                            All Departments
-                        </option>
-
-                        @if (departments != null)
-                        {
-                            foreach (var department in departments)
-                            {
-                                <option value="@department.DepartmentId"
-                                        selected="@(Model.DepartmentId == department.DepartmentId)">
-                                    @department.DepartmentName
-                                </option>
-                            }
-                        }
-
-                    </select>
-
-                </div>
-
-            </div>
-
-
-            <div class="d-flex gap-2 mt-3">
-
-                <button type="submit"
-                        class="btn btn-primary">
-
-                    <i class="bi bi-search me-1"></i>
-                    Apply Filters
-
-                </button>
-
-                <a asp-action="CurrentlyInside"
-                   class="btn btn-outline-secondary">
-
-                    <i class="bi bi-arrow-counterclockwise me-1"></i>
-                    Reset
-
-                </a>
-
-            </div>
-
-        </form>
+            <strong>
+                @Model.Items.Count visitor(s) currently inside
+            </strong>
+        </div>
 
     </div>
+
+    <div class="live-indicator">
+        <span></span>
+        LIVE
+    </div>
+
 </div>
 
 
-<div class="row g-3 mb-4">
+<!-- FILTERS -->
+<div class="premium-filter-card mb-3">
 
-    <div class="col-md-4">
+    <form method="get"
+          asp-action="CurrentlyInside"
+          class="currently-inside-filter-form">
 
-        <div class="card dashboard-card h-100">
+        <div class="premium-search-box currently-inside-search">
 
-            <div class="card-body">
+            <i class="bi bi-search"></i>
 
-                <div class="kpi-header">
+            <input type="text"
+                   name="search"
+                   value="@Model.Search"
+                   class="form-control"
+                   placeholder="Search visitor, ID, company or visit reference..." />
 
-                    <div>
+        </div>
 
-                        <div class="dashboard-label">
-                            Currently Inside
-                        </div>
 
-                        <div class="dashboard-value">
-                            @Model.Items.Count
-                        </div>
+        <div class="premium-filter-select">
 
-                    </div>
+            <label class="report-filter-label">
+                Department
+            </label>
 
-                    <div class="kpi-icon kpi-green">
-                        <i class="bi bi-building-check"></i>
-                    </div>
+            <select name="departmentId"
+                    class="form-select"
+                    onchange="this.form.submit()">
 
-                </div>
+                <option value="">
+                    All Departments
+                </option>
 
+                @if (departments != null)
+                {
+                    foreach (var department in departments)
+                    {
+                        <option value="@department.DepartmentId"
+                                selected="@(Model.DepartmentId == department.DepartmentId)">
+                            @department.DepartmentName
+                        </option>
+                    }
+                }
+
+            </select>
+
+        </div>
+
+
+        <button type="submit"
+                class="btn premium-primary-button">
+
+            <i class="bi bi-funnel"></i>
+            Apply
+
+        </button>
+
+
+        <a asp-action="CurrentlyInside"
+           class="btn premium-secondary-button">
+
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Reset
+
+        </a>
+
+    </form>
+
+</div>
+
+
+<!-- KPI -->
+<div class="row g-3 mb-3">
+
+    <div class="col-md-4 col-xl-3">
+
+        <div class="mini-summary-card">
+
+            <div class="mini-summary-icon stat-green">
+                <i class="bi bi-building-check"></i>
+            </div>
+
+            <div>
+                <span>Currently Inside</span>
+
+                <strong>
+                    @Model.Items.Count
+                </strong>
             </div>
 
         </div>
@@ -152,129 +159,247 @@
 </div>
 
 
-<div class="card shadow-sm">
+<!-- TABLE -->
+<div class="premium-table-card">
 
-    <div class="card-header d-flex justify-content-between align-items-center">
+    <div class="premium-table-header">
 
-        <strong>Visitors Currently Inside</strong>
+        <div>
+            <h5>Visitors Currently Inside</h5>
 
-        <span class="text-muted small">
-            @Model.Items.Count visitor(s)
-        </span>
+            <span>
+                @Model.Items.Count visitor(s)
+            </span>
+        </div>
+
+        <div class="premium-table-header-icon">
+            <i class="bi bi-people"></i>
+        </div>
 
     </div>
 
-    <div class="card-body">
 
-        <div class="table-responsive">
+    <div class="table-responsive">
 
-            <table class="table table-hover align-middle">
+        <table class="table premium-table currently-inside-table align-middle mb-0">
 
-                <thead>
-                    <tr>
-                        <th>Visitor</th>
-                        <th>ID Number</th>
-                        <th>Company</th>
-                        <th>Visit Reference</th>
-                        <th>Department</th>
-                        <th>Check-In</th>
-                        <th>Time Inside</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
+            <thead>
+                <tr>
+                    <th>Visitor</th>
+                    <th>Identity</th>
+                    <th>Company</th>
+                    <th>Visit</th>
+                    <th>Department</th>
+                    <th>Check-In</th>
+                    <th>Time Inside</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
 
-                <tbody>
 
-                    @if (Model.Items.Any())
+            <tbody>
+
+                @if (Model.Items.Any())
+                {
+                    foreach (var item in Model.Items)
                     {
-                        foreach (var item in Model.Items)
-                        {
-                            <tr>
+                        <tr class="currently-inside-row">
 
-                                <td>
-                                    <a asp-controller="Visitor"
-                                       asp-action="Details"
-                                       asp-route-id="@item.VisitorId"
-                                       class="text-decoration-none">
+                            <!-- VISITOR -->
+                            <td>
 
+                                <a asp-controller="Visitor"
+                                   asp-action="Details"
+                                   asp-route-id="@item.VisitorId"
+                                   class="report-visitor-profile">
+
+                                    <div class="report-visitor-avatar">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+
+                                    <div>
                                         <strong>
                                             @item.VisitorName
                                         </strong>
 
-                                    </a>
-                                </td>
+                                        <span>
+                                            Currently on site
+                                        </span>
+                                    </div>
 
-                                <td>
-                                    @item.IdNumber
-                                </td>
+                                </a>
 
-                                <td>
-                                    @item.CompanyName
-                                </td>
+                            </td>
 
-                                <td>
-                                    @item.VisitReference
-                                </td>
 
-                                <td>
-                                    @item.DepartmentName
-                                </td>
+                            <!-- ID -->
+                            <td>
 
-                                <td>
-                                    @item.EntryTime.ToString(
-                                    "dd-MMM-yyyy hh:mm tt")
-                        </td>
+                                <div class="report-id">
 
-                        <td>
+                                    <i class="bi bi-person-vcard"></i>
+
+                                    <span>
+                                        @item.IdNumber
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- COMPANY -->
+                            <td>
+
+                                <div class="currently-inside-company">
+
+                                    <i class="bi bi-building"></i>
+
+                                    <span>
+                                        @(string.IsNullOrWhiteSpace(item.CompanyName)
+                                                                        ? "-"
+                                                                        : item.CompanyName)
+                                                                                       </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- VISIT -->
+                            <td>
+
+                                <div class="report-reference">
+
+                                    <span>
+                                        VISIT REFERENCE
+                                    </span>
+
+                                    <strong>
+                                        @item.VisitReference
+                                    </strong>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- DEPARTMENT -->
+                            <td>
+
+                                <div class="report-department">
+
+                                    <i class="bi bi-diagram-3"></i>
+
+                                    <span>
+                                        @(string.IsNullOrWhiteSpace(item.DepartmentName)
+                                                                        ? "-"
+                                                                        : item.DepartmentName)
+                            </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- CHECK IN -->
+                            <td>
+
+                                <div class="report-time">
+
+                                    <span class="report-time-icon report-entry">
+                                        <i class="bi bi-box-arrow-in-right"></i>
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            @item.EntryTime.ToString("hh:mm tt")
+                                        </strong>
+
+                                        <span>
+                                            @item.EntryTime.ToString("dd MMM yyyy")
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- DURATION -->
+                            <td>
+
+                                <span class="currently-inside-duration">
+
+                                    <i class="bi bi-stopwatch"></i>
 
                             @if (item.DurationInside.TotalDays >= 1)
                                     {
-                                        <span>
+                                        <text>
                                             @((int)item.DurationInside.TotalDays)d
                                             @item.DurationInside.Hours.ToString("00")h
                                             @item.DurationInside.Minutes.ToString("00")m
-                                        </span>
+                                        </text>
                                     }
                                     else
                                     {
-                                        <span>
+                                        <text>
                                             @((int)item.DurationInside.TotalHours)h
                                             @item.DurationInside.Minutes.ToString("00")m
-                                        </span>
+                                        </text>
                                     }
 
-                                </td>
+                                </span>
 
-                                <td>
-                                    <span class="badge bg-success">
-                                        Inside
-                                    </span>
-                                </td>
+                            </td>
 
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
 
-                            <td colspan="8"
-                                class="text-center text-muted py-4">
+                            <!-- STATUS -->
+                            <td>
 
-                                <i class="bi bi-building-check fs-4 d-block mb-2"></i>
+                                <span class="reception-status status-inside">
 
-                                No visitors are currently inside.
+                                    <i class="bi bi-circle-fill"></i>
+                                    Inside
+
+                                </span>
 
                             </td>
 
                         </tr>
                     }
+                }
+                else
+                {
+                    <tr>
 
-                </tbody>
+                        <td colspan="8"
+                            class="text-center py-5">
 
-            </table>
+                            <div class="reception-empty-state">
 
-        </div>
+                                <i class="bi bi-building-check"></i>
+
+                                <strong>
+                                    No visitors currently inside
+                                </strong>
+
+                                <span>
+                                    The facility currently has no checked-in visitors.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
 
     </div>
 

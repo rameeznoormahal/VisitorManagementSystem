@@ -2,125 +2,111 @@
 
 @{
     ViewData["Title"] = "Department Summary";
+
+    var maxVisits = Model.Items.Any()
+        ? Model.Items.Max(x => x.TotalVisits)
+        : 0;
 }
 
-<div class="d-flex justify-content-between align-items-start mb-4">
+<div class="management-page-header mb-4">
 
     <div>
-        <h2 class="mb-1">Department Summary</h2>
-
-        <div class="text-muted">
-            Visit and visitor activity by department
+        <div class="admin-eyebrow">
+            REPORTING & ANALYTICS
         </div>
+
+        <h2>Department Summary</h2>
+
+        <p>
+            Compare visit and visitor activity across departments.
+        </p>
     </div>
 
     <a asp-action="Index"
-       class="btn btn-outline-secondary">
+       class="btn premium-secondary-button">
 
-        <i class="bi bi-arrow-left me-1"></i>
-        Reports
+        <i class="bi bi-arrow-left"></i>
+        Back to Reports
 
     </a>
 
 </div>
 
 
-<div class="card shadow-sm mb-4">
+<!-- FILTERS -->
+<div class="premium-filter-card mb-3">
 
-    <div class="card-header">
-        <strong>Report Filters</strong>
-    </div>
+    <form method="get"
+          asp-action="Departments"
+          class="department-report-filter-form">
 
-    <div class="card-body">
+        <div class="access-filter-field">
 
-        <form method="get"
-              asp-action="Departments">
+            <label>
+                From Date
+            </label>
 
-            <div class="row g-3">
+            <input type="date"
+                   name="fromDate"
+                   value="@Model.FromDate?.ToString("yyyy-MM-dd")"
+                   class="form-control" />
 
-                <div class="col-md-3">
-
-                    <label class="form-label">
-                        From Date
-                    </label>
-
-                    <input type="date"
-                           name="fromDate"
-                           value="@Model.FromDate?.ToString("yyyy-MM-dd")"
-                           class="form-control" />
-
-                </div>
-
-                <div class="col-md-3">
-
-                    <label class="form-label">
-                        To Date
-                    </label>
-
-                    <input type="date"
-                           name="toDate"
-                           value="@Model.ToDate?.ToString("yyyy-MM-dd")"
-                           class="form-control" />
-
-                </div>
-
-            </div>
+        </div>
 
 
-            <div class="d-flex gap-2 mt-3">
+        <div class="access-filter-field">
 
-                <button type="submit"
-                        class="btn btn-primary">
+            <label>
+                To Date
+            </label>
 
-                    <i class="bi bi-search me-1"></i>
-                    Apply Filters
+            <input type="date"
+                   name="toDate"
+                   value="@Model.ToDate?.ToString("yyyy-MM-dd")"
+                   class="form-control" />
 
-                </button>
+        </div>
 
-                <a asp-action="Departments"
-                   class="btn btn-outline-secondary">
 
-                    <i class="bi bi-arrow-counterclockwise me-1"></i>
-                    Reset
+        <button type="submit"
+                class="btn premium-primary-button">
 
-                </a>
+            <i class="bi bi-funnel"></i>
+            Apply
 
-            </div>
+        </button>
 
-        </form>
 
-    </div>
+        <a asp-action="Departments"
+           class="btn premium-secondary-button">
+
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Reset
+
+        </a>
+
+    </form>
+
 </div>
 
 
-<div class="row g-3 mb-4">
+<!-- KPI -->
+<div class="row g-3 mb-3">
 
     <div class="col-md-4">
 
-        <div class="card dashboard-card h-100">
+        <div class="mini-summary-card">
 
-            <div class="card-body">
+            <div class="mini-summary-icon stat-blue">
+                <i class="bi bi-building"></i>
+            </div>
 
-                <div class="kpi-header">
+            <div>
+                <span>Departments</span>
 
-                    <div>
-
-                        <div class="dashboard-label">
-                            Departments
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Count
-                        </div>
-
-                    </div>
-
-                    <div class="kpi-icon kpi-blue">
-                        <i class="bi bi-building"></i>
-                    </div>
-
-                </div>
-
+                <strong>
+                    @Model.Items.Count
+                </strong>
             </div>
 
         </div>
@@ -130,30 +116,18 @@
 
     <div class="col-md-4">
 
-        <div class="card dashboard-card h-100">
+        <div class="mini-summary-card">
 
-            <div class="card-body">
+            <div class="mini-summary-icon stat-green">
+                <i class="bi bi-calendar2-check"></i>
+            </div>
 
-                <div class="kpi-header">
+            <div>
+                <span>Total Visits</span>
 
-                    <div>
-
-                        <div class="dashboard-label">
-                            Total Visits
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Sum(x => x.TotalVisits)
-                        </div>
-
-                    </div>
-
-                    <div class="kpi-icon kpi-green">
-                        <i class="bi bi-calendar2-check"></i>
-                    </div>
-
-                </div>
-
+                <strong>
+                    @Model.Items.Sum(x => x.TotalVisits)
+                </strong>
             </div>
 
         </div>
@@ -163,30 +137,18 @@
 
     <div class="col-md-4">
 
-        <div class="card dashboard-card h-100">
+        <div class="mini-summary-card">
 
-            <div class="card-body">
+            <div class="mini-summary-icon stat-purple">
+                <i class="bi bi-people"></i>
+            </div>
 
-                <div class="kpi-header">
+            <div>
+                <span>Total Visitors</span>
 
-                    <div>
-
-                        <div class="dashboard-label">
-                            Total Visitors
-                        </div>
-
-                        <div class="dashboard-value">
-                            @Model.Items.Sum(x => x.TotalVisitors)
-                        </div>
-
-                    </div>
-
-                    <div class="kpi-icon kpi-purple">
-                        <i class="bi bi-people"></i>
-                    </div>
-
-                </div>
-
+                <strong>
+                    @Model.Items.Sum(x => x.TotalVisitors)
+                </strong>
             </div>
 
         </div>
@@ -196,104 +158,214 @@
 </div>
 
 
-<div class="card shadow-sm">
+<!-- RESULTS -->
+<div class="premium-table-card">
 
-    <div class="card-header d-flex justify-content-between align-items-center">
+    <div class="premium-table-header">
 
-        <strong>Department Results</strong>
+        <div>
+            <h5>Department Activity</h5>
 
-        <span class="text-muted small">
-            @Model.Items.Count department(s)
-        </span>
+            <span>
+                @Model.Items.Count department(s)
+            </span>
+        </div>
+
+        <div class="premium-table-header-icon">
+            <i class="bi bi-building"></i>
+        </div>
 
     </div>
 
-    <div class="card-body">
 
-        <div class="table-responsive">
+    <div class="table-responsive">
 
-            <table class="table table-hover align-middle">
+        <table class="table premium-table department-summary-table align-middle mb-0">
 
-                <thead>
-                    <tr>
-                        <th>Department</th>
-                        <th>Total Visits</th>
-                        <th>Total Visitors</th>
-                        <th>Pending</th>
-                        <th>Approved / Ready</th>
-                        <th>Rejected</th>
-                        <th>Completed</th>
-                    </tr>
-                </thead>
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Activity</th>
+                    <th>Total Visitors</th>
+                    <th>Pending</th>
+                    <th>Approved / Ready</th>
+                    <th>Rejected</th>
+                    <th>Completed</th>
+                </tr>
+            </thead>
 
-                <tbody>
 
-                    @if (Model.Items.Any())
+            <tbody>
+
+                @if (Model.Items.Any())
+                {
+                    foreach (var item in Model.Items)
                     {
-                        foreach (var item in Model.Items)
-                        {
-                            <tr>
+                        var activityPercent =
+                        maxVisits > 0
+                        ? (item.TotalVisits * 100.0 / maxVisits)
+                        : 0;
 
-                                <td>
-                                    <strong>
-                                        @item.DepartmentName
-                                    </strong>
-                                </td>
-
-                                <td>
-                                    @item.TotalVisits
-                                </td>
-
-                                <td>
-                                    @item.TotalVisitors
-                                </td>
-
-                                <td>
-                                    <span class="badge bg-warning text-dark">
-                                        @item.PendingVisits
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <span class="badge bg-success">
-                                        @item.ApprovedVisits
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <span class="badge bg-danger">
-                                        @item.RejectedVisits
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <span class="badge bg-secondary">
-                                        @item.CompletedVisits
-                                    </span>
-                                </td>
-
-                            </tr>
-                        }
-                    }
-                    else
-                    {
                         <tr>
 
-                            <td colspan="7"
-                                class="text-center text-muted py-4">
+                            <!-- DEPARTMENT -->
+                            <td>
 
-                                No department data found.
+                                <div class="department-report-profile">
+
+                                    <div class="department-report-icon">
+                                        <i class="bi bi-building"></i>
+                                    </div>
+
+                                    <div>
+                                        <strong>
+                                            @item.DepartmentName
+                                        </strong>
+
+                                        <span>
+                                            Department
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- ACTIVITY -->
+                            <td>
+
+                                <div class="department-activity">
+
+                                    <div class="department-activity-top">
+
+                                        <strong>
+                                            @item.TotalVisits
+                                        </strong>
+
+                                        <span>
+                                            visit@(item.TotalVisits == 1 ? "" : "s")
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="department-activity-track">
+
+                                        <div class="department-activity-fill"
+                                             style="width:@activityPercent.ToString("0")%">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- VISITORS -->
+                            <td>
+
+                                <div class="department-visitor-count">
+
+                                    <i class="bi bi-people"></i>
+
+                                    <strong>
+                                        @item.TotalVisitors
+                                    </strong>
+
+                                    <span>
+                                        visitors
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- PENDING -->
+                            <td>
+
+                                <span class="department-status-count status-pending">
+
+                                    <i class="bi bi-hourglass-split"></i>
+                                    @item.PendingVisits
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- APPROVED -->
+                            <td>
+
+                                <span class="department-status-count status-approved">
+
+                                    <i class="bi bi-check-circle"></i>
+                                    @item.ApprovedVisits
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- REJECTED -->
+                            <td>
+
+                                <span class="department-status-count status-rejected">
+
+                                    <i class="bi bi-x-circle"></i>
+                                    @item.RejectedVisits
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- COMPLETED -->
+                            <td>
+
+                                <span class="department-status-count status-completed">
+
+                                    <i class="bi bi-check2-all"></i>
+                                    @item.CompletedVisits
+
+                                </span>
 
                             </td>
 
                         </tr>
                     }
+                }
+                else
+                {
+                    <tr>
 
-                </tbody>
+                        <td colspan="7"
+                            class="text-center py-5">
 
-            </table>
+                            <div class="reception-empty-state">
 
-        </div>
+                                <i class="bi bi-building"></i>
+
+                                <strong>
+                                    No department data found
+                                </strong>
+
+                                <span>
+                                    Try changing the selected report period.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
 
     </div>
 

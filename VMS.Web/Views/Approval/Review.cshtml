@@ -4,134 +4,448 @@
     ViewData["Title"] = "Review Visit Request";
 }
 
-<h2 class="mb-4">Review Visit Request</h2>
+<div class="management-page-header mb-4">
 
-<div class="card mb-4">
-    <div class="card-header">
-        Visit Information
+    <div>
+        <div class="admin-eyebrow">
+            APPROVAL WORKFLOW
+        </div>
+
+        <h2>Review Visit Request</h2>
+
+        <p>
+            Review visit information and visitor details before making a decision.
+        </p>
     </div>
 
-    <div class="card-body">
-        <div class="row">
+    <a asp-action="Index"
+       class="btn premium-secondary-button">
+        <i class="bi bi-arrow-left"></i>
+        Back to Approvals
+    </a>
 
-            <div class="col-md-6 mb-3">
-                <strong>Reference</strong>
-                <div>@Model.VisitReference</div>
+</div>
+
+
+<!-- APPROVAL STATUS -->
+<div class="approval-review-banner mb-3">
+
+    <div class="approval-review-banner-left">
+
+        <div class="approval-review-banner-icon">
+            <i class="bi bi-hourglass-split"></i>
+        </div>
+
+        <div>
+            <span>AWAITING DECISION</span>
+            <strong>Visit request requires your approval</strong>
+        </div>
+
+    </div>
+
+    <div class="approval-review-reference">
+        <span>VISIT REFERENCE</span>
+        <strong>@Model.VisitReference</strong>
+    </div>
+
+</div>
+
+
+<!-- VISIT INFORMATION -->
+<div class="premium-profile-card mb-3">
+
+    <div class="premium-profile-header">
+
+        <div>
+            <h5>Visit Information</h5>
+            <span>Request schedule, host and access information</span>
+        </div>
+
+        <div class="premium-form-header-icon stat-purple">
+            <i class="bi bi-calendar2-check"></i>
+        </div>
+
+    </div>
+
+
+    <div class="approval-info-grid">
+
+        <!-- HOST -->
+        <div class="approval-info-item">
+
+            <div class="approval-info-icon">
+                <i class="bi bi-person-badge"></i>
             </div>
 
-            <div class="col-md-6 mb-3">
-                <strong>Host</strong>
-                <div>@Model.HostName</div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <strong>Department</strong>
-                <div>@Model.DepartmentName</div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <strong>Meeting Location</strong>
-                <div>@Model.MeetingLocation</div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <strong>Valid From</strong>
-                <div>
-                    @Model.VisitFromDateTime.ToString("dd-MMM-yyyy hh:mm tt")
-                </div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <strong>Valid To</strong>
-                <div>
-                    @Model.VisitToDateTime.ToString("dd-MMM-yyyy hh:mm tt")
-                </div>
-            </div>
-
-            <div class="col-md-12 mb-3">
-                <strong>Purpose</strong>
-                <div>@Model.Purpose</div>
-            </div>
-
-            <div class="col-md-12 mb-3">
-                <strong>Notes</strong>
-                <div>@Model.Notes</div>
+            <div>
+                <span>Host</span>
+                <strong>@Model.HostName</strong>
             </div>
 
         </div>
+
+
+        <!-- DEPARTMENT -->
+        <div class="approval-info-item">
+
+            <div class="approval-info-icon">
+                <i class="bi bi-building"></i>
+            </div>
+
+            <div>
+                <span>Department</span>
+                <strong>@Model.DepartmentName</strong>
+            </div>
+
+        </div>
+
+
+        <!-- LOCATION -->
+        <div class="approval-info-item">
+
+            <div class="approval-info-icon">
+                <i class="bi bi-geo-alt"></i>
+            </div>
+
+            <div>
+                <span>Meeting Location</span>
+
+                <strong>
+                    @(string.IsNullOrWhiteSpace(Model.MeetingLocation)
+                                        ? "-"
+                                        : Model.MeetingLocation)
+                </strong>
+            </div>
+
+        </div>
+
+
+        <!-- FROM -->
+        <div class="approval-info-item">
+
+            <div class="approval-info-icon approval-start-icon">
+                <i class="bi bi-calendar-check"></i>
+            </div>
+
+            <div>
+                <span>Valid From</span>
+
+                <strong>
+                    @Model.VisitFromDateTime.ToString(
+                                        "dd MMM yyyy, hh:mm tt")
+                </strong>
+            </div>
+
+        </div>
+
+
+        <!-- TO -->
+        <div class="approval-info-item">
+
+            <div class="approval-info-icon approval-end-icon">
+                <i class="bi bi-calendar-x"></i>
+            </div>
+
+            <div>
+                <span>Valid To</span>
+
+                <strong>
+                    @Model.VisitToDateTime.ToString(
+                                        "dd MMM yyyy, hh:mm tt")
+                </strong>
+            </div>
+
+        </div>
+
     </div>
+
+
+    <div class="approval-description-grid">
+
+        <!-- PURPOSE -->
+        <div class="approval-description-box">
+
+            <div class="approval-description-icon">
+                <i class="bi bi-card-text"></i>
+            </div>
+
+            <div>
+                <span>PURPOSE OF VISIT</span>
+
+                <strong>
+                    @(string.IsNullOrWhiteSpace(Model.Purpose)
+                                        ? "-"
+                                        : Model.Purpose)
+                </strong>
+            </div>
+
+        </div>
+
+
+        <!-- NOTES -->
+        <div class="approval-description-box">
+
+            <div class="approval-description-icon">
+                <i class="bi bi-journal-text"></i>
+            </div>
+
+            <div>
+                <span>REQUEST NOTES</span>
+
+                <strong>
+                    @(string.IsNullOrWhiteSpace(Model.Notes)
+                                        ? "No additional notes"
+                                        : Model.Notes)
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
-<div class="card mb-4">
-    <div class="card-header">
-        Visitors (@Model.Visitors.Count)
+
+<!-- VISITORS -->
+<div class="premium-table-card mb-3">
+
+    <div class="premium-table-header">
+
+        <div>
+            <h5>Visitor Verification</h5>
+
+            <span>
+                @Model.Visitors.Count visitor(s) included in this request
+            </span>
+        </div>
+
+        <div class="premium-table-header-icon">
+            <i class="bi bi-people"></i>
+        </div>
+
     </div>
 
-    <div class="card-body">
 
-        <div class="table-responsive">
-            <table class="table table-bordered align-middle">
+    <div class="table-responsive">
 
-                <thead>
+        <table class="table premium-table approval-review-table align-middle mb-0">
+
+            <thead>
+                <tr>
+                    <th>Visitor</th>
+                    <th>Identity</th>
+                    <th>Company</th>
+                    <th>Designation</th>
+                    <th>Contact</th>
+                    <th>ID Expiry</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var visitor in Model.Visitors)
+                {
+                    var idExpired =
+                    visitor.IdExpiryDate <
+                    DateOnly.FromDateTime(DateTime.Today);
+
                     <tr>
-                        <th>ID Type</th>
-                        <th>ID Number</th>
-                        <th>Name</th>
-                        <th>Company</th>
-                        <th>Designation</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Expiry</th>
+
+                        <!-- VISITOR -->
+                        <td>
+
+                            <div class="approval-review-visitor">
+
+                                <div class="approval-review-avatar">
+                                    <i class="bi bi-person"></i>
+                                </div>
+
+                                <div>
+                                    <strong>@visitor.FullName</strong>
+                                    <span>Visitor</span>
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- ID -->
+                        <td>
+
+                            <div class="approval-review-id">
+
+                                <span>
+                                    @visitor.IdType
+                                </span>
+
+                                <strong>
+                                    @visitor.IdNumber
+                                </strong>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- COMPANY -->
+                        <td>
+
+                            <div class="approval-review-company">
+
+                                <i class="bi bi-building"></i>
+
+                                <span>
+                                    @(string.IsNullOrWhiteSpace(visitor.CompanyName)
+                                                                    ? "-"
+                                                                    : visitor.CompanyName)
+                                                                                      </span>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- DESIGNATION -->
+                        <td>
+
+                            @(string.IsNullOrWhiteSpace(visitor.Designation)
+                                                    ? "-"
+                                                    : visitor.Designation)
+
+                        </td>
+
+
+                        <!-- CONTACT -->
+                        <td>
+
+                            <div class="approval-review-contact">
+
+                                <div>
+                                    <i class="bi bi-telephone"></i>
+                                    @(string.IsNullOrWhiteSpace(visitor.PhoneNumber)
+                                                                    ? "-"
+                                                                    : visitor.PhoneNumber)
+                                                                                      </div>
+
+                                <div>
+                                    <i class="bi bi-envelope"></i>
+                                    @(string.IsNullOrWhiteSpace(visitor.Email)
+                                                                    ? "-"
+                                                                    : visitor.Email)
+                            </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- EXPIRY -->
+                        <td>
+
+                        @if (idExpired)
+                            {
+                                <div class="approval-expiry expired">
+
+                                    <i class="bi bi-exclamation-triangle"></i>
+
+                                    <div>
+                                        <strong>
+                                            @visitor.IdExpiryDate
+                                            .ToString("dd MMM yyyy")
+                                        </strong>
+
+                                        <span>ID EXPIRED</span>
+                                    </div>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="approval-expiry valid">
+
+                                    <i class="bi bi-shield-check"></i>
+
+                                    <div>
+                                        <strong>
+                                            @visitor.IdExpiryDate
+                                            .ToString("dd MMM yyyy")
+                                        </strong>
+
+                                        <span>VALID</span>
+                                    </div>
+
+                                </div>
+                            }
+
+                        </td>
+
                     </tr>
-                </thead>
+                }
 
-                <tbody>
-                    @foreach (var visitor in Model.Visitors)
-                    {
-                        <tr>
-                            <td>@visitor.IdType</td>
-                            <td>@visitor.IdNumber</td>
-                            <td>@visitor.FullName</td>
-                            <td>@visitor.CompanyName</td>
-                            <td>@visitor.Designation</td>
-                            <td>@visitor.PhoneNumber</td>
-                            <td>@visitor.Email</td>
-                            <td>
-                                @visitor.IdExpiryDate.ToString("dd-MMM-yyyy")
-                            </td>
-                        </tr>
-                    }
-                </tbody>
+            </tbody>
 
-            </table>
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- DECISION -->
+<div class="approval-decision-card">
+
+    <div class="approval-decision-header">
+
+        <div class="approval-decision-header-icon">
+            <i class="bi bi-shield-check"></i>
+        </div>
+
+        <div>
+            <h5>Approval Decision</h5>
+
+            <span>
+                Review the request carefully before submitting your decision.
+            </span>
         </div>
 
     </div>
-</div>
 
-<div class="card">
-    <div class="card-header">
-        Decision
-    </div>
 
-    <div class="card-body">
+    <div class="approval-decision-body">
 
         <div class="mb-3">
-            <label for="comments" class="form-label">
-                Comments
+
+            <label for="comments"
+                   class="premium-form-label">
+                Decision Comments
             </label>
 
             <textarea id="comments"
-                      class="form-control"
-                      rows="4"></textarea>
+                      class="form-control premium-form-control approval-comments"
+                      rows="4"
+                      maxlength="1000"
+                      placeholder="Enter approval or rejection comments..."></textarea>
 
-            <small class="text-muted">
-                Comments are optional for approval and required for rejection.
-            </small>
+            <div class="approval-comments-help">
+
+                <span>
+                    <i class="bi bi-info-circle"></i>
+                    Optional for approval. Required for rejection.
+                </span>
+
+                <span id="commentCounter">
+                    0 / 1000
+                </span>
+
+            </div>
+
         </div>
 
-        <div class="d-flex gap-2">
 
+        <div class="approval-decision-actions">
+
+            <!-- APPROVE -->
             <form id="approveForm"
                   asp-action="Approve"
                   asp-route-id="@Model.VisitRequestId"
@@ -144,12 +458,17 @@
                        name="comments" />
 
                 <button type="submit"
-                        class="btn btn-success">
-                    Approve
+                        class="btn approval-approve-button">
+
+                    <i class="bi bi-check-circle"></i>
+                    Approve Request
+
                 </button>
 
             </form>
 
+
+            <!-- REJECT -->
             <form id="rejectForm"
                   asp-action="Reject"
                   asp-route-id="@Model.VisitRequestId"
@@ -162,46 +481,103 @@
                        name="comments" />
 
                 <button type="submit"
-                        class="btn btn-danger">
-                    Reject
+                        class="btn approval-reject-button">
+
+                    <i class="bi bi-x-circle"></i>
+                    Reject Request
+
                 </button>
 
             </form>
 
+
             <a asp-action="Index"
-               class="btn btn-secondary">
-                Back
+               class="btn premium-secondary-button">
+
+                Cancel
+
             </a>
 
         </div>
 
+
+        <div id="rejectValidationMessage"
+             class="approval-validation-message d-none">
+
+            <i class="bi bi-exclamation-circle"></i>
+
+            Rejection comments are required.
+
+        </div>
+
     </div>
+
 </div>
 
-@section Scripts {
-    <script>
-        const commentsBox = document.getElementById("comments");
 
+@section Scripts {
+
+    <script>
+
+        const commentsBox =
+            document.getElementById("comments");
+
+        const counter =
+            document.getElementById("commentCounter");
+
+        const validationMessage =
+            document.getElementById("rejectValidationMessage");
+
+
+        // Character counter
+        commentsBox.addEventListener("input", function () {
+
+            counter.textContent =
+                commentsBox.value.length + " / 1000";
+
+            if (commentsBox.value.trim()) {
+                validationMessage.classList.add("d-none");
+            }
+
+        });
+
+
+        // APPROVE
         document.getElementById("approveForm")
             .addEventListener("submit", function () {
-                document.getElementById("approveComments").value =
-                    commentsBox.value;
+
+                document.getElementById(
+                    "approveComments"
+                ).value = commentsBox.value;
+
             });
 
+
+        // REJECT
         document.getElementById("rejectForm")
             .addEventListener("submit", function (event) {
 
-                const comments = commentsBox.value.trim();
+                const comments =
+                    commentsBox.value.trim();
 
                 if (!comments) {
+
                     event.preventDefault();
-                    alert("Rejection comments are required.");
+
+                    validationMessage
+                        .classList.remove("d-none");
+
                     commentsBox.focus();
+
                     return;
                 }
 
-                document.getElementById("rejectComments").value =
-                    comments;
+                document.getElementById(
+                    "rejectComments"
+                ).value = comments;
+
             });
+
     </script>
+
 }

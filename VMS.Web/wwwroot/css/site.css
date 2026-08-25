@@ -5594,3 +5594,697 @@ textarea.premium-form-control {
         max-width: none;
     }
 }
+/* ==========================================
+   PREMIUM APPROVAL QUEUE
+   ========================================== */
+
+.approval-table {
+    min-width: 950px;
+}
+
+
+/* REFERENCE */
+
+.approval-reference {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 145px;
+}
+
+.approval-reference-icon {
+    width: 31px;
+    height: 31px;
+    flex: 0 0 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 12px;
+}
+
+.approval-reference span {
+    display: block;
+    color: #a098a4;
+    font-size: 6px;
+    font-weight: 700;
+    letter-spacing: .4px;
+}
+
+.approval-reference strong {
+    display: block;
+    margin-top: 2px;
+    color: #6500ae;
+    font-size: 8px;
+    overflow-wrap: anywhere;
+}
+
+
+/* VISITORS */
+
+.approval-visitors {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 140px;
+}
+
+.approval-visitor {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #514756;
+    font-size: 8px;
+}
+
+.approval-visitor-avatar {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f3eff6;
+    color: #6500ae;
+    font-size: 8px;
+}
+
+.approval-more-visitors {
+    margin-left: 25px;
+    color: #6500ae;
+    font-size: 7px;
+    font-weight: 700;
+}
+
+
+/* SCHEDULE */
+
+.approval-schedule {
+    min-width: 130px;
+}
+
+    .approval-schedule strong {
+        display: block;
+        color: #453c4a;
+        font-size: 8px;
+    }
+
+    .approval-schedule span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 3px;
+        color: #968f99;
+        font-size: 7px;
+    }
+
+
+/* DEPARTMENT */
+
+.approval-department {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    max-width: 150px;
+    color: #554d59;
+    font-size: 8px;
+}
+
+    .approval-department i {
+        color: #7651d6;
+    }
+
+
+/* PURPOSE */
+
+.approval-purpose {
+    max-width: 190px;
+    color: #5b525f;
+    font-size: 8px;
+    line-height: 1.45;
+}
+
+
+/* STATUS */
+
+.approval-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    border-radius: 20px;
+    background: #fff5dc;
+    color: #a86d00;
+    white-space: nowrap;
+    font-size: 7px;
+    font-weight: 700;
+}
+
+
+/* REVIEW */
+
+.approval-review-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 10px;
+    border: 0;
+    border-radius: 7px;
+    background: linear-gradient( 90deg, #6500ae, #7d27c7 );
+    color: #ffffff;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+    .approval-review-button:hover {
+        color: #ffffff;
+        transform: translateY(-1px);
+        box-shadow: 0 5px 12px rgba(101, 0, 174, .18);
+    }
+
+
+/* EMPTY */
+
+.approval-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.approval-empty-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    border-radius: 50%;
+    background: #e8f7ef;
+    color: #168954;
+    font-size: 18px;
+}
+
+.approval-empty-state strong {
+    color: #554b5a;
+    font-size: 10px;
+}
+
+.approval-empty-state span {
+    margin-top: 3px;
+    color: #9e96a2;
+    font-size: 8px;
+}
+/* ==========================================
+   PREMIUM APPROVAL REVIEW
+   ========================================== */
+
+
+/* TOP STATUS */
+
+.approval-review-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 16px;
+    background: linear-gradient( 90deg, #fff7e4, #fffdf8 );
+    border: 1px solid #f0dfb5;
+    border-radius: 12px;
+}
+
+.approval-review-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.approval-review-banner-icon {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #ffedbd;
+    color: #a86d00;
+    font-size: 16px;
+}
+
+.approval-review-banner-left span {
+    display: block;
+    color: #a86d00;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: .7px;
+}
+
+.approval-review-banner-left strong {
+    display: block;
+    margin-top: 2px;
+    color: #443b48;
+    font-size: 10px;
+}
+
+.approval-review-reference {
+    text-align: right;
+}
+
+    .approval-review-reference span {
+        display: block;
+        color: #9d95a1;
+        font-size: 6px;
+        font-weight: 700;
+        letter-spacing: .5px;
+    }
+
+    .approval-review-reference strong {
+        display: block;
+        margin-top: 2px;
+        color: #6500ae;
+        font-size: 10px;
+    }
+
+
+/* VISIT INFORMATION */
+
+.approval-info-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    border-bottom: 1px solid #eeeaf1;
+}
+
+.approval-info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 76px;
+    padding: 12px;
+    border-right: 1px solid #eeeaf1;
+}
+
+    .approval-info-item:last-child {
+        border-right: none;
+    }
+
+.approval-info-icon {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 11px;
+}
+
+.approval-start-icon {
+    background: #e8f7ef;
+    color: #168954;
+}
+
+.approval-end-icon {
+    background: #fff3e5;
+    color: #c77815;
+}
+
+.approval-info-item span {
+    display: block;
+    color: #9c949f;
+    font-size: 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.approval-info-item strong {
+    display: block;
+    margin-top: 3px;
+    color: #4a414f;
+    font-size: 8px;
+}
+
+
+/* PURPOSE + NOTES */
+
+.approval-description-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 12px;
+}
+
+.approval-description-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 11px;
+    background: #faf8fb;
+    border: 1px solid #eee9f1;
+    border-radius: 8px;
+}
+
+.approval-description-icon {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 10px;
+}
+
+.approval-description-box span {
+    display: block;
+    color: #99919d;
+    font-size: 6px;
+    font-weight: 700;
+    letter-spacing: .4px;
+}
+
+.approval-description-box strong {
+    display: block;
+    margin-top: 3px;
+    color: #514756;
+    font-size: 8px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+
+/* VISITOR */
+
+.approval-review-table {
+    min-width: 900px;
+}
+
+.approval-review-visitor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 140px;
+}
+
+.approval-review-avatar {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 12px;
+}
+
+.approval-review-visitor strong {
+    display: block;
+    color: #423848;
+    font-size: 9px;
+}
+
+.approval-review-visitor span {
+    display: block;
+    margin-top: 1px;
+    color: #a098a4;
+    font-size: 7px;
+}
+
+
+/* ID */
+
+.approval-review-id span {
+    display: block;
+    color: #99919d;
+    font-size: 6px;
+}
+
+.approval-review-id strong {
+    display: block;
+    margin-top: 2px;
+    color: #554b5a;
+    font-size: 8px;
+}
+
+
+/* COMPANY */
+
+.approval-review-company {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #5b525f;
+    font-size: 8px;
+}
+
+    .approval-review-company i {
+        color: #7651d6;
+    }
+
+
+/* CONTACT */
+
+.approval-review-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 130px;
+}
+
+    .approval-review-contact div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #625968;
+        font-size: 7px;
+    }
+
+    .approval-review-contact i {
+        color: #7651d6;
+    }
+
+
+/* EXPIRY */
+
+.approval-expiry {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 100px;
+}
+
+    .approval-expiry > i {
+        font-size: 13px;
+    }
+
+    .approval-expiry strong {
+        display: block;
+        color: #4f4654;
+        font-size: 8px;
+    }
+
+    .approval-expiry span {
+        display: block;
+        margin-top: 1px;
+        font-size: 6px;
+        font-weight: 800;
+    }
+
+    .approval-expiry.valid > i,
+    .approval-expiry.valid span {
+        color: #168954;
+    }
+
+    .approval-expiry.expired > i,
+    .approval-expiry.expired span {
+        color: #d83e57;
+    }
+
+
+/* DECISION CARD */
+
+.approval-decision-card {
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e6e0e9;
+    border-radius: 14px;
+    box-shadow: 0 7px 25px rgba(46, 29, 57, .05);
+}
+
+.approval-decision-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: linear-gradient( 90deg, #faf6fd, #ffffff );
+    border-bottom: 1px solid #eee9f1;
+}
+
+.approval-decision-header-icon {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #f1e8fb;
+    color: #6500ae;
+    font-size: 14px;
+}
+
+.approval-decision-header h5 {
+    margin: 0;
+    color: #423848;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.approval-decision-header span {
+    display: block;
+    margin-top: 2px;
+    color: #99919d;
+    font-size: 7px;
+}
+
+.approval-decision-body {
+    padding: 16px;
+}
+
+
+/* COMMENTS */
+
+.approval-comments {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.approval-comments-help {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5px;
+    color: #99919d;
+    font-size: 7px;
+}
+
+    .approval-comments-help i {
+        margin-right: 3px;
+        color: #7651d6;
+    }
+
+
+/* ACTIONS */
+
+.approval-decision-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.approval-approve-button,
+.approval-reject-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 125px;
+    padding: 8px 13px;
+    border-radius: 8px;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.approval-approve-button {
+    border: 1px solid #168954;
+    background: #168954;
+    color: #ffffff;
+}
+
+    .approval-approve-button:hover {
+        background: #117546;
+        border-color: #117546;
+        color: #ffffff;
+    }
+
+.approval-reject-button {
+    border: 1px solid #dc4058;
+    background: #ffffff;
+    color: #dc4058;
+}
+
+    .approval-reject-button:hover {
+        background: #dc4058;
+        color: #ffffff;
+    }
+
+
+/* VALIDATION */
+
+.approval-validation-message {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    padding: 8px 10px;
+    background: #fff0f2;
+    border: 1px solid #f2ccd2;
+    border-radius: 7px;
+    color: #c8364d;
+    font-size: 8px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+
+    .approval-info-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+
+    .approval-review-banner {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .approval-review-reference {
+        text-align: left;
+    }
+
+    .approval-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .approval-info-item {
+        border-right: none;
+        border-bottom: 1px solid #eeeaf1;
+    }
+
+    .approval-description-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .approval-decision-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+        .approval-decision-actions form,
+        .approval-approve-button,
+        .approval-reject-button,
+        .approval-decision-actions .premium-secondary-button {
+            width: 100%;
+        }
+}

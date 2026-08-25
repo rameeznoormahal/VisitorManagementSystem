@@ -4,117 +4,275 @@
     ViewData["Title"] = "Pending Approvals";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="management-page-header mb-4">
+
     <div>
-        <h2 class="mb-1">Pending Approvals</h2>
-        <small class="text-muted">
-            Visit requests waiting for review
-        </small>
+        <div class="admin-eyebrow">
+            APPROVAL WORKFLOW
+        </div>
+
+        <h2>Pending Approvals</h2>
+
+        <p>
+            Review visit requests waiting for authorization.
+        </p>
     </div>
+
 </div>
 
-<div class="card shadow-sm">
-    <div class="card-body">
 
-        @if (!Model.Any())
-        {
-            <div class="alert alert-info mb-0">
-                There are no visit requests pending approval.
+<!-- SUMMARY -->
+<div class="row g-3 mb-3">
+
+    <div class="col-md-4 col-xl-3">
+
+        <div class="mini-summary-card">
+
+            <div class="mini-summary-icon stat-yellow">
+                <i class="bi bi-hourglass-split"></i>
             </div>
-        }
-        else
-        {
-            <div class="table-responsive">
 
-                <table class="table table-hover align-middle">
+            <div>
+                <span>Pending Requests</span>
 
-                    <thead>
-                        <tr>
-                            <th>Reference</th>
-                            <th>Visitors</th>
-                            <th>Count</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Purpose</th>
-                            <th>Status</th>
-                            <th class="text-end">Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-
-                                <td>
-                                    <strong>
-                                        @item.VisitReference
-                                    </strong>
-                                </td>
-
-                                <td>
-                                    @if (item.VisitVisitors.Any())
-                                    {
-                                        @foreach (var visitVisitor in item.VisitVisitors)
-                                        {
-                                            <div>
-                                                @visitVisitor.Visitor.FullName
-                                            </div>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">
-                                            No visitors
-                                        </span>
-                                    }
-                                </td>
-
-                                <td>
-                                    <span class="badge bg-secondary">
-                                        @item.VisitVisitors.Count
-                                    </span>
-                                </td>
-
-                                <td>
-                                    @item.VisitFromDateTime.ToString("dd-MMM-yyyy hh:mm tt")
-                                </td>
-
-                                <td>
-                                    @item.VisitToDateTime.ToString("dd-MMM-yyyy hh:mm tt")
-                                </td>
-
-                                <td>
-                                    @item.Purpose
-                                </td>
-
-                                <td>
-                                    <span class="badge bg-warning text-dark">
-                                        Pending Approval
-                                    </span>
-                                </td>
-
-                                <td class="text-end">
-
-                                    <a asp-controller="Approval"
-                                       asp-action="Review"
-                                       asp-route-id="@item.VisitRequestId"
-                                       class="btn btn-sm btn-primary">
-                                        Review
-                                    </a>
-
-                                </td>
-
-                            </tr>
-                        }
-
-                    </tbody>
-
-                </table>
-
+                <strong>
+                    @Model.Count()
+                </strong>
             </div>
-        }
+
+        </div>
 
     </div>
+
+</div>
+
+
+<div class="premium-table-card">
+
+    <div class="premium-table-header">
+
+        <div>
+            <h5>Approval Queue</h5>
+
+            <span>
+                @Model.Count() request(s) awaiting review
+            </span>
+        </div>
+
+        <div class="premium-table-header-icon">
+            <i class="bi bi-shield-check"></i>
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table class="table premium-table approval-table align-middle mb-0">
+
+            <thead>
+                <tr>
+                    <th>Visit</th>
+                    <th>Visitors</th>
+                    <th>Schedule</th>
+                    <th>Department</th>
+                    <th>Purpose</th>
+                    <th>Status</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <!-- VISIT -->
+                            <td>
+
+                                <div class="approval-reference">
+
+                                    <div class="approval-reference-icon">
+                                        <i class="bi bi-calendar2-check"></i>
+                                    </div>
+
+                                    <div>
+
+                                        <span>
+                                            VISIT REFERENCE
+                                        </span>
+
+                                        <strong>
+                                            @item.VisitReference
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- VISITORS -->
+                            <td>
+
+                                @if (item.VisitVisitors.Any())
+                                {
+                                    <div class="approval-visitors">
+
+                                        @foreach (var visitVisitor in item.VisitVisitors.Take(3))
+                                        {
+                                            <div class="approval-visitor">
+
+                                                <span class="approval-visitor-avatar">
+                                                    <i class="bi bi-person"></i>
+                                                </span>
+
+                                                <span>
+                                                    @visitVisitor.Visitor.FullName
+                                                </span>
+
+                                            </div>
+                                        }
+
+                                        @if (item.VisitVisitors.Count > 3)
+                                        {
+                                            <span class="approval-more-visitors">
+                                                +@(item.VisitVisitors.Count - 3) more
+                                            </span>
+                                        }
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">
+                                        No visitors
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- SCHEDULE -->
+                            <td>
+
+                                <div class="approval-schedule">
+
+                                    <strong>
+                                        @item.VisitFromDateTime
+                                        .ToString("dd MMM yyyy")
+                                    </strong>
+
+                                    <span>
+                                        @item.VisitFromDateTime
+                                        .ToString("hh:mm tt")
+
+                                        <i class="bi bi-arrow-right"></i>
+
+                                        @item.VisitToDateTime
+                                        .ToString("hh:mm tt")
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- DEPARTMENT -->
+                            <td>
+
+                                <div class="approval-department">
+
+                                    <i class="bi bi-building"></i>
+
+                                    <span>
+                                        @(item.Department?.DepartmentName ?? "-")
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- PURPOSE -->
+                            <td>
+
+                                <div class="approval-purpose">
+                                    @item.Purpose
+                                </div>
+
+                            </td>
+
+
+                            <!-- STATUS -->
+                            <td>
+
+                                <span class="approval-status-badge">
+
+                                    <i class="bi bi-hourglass-split"></i>
+
+                                    Pending Approval
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- ACTION -->
+                            <td class="text-end">
+
+                                <a asp-controller="Approval"
+                                   asp-action="Review"
+                                   asp-route-id="@item.VisitRequestId"
+                                   class="btn approval-review-button">
+
+                                    <i class="bi bi-eye"></i>
+                                    Review
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+
+                        <td colspan="7"
+                            class="text-center py-5">
+
+                            <div class="approval-empty-state">
+
+                                <div class="approval-empty-icon">
+                                    <i class="bi bi-check-circle"></i>
+                                </div>
+
+                                <strong>
+                                    You're all caught up
+                                </strong>
+
+                                <span>
+                                    There are no visit requests waiting for approval.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
 </div>
